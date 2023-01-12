@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json.schemastore.org/nest-cli",
+  "collection": "@nestjs/schematics",
+  "sourceRoot": "apps/moinda_backend/src",
+  "compilerOptions": {
+    "deleteOutDir": true,
+    "webpack": true,
+    "tsConfigPath": "apps/moinda_backend/tsconfig.app.json"
+  },
+  "monorepo": true,
+  "root": "apps/moinda_backend",
+  "projects": {
+    "moinda-pd-api": {
+      "type": "application",
+      "root": "apps/moinda-pd-api",
+      "entryFile": "main",
+      "sourceRoot": "apps/moinda-pd-api/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/moinda-pd-api/tsconfig.app.json"
+      }
+    },
+    "moinda-pd-admin": {
+      "type": "application",
+      "root": "apps/moinda-pd-admin",
+      "entryFile": "main",
+      "sourceRoot": "apps/moinda-pd-admin/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/moinda-pd-admin/tsconfig.app.json"
+      }
+    },
+    "moinda": {
+      "type": "library",
+      "root": "libs/moinda",
+      "entryFile": "index",
+      "sourceRoot": "libs/moinda/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/moinda/tsconfig.lib.json"
+      }
+    },
+    "moinda-pd": {
+      "type": "library",
+      "root": "libs/moinda-pd",
+      "entryFile": "index",
+      "sourceRoot": "libs/moinda-pd/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/moinda-pd/tsconfig.lib.json"
+      }
+    }
+  }
+}
