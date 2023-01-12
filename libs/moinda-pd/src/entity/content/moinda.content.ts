@@ -1,6 +1,6 @@
 import { BaseEntity, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 
-export abstract class WayContent extends BaseEntity {
+export abstract class MoindaContent extends BaseEntity {
   @CreateDateColumn()
   createdAt!: Date;
 
