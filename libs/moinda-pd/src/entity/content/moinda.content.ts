@@ -7,4 +7,3 @@ export abstract class MoindaContent extends BaseEntity {
   @UpdateDateColumn()
   updatedAt: Date;
 }
-

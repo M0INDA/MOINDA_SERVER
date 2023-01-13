@@ -14,15 +14,8 @@ import { ApiService } from './api.service';
   imports: [
     MoindaPdModule,
     ConfigModule,
-    TypeOrmModule.forFeature([
-      UserRepository,
-    ]),
-    TypeOrmModule.forFeature(
-      [
-        PdReadUserRepository,
-      ],
-      DB_READ_NAME,
-    ),
+    TypeOrmModule.forFeature([UserRepository]),
+    TypeOrmModule.forFeature([PdReadUserRepository], DB_READ_NAME),
     // HttpModule.registerAsync({
     //   useFactory: () => ({
     //     timeout: 1000,
@@ -31,8 +24,6 @@ import { ApiService } from './api.service';
     // }),
   ],
   controllers: [],
-  providers: [
-    IdService,
-  ],
+  providers: [IdService],
 })
 export class ApiModule {}

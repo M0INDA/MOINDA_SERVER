@@ -29,9 +29,7 @@ import { IdService } from './service/pd.id.service';
       keepConnectionAlive: true,
       logging: process.env.DB_LOGGING == 'true',
       synchronize: process.env.DB_SYNCHRONIZE == 'true',
-      entities: [
-        UserEntity,
-      ],
+      entities: [UserEntity],
     }),
     TypeOrmModule.forRoot({
       name: DB_READ_NAME,
@@ -44,22 +42,12 @@ import { IdService } from './service/pd.id.service';
       keepConnectionAlive: true,
       logging: process.env.DB_LOGGING == 'true',
       synchronize: process.env.DB_SYNCHRONIZE == 'true',
-      entities: [
-        PdReadUserEntity,
-      ],
+      entities: [PdReadUserEntity],
     }),
-    TypeOrmModule.forFeature([
-      UserRepository,
-    ]),
-    TypeOrmModule.forFeature(
-      [
-        PdReadUserRepository,
-      ],
-      DB_READ_NAME,
-    ),
+    TypeOrmModule.forFeature([UserRepository]),
+    TypeOrmModule.forFeature([PdReadUserRepository], DB_READ_NAME),
   ],
   providers: [IdService],
   exports: [IdService],
 })
-
 export class MoindaPdModule {}
