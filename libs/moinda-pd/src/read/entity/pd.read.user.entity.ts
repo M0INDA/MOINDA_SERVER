@@ -1,6 +1,30 @@
 import { USER } from '@app/moinda-pd/constant.model';
 import { UserEntity } from '@app/moinda-pd/entity/user.entity';
-import { Entity } from 'typeorm';
+import { Entity, OneToMany } from 'typeorm';
+import { PdReadApproveEntity } from './pd.read.approve.entity';
+import { PdReadChatEntity } from './pd.read.chat.entity';
+import { PdReadCommentEntity } from './pd.read.comment.entity';
+import { PdReadDiaryEntity } from './pd.read.diary.entity';
+import { PdReadMemberEntity } from './pd.read.member.entity';
+import { PdReadStudyEntity } from './pd.read.study.entity';
 
 @Entity({ name: USER })
-export class PdReadUserEntity extends UserEntity {}
+export class PdReadUserEntity extends UserEntity {
+  @OneToMany(() => PdReadStudyEntity, (study) => study.user)
+  override studies: Promise<PdReadStudyEntity[]>;
+
+  @OneToMany(() => PdReadMemberEntity, (member) => member.user)
+  override members: Promise<PdReadMemberEntity[]>;
+
+  @OneToMany(() => PdReadApproveEntity, (approve) => approve.user)
+  override approves: Promise<PdReadApproveEntity[]>;
+
+  @OneToMany(() => PdReadDiaryEntity, (diary) => diary.user)
+  override diaries: Promise<PdReadDiaryEntity[]>;
+
+  @OneToMany(() => PdReadCommentEntity, (comment) => comment.user)
+  override comments: Promise<PdReadCommentEntity[]>;
+
+  @OneToMany(() => PdReadChatEntity, (chat) => chat.user)
+  override chats: Promise<PdReadChatEntity[]>;
+}
