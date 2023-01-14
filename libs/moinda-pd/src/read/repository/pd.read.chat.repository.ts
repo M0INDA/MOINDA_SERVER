@@ -1,5 +1,6 @@
-import { EntityRepository, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { PdReadChatEntity } from '../entity/pd.read.chat.entity';
+import { CustomRepository } from '../../CustomRepository/typeorm-ex.decorator';
 
-@EntityRepository(PdReadChatEntity)
+@CustomRepository(PdReadChatEntity)
 export class PdReadChatRepository extends Repository<PdReadChatEntity> {}

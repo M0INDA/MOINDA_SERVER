@@ -1,5 +1,6 @@
-import { EntityRepository, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { ApproveEntity } from '../entity/approve.entity';
+import { CustomRepository } from '../CustomRepository/typeorm-ex.decorator';
 
-@EntityRepository(ApproveEntity)
+@CustomRepository(ApproveEntity)
 export class ApproveRepository extends Repository<ApproveEntity> {}

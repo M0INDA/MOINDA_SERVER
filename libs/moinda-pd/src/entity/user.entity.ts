@@ -18,6 +18,7 @@ export class UserEntity extends MoindaContent {
     type: 'varchar',
     length: 64,
     nullable: false,
+    unique: true,
   })
   email!: string;
 
@@ -25,6 +26,7 @@ export class UserEntity extends MoindaContent {
     type: 'varchar',
     length: 64,
     nullable: false,
+    unique: true,
   })
   nickname!: string;
 

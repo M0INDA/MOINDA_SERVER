@@ -1,5 +1,6 @@
-import { EntityRepository, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { PdReadApproveEntity } from '../entity/pd.read.approve.entity';
+import { CustomRepository } from '../../CustomRepository/typeorm-ex.decorator';
 
-@EntityRepository(PdReadApproveEntity)
+@CustomRepository(PdReadApproveEntity)
 export class PdReadApproveRepository extends Repository<PdReadApproveEntity> {}

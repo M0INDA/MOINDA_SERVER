@@ -1,5 +1,6 @@
-import { EntityRepository, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { ChatEntity } from '../entity/chat.entity';
+import { CustomRepository } from '../CustomRepository/typeorm-ex.decorator';
 
-@EntityRepository(ChatEntity)
+@CustomRepository(ChatEntity)
 export class ChatRepository extends Repository<ChatEntity> {}

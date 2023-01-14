@@ -54,7 +54,7 @@ import { ApproveEntity } from './entity/approve.entity';
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
       keepConnectionAlive: true,
-      logging: process.env.DB_LOGGING == 'true',
+      // logging: process.env.DB_LOGGING == 'true',
       synchronize: process.env.DB_SYNCHRONIZE == 'true',
       entities: [
         UserEntity,
@@ -76,7 +76,7 @@ import { ApproveEntity } from './entity/approve.entity';
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
       keepConnectionAlive: true,
-      logging: process.env.DB_LOGGING == 'true',
+      // logging: process.env.DB_LOGGING == 'true',
       synchronize: process.env.DB_SYNCHRONIZE == 'true',
       entities: [
         PdReadUserEntity,
