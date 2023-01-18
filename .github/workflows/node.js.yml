@@ -28,6 +28,7 @@ jobs:
           cd libs
           cd moinda-pd
           mkdir environment
+          cd environment
           touch .env.ci
           cat << EOF >> .env.ci
           ${{ secrets.ENV_FILE }}
