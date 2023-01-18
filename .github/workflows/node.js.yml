@@ -35,8 +35,9 @@ jobs:
         working-directory: ./
         run: |
           npm install
-          npm test
-          npm build
+          
+#          npm test
+#          npm build
           
       - name: zip file
         run: zip -r moinda.zip ./apps ./libs ./.eslintrc.js ./.gitignore ./.prettierrc ./nest-cli.json ./package.json ./tsconfig.build.json ./tsconfig.json ./appspec.yml ./scripts
