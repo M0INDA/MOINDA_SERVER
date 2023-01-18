@@ -1,3 +1,3 @@
 # MOINDA_SERVER
 
-enum 정하기
+dev 브랜치 나누기
