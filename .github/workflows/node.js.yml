@@ -10,7 +10,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [16.x]
+        node-version: [18.x]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
@@ -36,12 +36,12 @@ jobs:
         working-directory: ./
         run: |
           npm install
-          
+          npm build
 #          npm test
-#          npm build
+          
           
       - name: zip file
-        run: zip -r moinda.zip ./apps ./libs ./.eslintrc.js ./.gitignore ./.prettierrc ./nest-cli.json ./package.json ./tsconfig.build.json ./tsconfig.json ./appspec.yml ./scripts
+        run: zip -r moinda.zip ./apps ./libs ./dist ./.eslintrc.js ./.gitignore ./.prettierrc ./nest-cli.json ./package.json ./tsconfig.build.json ./tsconfig.json ./appspec.yml ./scripts
 
       - name: AWS connect
         uses: aws-actions/configure-aws-credentials@v1
