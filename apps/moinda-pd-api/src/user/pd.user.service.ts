@@ -42,7 +42,7 @@ export class UserService {
 
   // 닉네임 중복 : 권용교
   async findNick(nickName: string): Promise<UserEntity> {
-    let result = await this.usersReopsitory.findOne({
+    const result = await this.usersReopsitory.findOne({
       where: {
         nickname: nickName,
       },
@@ -54,28 +54,21 @@ export class UserService {
   // 회원가입 초기 refresh token 값은 null
   // 회원 비밀번호 bcrypt 암호화를 사용하여 데이터베이스에 저장
   async signup(createUserDto: CreateUserDto): Promise<UserEntity> {
-    let { email, password, nickname } = createUserDto;
+    const { email, password, nickname } = createUserDto;
 
+    const hash = parseInt(this.configService.get<string>('HASHCODE'));
     // 비밀번호 암호화
-    try {
-      let hash = parseInt(this.configService.get<string>('HASHCODE'));
-      password = await bcrypt.hash(password, hash);
-    } catch (error) {
-      throw new HttpException(
-        '비밀번호 암호화 오류',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
+    const hashPassword: string = await bcrypt.hash(password, hash);
 
     // 유저 인스턴스 생성
-    let signUser = new UserEntity();
-    let signUserId = this.idService.getId(signUser);
-    signUser.id = signUserId;
-    signUser.email = email;
-    signUser.nickname = nickname;
-    signUser.password = password;
-
+    const signUser = new UserEntity();
+    const signUserId = this.idService.getId(signUser);
     try {
+      signUser.id = signUserId;
+      signUser.email = email;
+      signUser.nickname = nickname;
+      signUser.password = hashPassword;
+
       return await this.usersReopsitory.save(signUser);
     } catch (error) {
       console.log('ERROR :::::::> ' + error.message);
