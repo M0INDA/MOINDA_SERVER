@@ -11,4 +11,4 @@ npm run build
 
 sudo pm2 kill
 
-sudo pm2 start dist/apps/moinda-pd-api/main.js
+sudo NODE_ENV=ci pm2 start dist/apps/moinda-pd-api/main.js
