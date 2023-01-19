@@ -1,14 +1,14 @@
 {
   "$schema": "https://json.schemastore.org/nest-cli",
   "collection": "@nestjs/schematics",
-  "sourceRoot": "apps/moinda_backend/src",
+  "sourceRoot": "apps/moinda-pd-api/src",
   "compilerOptions": {
     "deleteOutDir": true,
     "webpack": true,
-    "tsConfigPath": "apps/moinda_backend/tsconfig.app.json"
+    "tsConfigPath": "apps/moinda-pd-api/tsconfig.app.json"
   },
   "monorepo": true,
-  "root": "apps/moinda_backend",
+  "root": "apps/moinda-pd-api",
   "projects": {
     "moinda-pd-api": {
       "type": "application",

@@ -53,6 +53,7 @@ import { ApproveEntity } from './entity/approve.entity';
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
+      timezone: '+09:00',
       keepConnectionAlive: true,
       // logging: process.env.DB_LOGGING == 'true',
       synchronize: process.env.DB_SYNCHRONIZE == 'true',
@@ -75,6 +76,8 @@ import { ApproveEntity } from './entity/approve.entity';
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
+      timezone: '+09:00',
+
       keepConnectionAlive: true,
       // logging: process.env.DB_LOGGING == 'true',
       synchronize: process.env.DB_SYNCHRONIZE == 'true',
