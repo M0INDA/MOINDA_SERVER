@@ -21,6 +21,9 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from './user/pd.user.module';
+import { StudyController } from './study/study.controller';
+import { StudyService } from './study/study.service';
+// import { StudyModule } from './study/study.module';
 
 @Module({
   imports: [
@@ -57,7 +60,7 @@ import { UserModule } from './user/pd.user.module';
     //   }),
     // }),
   ],
-  controllers: [],
-  providers: [IdService],
+  controllers: [StudyController],
+  providers: [IdService, StudyService],
 })
 export class ApiModule {}
