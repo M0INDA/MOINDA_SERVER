@@ -36,7 +36,7 @@ jobs:
         run: |
           npm install
           npm run build
-
+          
       - name: zip file
         run: zip -r moinda-dev.zip ./apps ./libs ./dist ./.eslintrc.js ./.gitignore ./.prettierrc ./nest-cli.json ./package.json ./tsconfig.build.json ./tsconfig.json ./appspec.yml ./scripts
 
