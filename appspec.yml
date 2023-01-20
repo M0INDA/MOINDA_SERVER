@@ -1,0 +1,29 @@
+version: 0.0
+os: linux
+files:
+# 인스턴스에 복사할 수정된 파일과 디렉토리를 식별
+  - source:  /
+# 인스턴스에서 파일이 복사되어야 하는 위치를 식별
+    destination: /home/ubuntu/github_action
+# 이건 몰루 덮어쓰기 허용 그런 건가 모르니까 일단 주석
+#     overwrite: yes
+
+# files 섹션에서 정의한 파일이 인스턴스에 복사된 후에 해당 파일에 권한이 어떻게 적용돼야 하는지 지정?
+permissions:
+# 인스턴스로 복사된 후 지정한 권한이 적용되는 파일 시스템 객체..
+  - object: /home/ubuntu/github_action
+#   권한 적용 패턴 지정 *으로 할 시에 모든 파일 적용 ( type에 따라 일치하는? )
+    pattern: "**"
+    owner: ubuntu
+    group: ubuntu
+    mode: 755
+
+# EC2/온프레미스 배포인 지금은 배포 수명 주기 이벤트 후크를 하나 이상의 크스립트에 연결하는 매핑이 포함돼 있음
+hooks:
+  AfterInstall:
+# gh_deploy.sh는 배포 프로세스의 AfterInstall 단계 중 실행된다
+    - location: scripts/gh_deploy.sh
+# 각 배포 수명 주기 이벤트에 대한 스크립트 실행에 허용되는 최대 시간 )) 디폴트는 3600 // 스크립트 실행 시 180초 넘기면 배포 시류패
+      timeout: 180
+# 기본적으로 인스턴스에서 실행 중인 코디플 에이전트
+      runas: ubuntu
