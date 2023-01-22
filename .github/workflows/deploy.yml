@@ -1,4 +1,4 @@
-name: moinda dev
+name: moinda dev 
 
 on:
   push:
