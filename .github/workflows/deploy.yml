@@ -1,4 +1,4 @@
-name: moinda dev CI
+name: moinda dev
 
 on:
   push:
