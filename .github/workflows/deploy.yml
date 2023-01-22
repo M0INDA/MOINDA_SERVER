@@ -30,7 +30,7 @@ jobs:
           cd environment
           touch .env.ci
           cat << EOF >> .env.ci
-          ${{ secrets.ENV_FILE }}
+          ${{ secrets.ENV_FILE_DEV }}
       - name: build client files
         working-directory: ./
         run: |
@@ -52,7 +52,7 @@ jobs:
 
       - name: deploy with AWS codeDeploy
         run: aws deploy create-deployment
-          --application-name moinda-dev
+          --application-name MOINDA-DEV3
           --deployment-config-name CodeDeployDefault.OneAtATime
-          --deployment-group-name MOINDA-DEV
+          --deployment-group-name MOINDA-DEV3
           --s3-location bucket=moinda-dev,bundleType=zip,key=moinda-dev.zip
