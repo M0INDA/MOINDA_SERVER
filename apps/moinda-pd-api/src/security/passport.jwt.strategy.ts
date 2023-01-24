@@ -1,13 +1,13 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { ExtractJwt, Strategy, VerifiedCallback } from 'passport-jwt';
 import { PassportStrategy } from '@nestjs/passport';
-import { AuthService } from '../auth.service';
+import { AuthService } from '../auth/auth.service';
 import { ConfigService } from '@nestjs/config';
 
 interface Payload {
   nickname?: string;
   email?: string;
-  userId: string | number;
+  userId: string;
 }
 
 @Injectable()
@@ -31,6 +31,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     if (!user)
       return done(new UnauthorizedException({ message: '토큰 에러' }), false);
 
-    return done(null, { userId: user.userId });
+    return done(null, { userId: user.id });
   }
 }

@@ -1,24 +1,16 @@
 import { forwardRef, Module } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
-import { UsersModule } from 'src/users/users.module';
-import { JwtModule } from '@nestjs/jwt';
-import { PassportModule } from '@nestjs/passport';
-import { JwtStrategy } from './security/passport.jwt.strategy';
+import { UserModule } from '../user/pd.user.module';
+import { JwtStrategy } from '../security/passport.jwt.strategy';
 import { ConfigService } from '@nestjs/config';
 const configService = new ConfigService();
-
+import { JwtService } from '@nestjs/jwt';
 
 @Module({
-  imports:[
-    PassportModule.register({defaultStrategy:'jwt',session:false}),
-    JwtModule.register({
-      secret: process.env.TOKENKEY,
-    }),
-    forwardRef(() => UsersModule),
-  ],
-  providers: [AuthService, JwtStrategy,],
+  imports: [forwardRef(() => UserModule)],
+  providers: [AuthService, JwtStrategy, JwtService],
   controllers: [AuthController],
-  exports:[AuthService]
+  exports: [AuthService],
 })
 export class AuthModule {}

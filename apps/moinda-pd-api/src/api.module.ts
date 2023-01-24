@@ -20,6 +20,7 @@ import { IdService } from '@app/moinda-pd/service/pd.id.service';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/pd.user.module';
 
 @Module({
@@ -27,6 +28,7 @@ import { UserModule } from './user/pd.user.module';
     MoindaPdModule,
     ConfigModule,
     UserModule,
+    AuthModule,
     TypeOrmModule.forFeature([
       UserRepository,
       StudyRepository,

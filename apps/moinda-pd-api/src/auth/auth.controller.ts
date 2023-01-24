@@ -1,34 +1,21 @@
 import {
-  HttpStatus,
   Headers,
   Body,
   Controller,
-  Get,
   Post,
-  Req,
   Res,
+  Get,
   UseGuards,
-  UseFilters,
-  HttpException,
+  Req,
 } from '@nestjs/common';
 import { Response, Request } from 'express';
 import { AuthService } from './auth.service';
-import { LoginUserDto } from '../dto/login-user.dto';
 import { AuthGuard } from '../security/auth.guard';
 
 // @UseFilters(HttpExceptionFilter)
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
-
-  @Post('login')
-  async login(@Body() loginUserDto: LoginUserDto, @Res() res: Response) {
-    const jwt = await this.authService.validateUser(loginUserDto);
-
-    res.setHeader('authorization', 'Bearer ' + jwt.accessToken);
-    res.setHeader('refreshtoken', 'Bearer ' + jwt.refreshToken);
-    return res.json(jwt);
-  }
 
   @Post('/refreshAccessToken')
   async refreshToken(@Headers() headers, @Res() res: Response) {
@@ -40,10 +27,11 @@ export class AuthController {
   }
 
   // AuthGuard test : 권용교
-  @Get('/authenticate')
+  @Get('/authtest')
   @UseGuards(AuthGuard)
   isAuthenticated(@Req() req: Request): any {
-    const user: any = req.user;
-    return user;
+    // const user: any = req.user;
+    console.log(req.body);
+    return '성공!';
   }
 }
