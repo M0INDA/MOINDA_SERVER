@@ -9,13 +9,13 @@ export class ChatEntity extends MoindaContent {
   @PrimaryColumn()
   id: string;
 
-  @Column({ type: 'varchar', length: 32, nullable: false })
+  @Column({ type: 'varchar', length: 12, nullable: false })
   studyId!: string;
 
   @ManyToOne(() => StudyEntity, (study) => study.chats)
   study: StudyEntity;
 
-  @Column({ type: 'varchar', length: 32, nullable: false })
+  @Column({ type: 'varchar', length: 12, nullable: false })
   userId?: string;
 
   @ManyToOne(() => UserEntity, (user) => user.chats)

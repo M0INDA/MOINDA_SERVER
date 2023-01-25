@@ -1,20 +1,18 @@
 import { USER } from '@app/moinda-pd/constant.model';
 import { UserEntity } from '@app/moinda-pd/entity/user.entity';
-import { Entity, OneToMany } from 'typeorm';
+import { Entity, OneToMany, OneToOne } from 'typeorm';
 import { PdReadApproveEntity } from './pd.read.approve.entity';
 import { PdReadChatEntity } from './pd.read.chat.entity';
 import { PdReadCommentEntity } from './pd.read.comment.entity';
 import { PdReadDiaryEntity } from './pd.read.diary.entity';
-import { PdReadMemberEntity } from './pd.read.member.entity';
+import { PdReadRatingEntity } from './pd.read.rating.entity';
+import { PdReadScoreEntity } from './pd.read.score.entity';
 import { PdReadStudyEntity } from './pd.read.study.entity';
 
 @Entity({ name: USER })
 export class PdReadUserEntity extends UserEntity {
   @OneToMany(() => PdReadStudyEntity, (study) => study.user)
   override studies: Promise<PdReadStudyEntity[]>;
-
-  @OneToMany(() => PdReadMemberEntity, (member) => member.user)
-  override members: Promise<PdReadMemberEntity[]>;
 
   @OneToMany(() => PdReadApproveEntity, (approve) => approve.user)
   override approves: Promise<PdReadApproveEntity[]>;
@@ -27,4 +25,10 @@ export class PdReadUserEntity extends UserEntity {
 
   @OneToMany(() => PdReadChatEntity, (chat) => chat.user)
   override chats: Promise<PdReadChatEntity[]>;
+
+  @OneToOne(() => PdReadRatingEntity, (rating) => rating.user)
+  override ratings: Promise<PdReadRatingEntity[]>;
+
+  @OneToMany(() => PdReadScoreEntity, (score) => score.user)
+  override scores: Promise<PdReadScoreEntity[]>;
 }

@@ -15,7 +15,7 @@ export class DiaryImgEntity extends MoindaContent {
   })
   diaryImg!: string;
 
-  @Column({ type: 'varchar', length: 32, nullable: false })
+  @Column({ type: 'varchar', length: 12, nullable: false })
   diaryId?: string;
 
   @ManyToOne(() => DiaryEntity, (diary) => diary.diaryimgs)
