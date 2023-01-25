@@ -26,6 +26,7 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/pd.user.module';
+import { ApiService } from './api.service';
 
 @Module({
   imports: [
@@ -68,6 +69,6 @@ import { UserModule } from './user/pd.user.module';
     // }),
   ],
   controllers: [],
-  providers: [IdService],
+  providers: [IdService, ApiService],
 })
 export class ApiModule {}
