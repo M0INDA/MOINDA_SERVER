@@ -25,10 +25,10 @@ export class DiaryEntity extends MoindaContent {
   })
   likeCnt: number;
 
-  @Column({ type: 'varchar', length: 32, nullable: false })
+  @Column({ type: 'varchar', length: 12, nullable: false })
   userId?: string;
 
-  @Column({ type: 'varchar', length: 32, nullable: false })
+  @Column({ type: 'varchar', length: 12, nullable: false })
   studyId?: string;
 
   @ManyToOne(() => UserEntity, (user) => user.diaries)

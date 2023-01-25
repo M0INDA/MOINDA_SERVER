@@ -1,23 +1,32 @@
+import { PdReadCheckInRepository } from './read/repository/pd.read.checkIn.repository';
+import { PdReadRatingRepository } from './read/repository/pd.read.rating.repository';
+import { PdReadScoreRepository } from './read/repository/pd.read.score.repository';
+import { CheckInRepository } from './repository/checkIn.repository';
+import { RatingRepository } from './repository/rating.repository';
+import { ScoreRepository } from './repository/score.repository';
+import { PdReadCheckInEntity } from './read/entity/pd.read.checkIn.entity';
+import { PdReadRatingEntity } from './read/entity/pd.read.rating.entity';
+import { PdReadScoreEntity } from './read/entity/pd.read.score.entity';
+import { CheckInEntity } from './entity/checkIn.entity';
+import { RatingEntity } from './entity/rating.entity';
+import { ScoreEntity } from './entity/score.entity';
 import { PdReadApproveEntity } from './read/entity/pd.read.approve.entity';
 import { PdReadChatEntity } from './read/entity/pd.read.chat.entity';
 import { PdReadCommentEntity } from './read/entity/pd.read.comment.entity';
 import { PdReadDiaryEntity } from './read/entity/pd.read.diary.entity';
 import { PdReadDiaryImgEntity } from './read/entity/pd.read.diaryImg.entity';
-import { PdReadMemberEntity } from './read/entity/pd.read.member.entity';
 import { PdReadStudyEntity } from './read/entity/pd.read.study.entity';
 import { PdReadApproveRepository } from './read/repository/pd.read.approve.repository';
 import { PdReadChatRepository } from './read/repository/pd.read.chat.repository';
 import { PdReadCommentRepository } from './read/repository/pd.read.comment.repository';
 import { PdReadDiaryRepository } from './read/repository/pd.read.diary.repository';
 import { PdReadDiaryImgRepository } from './read/repository/pd.read.diaryImg.repository';
-import { PdReadMemberRepository } from './read/repository/pd.read.member.repository';
 import { PdReadStudyRepository } from './read/repository/pd.read.study.repository';
 import { ApproveRepository } from './repository/approve.repository';
 import { ChatRepository } from './repository/chat.repository';
 import { CommentRepository } from './repository/comment.repository';
 import { DiaryRepository } from './repository/diary.repository';
 import { DiaryImgRepository } from './repository/diaryImg.repository';
-import { MemberRepository } from './repository/member.repository';
 import { StudyRepository } from './repository/study.repository';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
@@ -29,7 +38,6 @@ import { PdReadUserRepository } from './read/repository/pd.read.user.repository'
 import { UserRepository } from './repository/user.repository';
 import { IdService } from './service/pd.id.service';
 import { StudyEntity } from './entity/study.entity';
-import { MemberEntity } from './entity/member.entity';
 import { DiaryImgEntity } from './entity/diaryImg.entity';
 import { DiaryEntity } from './entity/diary.entity';
 import { CommentEntity } from './entity/comment.entity';
@@ -60,12 +68,14 @@ import { ApproveEntity } from './entity/approve.entity';
       entities: [
         UserEntity,
         StudyEntity,
-        MemberEntity,
         DiaryImgEntity,
         DiaryEntity,
         CommentEntity,
         ChatEntity,
         ApproveEntity,
+        ScoreEntity,
+        RatingEntity,
+        CheckInEntity,
       ],
     }),
     TypeOrmModule.forRoot({
@@ -84,34 +94,40 @@ import { ApproveEntity } from './entity/approve.entity';
       entities: [
         PdReadUserEntity,
         PdReadStudyEntity,
-        PdReadMemberEntity,
         PdReadDiaryImgEntity,
         PdReadDiaryEntity,
         PdReadCommentEntity,
         PdReadChatEntity,
         PdReadApproveEntity,
+        PdReadScoreEntity,
+        PdReadRatingEntity,
+        PdReadCheckInEntity,
       ],
     }),
     TypeOrmModule.forFeature([
       UserRepository,
       StudyRepository,
-      MemberRepository,
       DiaryImgRepository,
       DiaryRepository,
       CommentRepository,
       ChatRepository,
       ApproveRepository,
+      ScoreRepository,
+      RatingRepository,
+      CheckInRepository,
     ]),
     TypeOrmModule.forFeature(
       [
         PdReadUserRepository,
         PdReadStudyRepository,
-        PdReadMemberRepository,
         PdReadDiaryImgRepository,
         PdReadDiaryRepository,
         PdReadCommentRepository,
         PdReadChatRepository,
         PdReadApproveRepository,
+        PdReadScoreRepository,
+        PdReadRatingRepository,
+        PdReadCheckInRepository,
       ],
       DB_READ_NAME,
     ),

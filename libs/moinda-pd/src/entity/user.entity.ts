@@ -1,13 +1,14 @@
 import { StudyEntity } from './study.entity';
-import { Column, Entity, OneToMany, PrimaryColumn } from 'typeorm';
+import { Column, Entity, OneToMany, OneToOne, PrimaryColumn } from 'typeorm';
 import { USER } from '../constant.model';
 import { MoindaContent } from './content/moinda.content';
-import { MemberEntity } from './member.entity';
 import { ApproveEntity } from './approve.entity';
 import { DiaryEntity } from './diary.entity';
 import { CommentEntity } from './comment.entity';
 import { ChatEntity } from './chat.entity';
 import { UserProviderEnum } from './enum/user.provider.enum';
+import { RatingEntity } from './rating.entity';
+import { ScoreEntity } from './score.entity';
 
 @Entity({ name: USER })
 export class UserEntity extends MoindaContent {
@@ -63,9 +64,6 @@ export class UserEntity extends MoindaContent {
   @OneToMany(() => StudyEntity, (study) => study.user)
   studies: Promise<StudyEntity[]>;
 
-  @OneToMany(() => MemberEntity, (member) => member.user)
-  members: Promise<MemberEntity[]>;
-
   @OneToMany(() => ApproveEntity, (approve) => approve.user)
   approves: Promise<ApproveEntity[]>;
 
@@ -77,4 +75,10 @@ export class UserEntity extends MoindaContent {
 
   @OneToMany(() => ChatEntity, (chat) => chat.user)
   chats: Promise<ChatEntity[]>;
+
+  @OneToOne(() => RatingEntity, (rating) => rating.user)
+  ratings: Promise<RatingEntity[]>;
+
+  @OneToMany(() => ScoreEntity, (score) => score.user)
+  scores: Promise<ScoreEntity[]>;
 }
