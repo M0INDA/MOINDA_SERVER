@@ -28,6 +28,9 @@ import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/pd.user.module';
 import { ApiService } from './api.service';
 import { ApiController } from './api.controller';
+import { StudyController } from './study/study.controller';
+import { StudyService } from './study/study.service';
+import { TypeOrmExModule } from '@app/moinda-pd/CustomRepository/typeorm-ex.module';
 
 @Module({
   imports: [
@@ -62,6 +65,28 @@ import { ApiController } from './api.controller';
       ],
       DB_READ_NAME,
     ),
+    // TypeOrmExModule.forCustomRepository([
+    //   UserRepository,
+    //   StudyRepository,
+    //   DiaryImgRepository,
+    //   DiaryRepository,
+    //   CommentRepository,
+    //   ChatRepository,
+    //   ApproveRepository,
+    //   ScoreRepository,
+    //   RatingRepository,
+    //   CheckInRepository,
+    //   PdReadUserRepository,
+    //   PdReadStudyRepository,
+    //   PdReadDiaryImgRepository,
+    //   PdReadDiaryRepository,
+    //   PdReadCommentRepository,
+    //   PdReadChatRepository,
+    //   PdReadApproveRepository,
+    //   PdReadScoreRepository,
+    //   PdReadRatingRepository,
+    //   PdReadCheckInRepository,
+    // ]),
     // HttpModule.registerAsync({
     //   useFactory: () => ({
     //     timeout: 1000,
@@ -69,7 +94,7 @@ import { ApiController } from './api.controller';
     //   }),
     // }),
   ],
-  controllers: [ApiController],
-  providers: [IdService, ApiService],
+  controllers: [ApiController, StudyController],
+  providers: [IdService, ApiService, StudyService],
 })
 export class ApiModule {}
