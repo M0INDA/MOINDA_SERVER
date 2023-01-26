@@ -1,5 +1,5 @@
 import { CreateStudyDto } from './../dto/create-study.dto';
-import { Body, Controller, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { StudyService } from './study.service';
 import { StudyEntity } from '@app/moinda-pd/entity/study.entity';
 import { JwtStrategy } from '../security/passport.jwt.strategy';
@@ -17,5 +17,10 @@ export class StudyController {
     @User() user: UserEntity | undefined,
   ): Promise<StudyEntity> {
     return this.studyService.onCreateStudy(user, createStudyDto);
+  }
+
+  @Get()
+  async onGetStudy(@Param(':id') studyId: string): Promise<StudyEntity> {
+    return this.studyService.onGetStudy(studyId);
   }
 }

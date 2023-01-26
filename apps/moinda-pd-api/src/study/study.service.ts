@@ -1,3 +1,4 @@
+import { PdReadStudyEntity } from './../../../../libs/moinda-pd/src/read/entity/pd.read.study.entity';
 import { IconEnum } from './../../../../libs/moinda-pd/src/entity/enum/study.icon.enum';
 import { DB_READ_NAME, STUDY } from '@app/moinda-pd/constant.model';
 import { StudyEntity } from '@app/moinda-pd/entity/study.entity';
@@ -8,8 +9,8 @@ import { UserRepository } from '@app/moinda-pd/repository/user.repository';
 import { IdService } from '@app/moinda-pd/service/pd.id.service';
 import { Do } from '@app/moinda/do';
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Connection } from 'typeorm';
+import { getRepositoryToken, InjectRepository } from '@nestjs/typeorm';
+import { Connection, getRepository } from 'typeorm';
 import { CategoryEnum } from '@app/moinda-pd/entity/enum/study.category.enum';
 
 @Injectable()
