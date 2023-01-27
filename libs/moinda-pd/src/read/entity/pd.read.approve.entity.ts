@@ -1,4 +1,4 @@
-import { ApproveEntity } from './../../entity/approve.entity';
+import { ApproveEntity } from '../../entity/approve.entity';
 import { APPROVE } from '@app/moinda-pd/constant.model';
 import { Entity, ManyToOne, OneToMany } from 'typeorm';
 import { PdReadStudyEntity } from './pd.read.study.entity';

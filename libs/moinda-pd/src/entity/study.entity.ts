@@ -8,7 +8,6 @@ import { DiaryEntity } from './diary.entity';
 import { CategoryEnum } from './enum/study.category.enum';
 import { IconEnum } from './enum/study.icon.enum';
 import { StudyStatusEnum } from './enum/study.status.enum';
-import { MemberEntity } from './member.entity';
 
 @Entity({ name: STUDY })
 export class StudyEntity extends MoindaContent {
@@ -17,7 +16,7 @@ export class StudyEntity extends MoindaContent {
 
   @Column({
     type: 'varchar',
-    length: 64,
+    length: 25,
     nullable: false,
   })
   studyName!: string;
@@ -68,17 +67,14 @@ export class StudyEntity extends MoindaContent {
   icon: IconEnum;
   //숫자로 관리 1~20
 
-  @Column({ type: 'varchar', length: 32, nullable: true })
-  userId?: string;
+  @Column({ type: 'varchar', length: 12, nullable: true })
+  hostUserId?: string;
 
-  @Column({ type: 'varchar', length: 32, nullable: true })
+  @Column({ type: 'varchar', length: 12, nullable: true })
   approveId?: string;
 
   @ManyToOne(() => UserEntity, (user) => user.studies)
   user: UserEntity;
-
-  @OneToMany(() => MemberEntity, (member) => member.study)
-  members: Promise<MemberEntity[]>;
 
   @ManyToOne(() => ApproveEntity, (approve) => approve.studies)
   approve: ApproveEntity;
