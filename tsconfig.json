@@ -18,24 +18,10 @@
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
     "paths": {
-      "@app/entity": [
-        "libs/entity/src"
-      ],
-      "@app/entity/*": [
-        "libs/entity/src/*"
-      ],
-      "@app/moinda": [
-        "libs/moinda/src"
-      ],
-      "@app/moinda/*": [
-        "libs/moinda/src/*"
-      ],
-      "@app/moinda-pd": [
-        "libs/moinda-pd/src"
-      ],
-      "@app/moinda-pd/*": [
-        "libs/moinda-pd/src/*"
-      ]
+      "@app/moinda": ["libs/moinda/src"],
+      "@app/moinda/*": ["libs/moinda/src/*"],
+      "@app/moinda-pd": ["libs/moinda-pd/src"],
+      "@app/moinda-pd/*": ["libs/moinda-pd/src/*"]
     }
   }
 }

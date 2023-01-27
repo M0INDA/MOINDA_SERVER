@@ -1,5 +1,5 @@
 import { CustomRepository } from '@app/moinda-pd/CustomRepository/typeorm-ex.decorator';
-import { Repository } from 'typeorm';
+import { EntityRepository, Repository } from 'typeorm';
 import { PdReadCheckInEntity } from '../entity/pd.read.checkIn.entity';
 
 @CustomRepository(PdReadCheckInEntity)

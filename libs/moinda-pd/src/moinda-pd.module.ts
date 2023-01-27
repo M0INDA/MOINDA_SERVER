@@ -43,6 +43,8 @@ import { DiaryEntity } from './entity/diary.entity';
 import { CommentEntity } from './entity/comment.entity';
 import { ChatEntity } from './entity/chat.entity';
 import { ApproveEntity } from './entity/approve.entity';
+import { DataSource } from 'typeorm';
+import { TypeOrmExModule } from './CustomRepository/typeorm-ex.module';
 
 @Module({
   imports: [
@@ -78,6 +80,7 @@ import { ApproveEntity } from './entity/approve.entity';
         CheckInEntity,
       ],
     }),
+
     TypeOrmModule.forRoot({
       name: DB_READ_NAME,
       type: 'mysql',
@@ -131,8 +134,22 @@ import { ApproveEntity } from './entity/approve.entity';
       ],
       DB_READ_NAME,
     ),
+    TypeOrmExModule.forCustomRepository([
+      PdReadUserRepository,
+      PdReadStudyRepository,
+      PdReadDiaryImgRepository,
+      PdReadDiaryRepository,
+      PdReadCommentRepository,
+      PdReadChatRepository,
+      PdReadApproveRepository,
+      PdReadScoreRepository,
+      PdReadRatingRepository,
+      PdReadCheckInRepository,
+    ]),
   ],
   providers: [IdService],
   exports: [IdService],
 })
-export class MoindaPdModule {}
+export class MoindaPdModule {
+  constructor(private dataSource: DataSource) {}
+}

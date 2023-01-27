@@ -1,5 +1,5 @@
-import { CommentEntity } from './../../entity/comment.entity';
 import { COMMENT } from '@app/moinda-pd/constant.model';
+import { CommentEntity } from '@app/moinda-pd/entity/comment.entity';
 import { Entity, ManyToOne } from 'typeorm';
 import { PdReadDiaryEntity } from './pd.read.diary.entity';
 import { PdReadUserEntity } from './pd.read.user.entity';

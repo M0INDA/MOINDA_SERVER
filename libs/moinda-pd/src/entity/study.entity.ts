@@ -16,7 +16,7 @@ export class StudyEntity extends MoindaContent {
 
   @Column({
     type: 'varchar',
-    length: 64,
+    length: 25,
     nullable: false,
   })
   studyName!: string;
@@ -68,7 +68,7 @@ export class StudyEntity extends MoindaContent {
   //숫자로 관리 1~20
 
   @Column({ type: 'varchar', length: 12, nullable: true })
-  userId?: string;
+  hostUserId?: string;
 
   @Column({ type: 'varchar', length: 12, nullable: true })
   approveId?: string;

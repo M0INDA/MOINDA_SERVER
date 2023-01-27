@@ -1,6 +1,6 @@
-import { Repository } from 'typeorm';
+import { CustomRepository } from '@app/moinda-pd/CustomRepository/typeorm-ex.decorator';
+import { EntityRepository, Repository } from 'typeorm';
 import { DiaryEntity } from '../entity/diary.entity';
-import { CustomRepository } from '../CustomRepository/typeorm-ex.decorator';
 
 @CustomRepository(DiaryEntity)
 export class DiaryRepository extends Repository<DiaryEntity> {}

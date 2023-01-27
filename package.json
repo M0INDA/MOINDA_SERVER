@@ -85,7 +85,6 @@
       "<rootDir>/libs/"
     ],
     "moduleNameMapper": {
-      "^@app/entity(|/.*)$": "<rootDir>/libs/entity/src/$1",
       "^@app/moinda(|/.*)$": "<rootDir>/libs/moinda/src/$1",
       "^@app/moinda-pd(|/.*)$": "<rootDir>/libs/moinda-pd/src/$1"
     }
