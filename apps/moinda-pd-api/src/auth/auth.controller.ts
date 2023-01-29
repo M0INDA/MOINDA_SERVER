@@ -22,8 +22,8 @@ export class AuthController {
     // access token 만료 시 호출하여 토큰 재발급
     let refreshToken: string = headers.refreshtoken.split(' ')[1];
     let result = await this.authService.refreshToken(refreshToken);
-    res.setHeader('authorization', 'Bearer ' + result.accessToken);
-    return res.json(result);
+    // res.setHeader('authorization', 'Bearer ' + result.accessToken);
+    return res.json({ accessToken: 'Bearer ' + result.accessToken });
   }
 
   // AuthGuard test : 권용교
