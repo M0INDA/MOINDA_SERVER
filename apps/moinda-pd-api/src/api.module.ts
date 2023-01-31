@@ -31,6 +31,8 @@ import { ApiController } from './api.controller';
 import { StudyController } from './study/study.controller';
 import { StudyService } from './study/study.service';
 import { TypeOrmExModule } from '@app/moinda-pd/CustomRepository/typeorm-ex.module';
+import { UserController } from './user/pd.user.controller';
+import { UserService } from './user/pd.user.service';
 
 @Module({
   imports: [
@@ -94,7 +96,7 @@ import { TypeOrmExModule } from '@app/moinda-pd/CustomRepository/typeorm-ex.modu
     //   }),
     // }),
   ],
-  controllers: [ApiController, StudyController],
-  providers: [IdService, ApiService, StudyService],
+  controllers: [ApiController, StudyController, UserController],
+  providers: [IdService, ApiService, StudyService, UserService],
 })
 export class ApiModule {}
