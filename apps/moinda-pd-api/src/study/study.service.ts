@@ -24,7 +24,7 @@ export class StudyService {
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>,
     @InjectRepository(StudyEntity)
-    private readonly studyRepository: StudyRepository,
+    private readonly studyRepository: Repository<StudyEntity>,
     private readonly connection: Connection,
     private readonly idService: IdService,
     @InjectRepository(PdReadStudyEntity, DB_READ_NAME)

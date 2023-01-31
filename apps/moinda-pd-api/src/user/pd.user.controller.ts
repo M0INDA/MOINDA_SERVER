@@ -7,6 +7,7 @@ import {
   HttpException,
   HttpStatus,
   Res,
+  Get,
 } from '@nestjs/common';
 import { Response, Request } from 'express';
 import { UserService } from './pd.user.service';
@@ -53,5 +54,10 @@ export class UserController {
     res.setHeader('authorization', 'Bearer ' + jwt.accessToken);
     res.setHeader('refreshtoken', 'Bearer ' + jwt.refreshToken);
     return res.json(jwt);
+  }
+
+  @Get('readtest')
+  async test() {
+    return await this.userService.testdb();
   }
 }

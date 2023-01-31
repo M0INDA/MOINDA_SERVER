@@ -6,7 +6,6 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from '../../../../libs/moinda-pd/src/entity/user.entity';
-import { UserRepository } from '../../../../libs/moinda-pd/src/repository/user.repository';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { LoginUserDto } from '../dto/login-user.dto';
 import * as bcrypt from 'bcrypt';
@@ -14,34 +13,39 @@ import { ConfigService } from '@nestjs/config';
 import { IdService } from '@app/moinda-pd/service/pd.id.service';
 import { JwtService } from '@nestjs/jwt';
 import { Payload } from '../auth/auth.service';
+import { PdReadUserEntity } from '../../../../libs/moinda-pd/src/read/entity/pd.read.user.entity';
+import { Repository } from 'typeorm';
+import { DB_READ_NAME } from '@app/moinda-pd/constant.model';
 
 @Injectable()
 export class UserService {
   constructor(
-    @InjectRepository(UserRepository)
-    private readonly userReopsitory: UserRepository,
+    @InjectRepository(UserEntity)
+    private readonly userRepository: Repository<UserEntity>,
     private configService: ConfigService,
     private idService: IdService,
     private readonly jwtService: JwtService,
+    @InjectRepository(PdReadUserEntity, DB_READ_NAME)
+    private readonly pdReadUserRepository: Repository<PdReadUserEntity>,
   ) {}
 
   // 이메일로 회원 찾기 : 권용교
   async findOne(email: string): Promise<UserEntity> {
-    return await this.userReopsitory.findOneBy({
+    return await this.pdReadUserRepository.findOneBy({
       email: email,
     });
   }
 
   // 회원 Id로 찾기 : 권용교
   async findId(userId: string): Promise<UserEntity> {
-    return await this.userReopsitory.findOneBy({
+    return await this.pdReadUserRepository.findOneBy({
       id: userId,
     });
   }
 
   // 닉네임 중복 : 권용교
   async findNick(nickName: string): Promise<UserEntity> {
-    const result = await this.userReopsitory.findOne({
+    const result = await this.pdReadUserRepository.findOne({
       where: {
         nickname: nickName,
       },
@@ -68,7 +72,7 @@ export class UserService {
       signUser.nickname = nickname;
       signUser.password = hashPassword;
 
-      return await this.userReopsitory.save(signUser);
+      return await this.userRepository.save(signUser);
     } catch (error) {
       console.log('ERROR :::::::> ' + error.message);
       throw new HttpException(
@@ -87,7 +91,7 @@ export class UserService {
     let tokenKey = this.configService.get<string>('TOKENKEY');
     let access_expiresIn = this.configService.get<string>('ACCESS_EXPIRESIN');
     let refresh_expiresIn = this.configService.get<string>('REFRESH_EXPIRESIN');
-    let findUser: UserEntity = await this.userReopsitory.findOne({
+    let findUser: UserEntity = await this.pdReadUserRepository.findOne({
       where: { email: email },
     });
 
@@ -127,12 +131,17 @@ export class UserService {
   // 로그인 시 RefreshToken 업데이트 : 권용교
   async updateRefreshToken(userId: string, refreshToken: string) {
     try {
-      return await this.userReopsitory.update(
+      return await this.userRepository.update(
         { id: userId },
         { refreshToken: refreshToken },
       );
     } catch (error) {
       throw new HttpException('refreshToken update Error', 404);
     }
+  }
+
+  // read db test
+  async testdb() {
+    return await this.pdReadUserRepository.find({});
   }
 }
