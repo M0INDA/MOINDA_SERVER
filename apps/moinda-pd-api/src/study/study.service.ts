@@ -10,20 +10,20 @@ import { IdService } from '@app/moinda-pd/service/pd.id.service';
 import { Do } from '@app/moinda/do';
 import { Injectable } from '@nestjs/common';
 import { getRepositoryToken, InjectRepository } from '@nestjs/typeorm';
-import { Connection, getRepository } from 'typeorm';
+import { Connection, getRepository, Repository } from 'typeorm';
 import { CategoryEnum } from '@app/moinda-pd/entity/enum/study.category.enum';
 
 @Injectable()
 export class StudyService {
   constructor(
-    @InjectRepository(UserRepository)
-    private readonly userRepository: UserRepository,
-    @InjectRepository(StudyRepository)
-    private readonly studyRepository: StudyRepository,
+    @InjectRepository(UserEntity)
+    private readonly userRepository: Repository<UserEntity>,
+    @InjectRepository(StudyEntity)
+    private readonly studyRepository: Repository<StudyEntity>,
     private readonly connection: Connection,
     private readonly idService: IdService,
-    @InjectRepository(PdReadStudyRepository, DB_READ_NAME)
-    private readonly pdReadStudyRepository: PdReadStudyRepository,
+    @InjectRepository(PdReadStudyEntity, DB_READ_NAME)
+    private readonly pdReadStudyRepository: Repository<PdReadStudyEntity>,
   ) {}
 
   async onCreateStudy(user: UserEntity, dto: any): Promise<StudyEntity> {

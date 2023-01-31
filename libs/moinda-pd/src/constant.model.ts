@@ -13,4 +13,5 @@ export const SCORE = 'score';
 export const RATING = 'rating';
 export const CHECKIN = 'checkin';
 
-export const DB_READ_NAME = 'DB_READ_NAME';
+// export const DB_READ_NAME = 'DB_READ_NAME';
+export const DB_READ_NAME = 'moinda'; // rds

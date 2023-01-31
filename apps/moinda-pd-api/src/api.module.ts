@@ -31,6 +31,26 @@ import { ApiController } from './api.controller';
 import { StudyController } from './study/study.controller';
 import { StudyService } from './study/study.service';
 import { TypeOrmExModule } from '@app/moinda-pd/CustomRepository/typeorm-ex.module';
+import { UserEntity } from '@app/moinda-pd/entity/user.entity';
+import { StudyEntity } from '@app/moinda-pd/entity/study.entity';
+import { DiaryEntity } from '@app/moinda-pd/entity/diary.entity';
+import { DiaryImgEntity } from '@app/moinda-pd/entity/diaryImg.entity';
+import { CommentEntity } from '@app/moinda-pd/entity/comment.entity';
+import { ChatEntity } from '@app/moinda-pd/entity/chat.entity';
+import { ApproveEntity } from '@app/moinda-pd/entity/approve.entity';
+import { ScoreEntity } from '@app/moinda-pd/entity/score.entity';
+import { RatingEntity } from '@app/moinda-pd/entity/rating.entity';
+import { CheckInEntity } from '@app/moinda-pd/entity/checkIn.entity';
+import { PdReadUserEntity } from '@app/moinda-pd/read/entity/pd.read.user.entity';
+import { PdReadStudyEntity } from '@app/moinda-pd/read/entity/pd.read.study.entity';
+import { PdReadDiaryImgEntity } from '@app/moinda-pd/read/entity/pd.read.diaryImg.entity';
+import { PdReadDiaryEntity } from '@app/moinda-pd/read/entity/pd.read.diary.entity';
+import { PdReadCommentEntity } from '@app/moinda-pd/read/entity/pd.read.comment.entity';
+import { PdReadChatEntity } from '@app/moinda-pd/read/entity/pd.read.chat.entity';
+import { PdReadApproveEntity } from '@app/moinda-pd/read/entity/pd.read.approve.entity';
+import { PdReadScoreEntity } from '@app/moinda-pd/read/entity/pd.read.score.entity';
+import { PdReadRatingEntity } from '@app/moinda-pd/read/entity/pd.read.rating.entity';
+import { PdReadCheckInEntity } from '@app/moinda-pd/read/entity/pd.read.checkIn.entity';
 
 @Module({
   imports: [
@@ -39,29 +59,29 @@ import { TypeOrmExModule } from '@app/moinda-pd/CustomRepository/typeorm-ex.modu
     UserModule,
     AuthModule,
     TypeOrmModule.forFeature([
-      UserRepository,
-      StudyRepository,
-      DiaryImgRepository,
-      DiaryRepository,
-      CommentRepository,
-      ChatRepository,
-      ApproveRepository,
-      ScoreRepository,
-      RatingRepository,
-      CheckInRepository,
+      UserEntity,
+      StudyEntity,
+      DiaryImgEntity,
+      DiaryEntity,
+      CommentEntity,
+      ChatEntity,
+      ApproveEntity,
+      ScoreEntity,
+      RatingEntity,
+      CheckInEntity,
     ]),
     TypeOrmModule.forFeature(
       [
-        PdReadUserRepository,
-        PdReadStudyRepository,
-        PdReadDiaryImgRepository,
-        PdReadDiaryRepository,
-        PdReadCommentRepository,
-        PdReadChatRepository,
-        PdReadApproveRepository,
-        PdReadScoreRepository,
-        PdReadRatingRepository,
-        PdReadCheckInRepository,
+        PdReadUserEntity,
+        PdReadStudyEntity,
+        PdReadDiaryImgEntity,
+        PdReadDiaryEntity,
+        PdReadCommentEntity,
+        PdReadChatEntity,
+        PdReadApproveEntity,
+        PdReadScoreEntity,
+        PdReadRatingEntity,
+        PdReadCheckInEntity,
       ],
       DB_READ_NAME,
     ),
