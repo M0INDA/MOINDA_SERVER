@@ -14,12 +14,13 @@ import { ConfigService } from '@nestjs/config';
 import { IdService } from '@app/moinda-pd/service/pd.id.service';
 import { JwtService } from '@nestjs/jwt';
 import { Payload } from '../auth/auth.service';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class UserService {
   constructor(
-    @InjectRepository(UserRepository)
-    private readonly userReopsitory: UserRepository,
+    @InjectRepository(UserEntity)
+    private readonly userReopsitory: Repository<UserEntity>,
     private configService: ConfigService,
     private idService: IdService,
     private readonly jwtService: JwtService,

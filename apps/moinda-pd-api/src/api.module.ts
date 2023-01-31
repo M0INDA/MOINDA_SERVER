@@ -1,3 +1,5 @@
+import { UserController } from './user/pd.user.controller';
+import { UserService } from './user/pd.user.service';
 import { PdReadCheckInRepository } from './../../../libs/moinda-pd/src/read/repository/pd.read.checkIn.repository';
 import { PdReadRatingRepository } from './../../../libs/moinda-pd/src/read/repository/pd.read.rating.repository';
 import { PdReadScoreRepository } from './../../../libs/moinda-pd/src/read/repository/pd.read.score.repository';
@@ -76,6 +78,31 @@ import { TypeOrmExModule } from '@app/moinda-pd/CustomRepository/typeorm-ex.modu
     //   ScoreRepository,
     //   RatingRepository,
     //   CheckInRepository,
+    // ]),
+    // TypeOrmExModule.forCustomRepository([
+    //   PdReadUserRepository,
+    //   PdReadStudyRepository,
+    //   PdReadDiaryImgRepository,
+    //   PdReadDiaryRepository,
+    //   PdReadCommentRepository,
+    //   PdReadChatRepository,
+    //   PdReadApproveRepository,
+    //   PdReadScoreRepository,
+    //   PdReadRatingRepository,
+    //   PdReadCheckInRepository,
+    // ]),
+
+    // TypeOrmExModule.forCustomRepository([
+    //   UserRepository,
+    //   StudyRepository,
+    //   DiaryImgRepository,
+    //   DiaryRepository,
+    //   CommentRepository,
+    //   ChatRepository,
+    //   ApproveRepository,
+    //   ScoreRepository,
+    //   RatingRepository,
+    //   CheckInRepository,
     //   PdReadUserRepository,
     //   PdReadStudyRepository,
     //   PdReadDiaryImgRepository,
@@ -94,7 +121,7 @@ import { TypeOrmExModule } from '@app/moinda-pd/CustomRepository/typeorm-ex.modu
     //   }),
     // }),
   ],
-  controllers: [ApiController, StudyController],
-  providers: [IdService, ApiService, StudyService],
+  controllers: [ApiController, StudyController, UserController],
+  providers: [IdService, ApiService, StudyService, UserService],
 })
 export class ApiModule {}

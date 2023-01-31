@@ -107,6 +107,8 @@ import { TypeOrmExModule } from './CustomRepository/typeorm-ex.module';
         PdReadCheckInEntity,
       ],
     }),
+    // TypeOrmModule.forRootAsync(options),
+    // TypeOrmModule.forRootAsync(readOptions),
     TypeOrmModule.forFeature([
       UserRepository,
       StudyRepository,
@@ -134,22 +136,8 @@ import { TypeOrmExModule } from './CustomRepository/typeorm-ex.module';
       ],
       DB_READ_NAME,
     ),
-    TypeOrmExModule.forCustomRepository([
-      PdReadUserRepository,
-      PdReadStudyRepository,
-      PdReadDiaryImgRepository,
-      PdReadDiaryRepository,
-      PdReadCommentRepository,
-      PdReadChatRepository,
-      PdReadApproveRepository,
-      PdReadScoreRepository,
-      PdReadRatingRepository,
-      PdReadCheckInRepository,
-    ]),
   ],
   providers: [IdService],
   exports: [IdService],
 })
-export class MoindaPdModule {
-  constructor(private dataSource: DataSource) {}
-}
+export class MoindaPdModule {}

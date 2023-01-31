@@ -1,3 +1,4 @@
+import { UserEntity } from '@app/moinda-pd/entity/user.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Module, forwardRef } from '@nestjs/common';
 import { UserRepository } from '@app/moinda-pd/repository/user.repository';
@@ -10,8 +11,8 @@ import { TypeOrmExModule } from '@app/moinda-pd/CustomRepository/typeorm-ex.modu
 
 @Module({
   imports: [
-    TypeOrmExModule.forCustomRepository([UserRepository]),
-    TypeOrmModule.forFeature([UserRepository]),
+    // TypeOrmExModule.forCustomRepository([UserRepository]),
+    TypeOrmModule.forFeature([UserEntity]),
     PassportModule.register({ defaultStrategy: 'jwt', session: false }),
     JwtModule.register({
       secret: process.env.TOKENKEY,
