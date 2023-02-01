@@ -11,6 +11,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { StudyEntity } from '@app/moinda-pd/entity/study.entity';
 import { UserEntity } from '@app/moinda-pd/entity/user.entity';
 import { PdReadStudyEntity } from '@app/moinda-pd/read/entity/pd.read.study.entity';
+import { IdService } from '@app/moinda-pd/service/pd.id.service';
 
 @Module({
   imports: [
@@ -23,6 +24,6 @@ import { PdReadStudyEntity } from '@app/moinda-pd/read/entity/pd.read.study.enti
     // ]),
   ],
   controllers: [StudyController],
-  providers: [StudyService],
+  providers: [StudyService, IdService],
 })
 export class StudyModule {}

@@ -1,3 +1,4 @@
+import { JwtStrategy } from './security/passport.jwt.strategy';
 import { PdReadCheckInRepository } from './../../../libs/moinda-pd/src/read/repository/pd.read.checkIn.repository';
 import { PdReadRatingRepository } from './../../../libs/moinda-pd/src/read/repository/pd.read.rating.repository';
 import { PdReadScoreRepository } from './../../../libs/moinda-pd/src/read/repository/pd.read.score.repository';
@@ -21,7 +22,7 @@ import { DiaryImgRepository } from '@app/moinda-pd/repository/diaryImg.repositor
 import { StudyRepository } from '@app/moinda-pd/repository/study.repository';
 import { UserRepository } from '@app/moinda-pd/repository/user.repository';
 import { IdService } from '@app/moinda-pd/service/pd.id.service';
-import { Module } from '@nestjs/common';
+import { ClassSerializerInterceptor, Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
@@ -51,6 +52,7 @@ import { PdReadApproveEntity } from '@app/moinda-pd/read/entity/pd.read.approve.
 import { PdReadScoreEntity } from '@app/moinda-pd/read/entity/pd.read.score.entity';
 import { PdReadRatingEntity } from '@app/moinda-pd/read/entity/pd.read.rating.entity';
 import { PdReadCheckInEntity } from '@app/moinda-pd/read/entity/pd.read.checkIn.entity';
+import { APP_INTERCEPTOR } from '@nestjs/core';
 
 @Module({
   imports: [
@@ -115,6 +117,6 @@ import { PdReadCheckInEntity } from '@app/moinda-pd/read/entity/pd.read.checkIn.
     // }),
   ],
   controllers: [ApiController, StudyController],
-  providers: [IdService, ApiService, StudyService],
+  providers: [IdService, ApiService, StudyService, JwtStrategy],
 })
 export class ApiModule {}

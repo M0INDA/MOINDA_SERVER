@@ -1,4 +1,5 @@
 import { UserEntity } from '@app/moinda-pd/entity/user.entity';
+import { Transform, TransformFnParams } from 'class-transformer';
 import { Column, Entity, ManyToOne, OneToMany, PrimaryColumn } from 'typeorm';
 import { STUDY } from '../constant.model';
 import { ApproveEntity } from './approve.entity';
@@ -67,15 +68,14 @@ export class StudyEntity extends MoindaContent {
   icon: IconEnum;
   //숫자로 관리 1~20
 
-  @Column({ type: 'varchar', length: 12, nullable: true })
-  hostUserId?: string;
-
-  @Column({ type: 'varchar', length: 12, nullable: true })
-  approveId?: string;
+  @Column({ type: 'varchar', length: 12, nullable: false })
+  userId!: string;
 
   @ManyToOne(() => UserEntity, (user) => user.studies)
   user: UserEntity;
 
+  @Column({ type: 'varchar', length: 12, nullable: true })
+  approveId?: string;
   @ManyToOne(() => ApproveEntity, (approve) => approve.studies)
   approve: ApproveEntity;
 

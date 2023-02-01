@@ -1,7 +1,7 @@
 export enum ndScoreEnum {
-  ONE = '1',
-  TWO = '2',
-  THREE = '3',
-  FOUR = '4',
-  FIVE = '5',
+  ONE = 'ONE',
+  TWO = 'TWO',
+  THREE = 'THREE',
+  FOUR = 'FOUR',
+  FIVE = 'FIVE',
 }

@@ -1,8 +1,9 @@
+import { UserEntity } from '@app/moinda-pd/entity/user.entity';
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
 
-export const User = createParamDecorator(
-  (data: unknown, ctx: ExecutionContext) => {
-    const request = ctx.switchToHttp().getRequest();
-    return request.user;
+export const GetUser = createParamDecorator(
+  (_data, ctx: ExecutionContext): UserEntity => {
+    const req = ctx.switchToHttp().getRequest();
+    return req.user;
   },
 );

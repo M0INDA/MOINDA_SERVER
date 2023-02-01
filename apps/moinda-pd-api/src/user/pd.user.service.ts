@@ -37,9 +37,9 @@ export class UserService {
   }
 
   // 회원 Id로 찾기 : 권용교
-  async findId(userId: string): Promise<UserEntity> {
+  async findId(id: string): Promise<UserEntity> {
     return await this.pdReadUserRepository.findOneBy({
-      id: userId,
+      id: id,
     });
   }
 
@@ -65,9 +65,9 @@ export class UserService {
 
     // 유저 인스턴스 생성
     const signUser = new UserEntity();
-    const signUserId = this.idService.getId(signUser);
+    const signid = this.idService.getId(signUser);
     try {
-      signUser.id = signUserId;
+      signUser.id = signid;
       signUser.email = email;
       signUser.nickname = nickname;
       signUser.password = hashPassword;
@@ -106,14 +106,14 @@ export class UserService {
     if (!isPasswordValidated)
       throw new HttpException('비밀번호 불일치', HttpStatus.UNAUTHORIZED);
 
-    let payload: Payload = { email: findUser.email, userId: findUser.id };
+    let payload: Payload = { email: findUser.email, id: findUser.id };
     let accessToken = this.jwtService.sign(payload, {
       secret: tokenKey,
       expiresIn: access_expiresIn + 's',
     });
 
     let refreshToken = this.jwtService.sign(
-      { userId: findUser.id },
+      { id: findUser.id },
       {
         secret: tokenKey,
         expiresIn: refresh_expiresIn + 's',
@@ -129,10 +129,10 @@ export class UserService {
   }
 
   // 로그인 시 RefreshToken 업데이트 : 권용교
-  async updateRefreshToken(userId: string, refreshToken: string) {
+  async updateRefreshToken(id: string, refreshToken: string) {
     try {
       return await this.userRepository.update(
-        { id: userId },
+        { id: id },
         { refreshToken: refreshToken },
       );
     } catch (error) {
