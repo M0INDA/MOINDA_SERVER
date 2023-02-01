@@ -7,7 +7,7 @@ import { ConfigService } from '@nestjs/config';
 interface Payload {
   nickname?: string;
   email?: string;
-  userId: string;
+  id: string;
 }
 
 @Injectable()
@@ -31,6 +31,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     if (!user)
       return done(new UnauthorizedException({ message: '토큰 에러' }), false);
 
-    return done(null, { userId: user.id });
+    return done(null, { id: user.id });
   }
 }

@@ -16,7 +16,7 @@ import { MailerService } from '@nestjs-modules/mailer';
 export interface Payload {
   nickname?: string;
   email?: string;
-  userId: string;
+  id: string;
 }
 
 @Injectable()
@@ -31,8 +31,8 @@ export class AuthService {
 
   // accessToken 유저 정보 조회 : 권용교
   async tokenValidateUser(payload: Payload): Promise<UserEntity | undefined> {
-    let { userId } = payload;
-    return await this.usersService.findId(userId);
+    let { id } = payload;
+    return await this.usersService.findId(id);
   }
 
   // access token 재발급 : 권용교
@@ -46,12 +46,12 @@ export class AuthService {
         secret: tokenKey,
       });
 
-      let findUser = await this.usersService.findId(verifyResult.userId);
+      let findUser = await this.usersService.findId(verifyResult.id);
 
       let result = await bcrypt.compare(refreshToken, findUser.refreshToken);
 
       if (result) {
-        let payload: Payload = { email: findUser.email, userId: findUser.id };
+        let payload: Payload = { email: findUser.email, id: findUser.id };
         let accessToken = this.jwtService.sign(payload, {
           secret: tokenKey,
           expiresIn: access_expiresIn + 's',

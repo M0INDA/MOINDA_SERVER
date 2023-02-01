@@ -1,3 +1,5 @@
+import { CreateStudyDto } from './../dto/create-study.dto';
+import { CategoryEnum } from './../../../../libs/moinda-pd/src/entity/enum/study.category.enum';
 import { PdReadStudyEntity } from './../../../../libs/moinda-pd/src/read/entity/pd.read.study.entity';
 import { IconEnum } from './../../../../libs/moinda-pd/src/entity/enum/study.icon.enum';
 import { DB_READ_NAME, STUDY } from '@app/moinda-pd/constant.model';
@@ -11,7 +13,6 @@ import { Do } from '@app/moinda/do';
 import { Injectable } from '@nestjs/common';
 import { getRepositoryToken, InjectRepository } from '@nestjs/typeorm';
 import { Connection, getRepository, Repository } from 'typeorm';
-import { CategoryEnum } from '@app/moinda-pd/entity/enum/study.category.enum';
 
 @Injectable()
 export class StudyService {
@@ -32,17 +33,23 @@ export class StudyService {
     const queryRunner = await this.connection.createQueryRunner();
     await queryRunner.connect();
     await queryRunner.startTransaction();
+    console.log('asdfdasf', dto);
     try {
       const study = this.studyRepository.create();
+      // const study = new StudyEntity();
       dto.id = this.idService.getId(study);
+      // try {
+      console.log(user.id, 'user.id');
       study.id = dto.id;
       study.studyName = dto.studyName;
       study.title = dto.title;
       study.content = dto.content;
-      study.icon = IconEnum.ONE;
-      study.hostUserId = user.id;
-      study.category = CategoryEnum.ETC;
+      study.icon = dto.icon;
+      study.userId = user.id;
+      study.category = dto.category;
       study.startDate = dto.startDate;
+      study.approveId = null;
+      console.log(study, '1111111');
       await queryRunner.manager.save(StudyEntity, study);
       await queryRunner.commitTransaction();
     } catch (e) {
@@ -51,10 +58,13 @@ export class StudyService {
       await queryRunner.release();
     }
     return this.onGetStudy(dto.id);
+    // } catch (e) {
+    //   console.log(e);
+    // }
   }
 
-  async onGetStudy(studyId: string): Promise<StudyEntity> {
-    return this.pdReadStudyRepository
+  async onGetStudy(studyId: string) {
+    return await this.pdReadStudyRepository
       .createQueryBuilder(STUDY)
       .where({ id: studyId })
       .getOne();
