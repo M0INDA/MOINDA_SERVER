@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 import { StudyController } from './study.controller';
 import { StudyService } from './study.service';
-import { TypeOrmExModule } from '@app/moinda-pd/CustomRepository/typeorm-ex.module';
 import { DB_READ_NAME } from '@app/moinda-pd/constant.model';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { StudyEntity } from '@app/moinda-pd/entity/study.entity';

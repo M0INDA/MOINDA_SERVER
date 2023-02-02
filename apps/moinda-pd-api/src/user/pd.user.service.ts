@@ -16,6 +16,7 @@ import { Payload } from '../auth/auth.service';
 import { PdReadUserEntity } from '../../../../libs/moinda-pd/src/read/entity/pd.read.user.entity';
 import { Repository } from 'typeorm';
 import { DB_READ_NAME } from '@app/moinda-pd/constant.model';
+import { response } from 'express';
 
 @Injectable()
 export class UserService {
@@ -84,7 +85,7 @@ export class UserService {
 
   // 로그인 : 권용교
   async validateUser(
-    loginUserDto: LoginUserDto,
+    loginUserDto: LoginUserDto, // : Promise<{ accessToken: string; refreshToken: string }>
   ): Promise<{ accessToken: string; refreshToken: string }> {
     const { email, password } = loginUserDto;
     let hash = parseInt(this.configService.get<string>('HASHCODE'));
