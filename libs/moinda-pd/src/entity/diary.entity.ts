@@ -5,6 +5,7 @@ import { MoindaContent } from './content/moinda.content';
 import { DiaryImgEntity } from './diaryImg.entity';
 import { CommentEntity } from './comment.entity';
 import { UserEntity } from './user.entity';
+import { MemberEntity } from './memeber.entity';
 
 @Entity({ name: DIARY })
 export class DiaryEntity extends MoindaContent {
@@ -42,4 +43,10 @@ export class DiaryEntity extends MoindaContent {
 
   @OneToMany(() => CommentEntity, (comment) => comment.diary)
   comments: Promise<CommentEntity[]>;
+
+  @Column({ type: 'varchar', length: 12, nullable: false })
+  memberId!: string;
+
+  @ManyToOne(() => MemberEntity, (member) => member.diaries)
+  member: MemberEntity;
 }

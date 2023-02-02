@@ -1,6 +1,15 @@
 import { MEMBER } from '@app/moinda-pd/constant.model';
-import { Column, Entity, ManyToOne, PrimaryColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  ManyToOne,
+  OneToMany,
+  OneToOne,
+  PrimaryColumn,
+} from 'typeorm';
 import { MoindaContent } from './content/moinda.content';
+import { DiaryEntity } from './diary.entity';
+import { RatingEntity } from './rating.entity';
 import { StudyEntity } from './study.entity';
 import { UserEntity } from './user.entity';
 
@@ -20,4 +29,10 @@ export class MemberEntity extends MoindaContent {
 
   @ManyToOne(() => StudyEntity, (study) => study.members)
   study: StudyEntity;
+
+  @OneToMany(() => RatingEntity, (rating) => rating.member)
+  ratings: Promise<RatingEntity[]>;
+
+  @OneToMany(() => DiaryEntity, (diary) => diary.member)
+  diaries: Promise<DiaryEntity[]>;
 }
