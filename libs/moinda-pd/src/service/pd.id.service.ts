@@ -9,6 +9,8 @@ import { DiaryImgEntity } from '../entity/diaryImg.entity';
 import { DiaryEntity } from '../entity/diary.entity';
 import { ScoreEntity } from '../entity/score.entity';
 import { CheckInEntity } from '../entity/checkIn.entity';
+import { MemberEntity } from '../entity/memeber.entity';
+import { AttendanceEntity } from '../entity/attendance.entity';
 export class IdService {
   nanoid = customAlphabet('ABCDEFGHIJKLMNOPQRSTUVW23456789', 10);
 
@@ -37,6 +39,10 @@ export class IdService {
       return 'CI';
     } else if (entity instanceof RatingEntity) {
       return 'RA';
+    } else if (entity instanceof MemberEntity) {
+      return 'ME';
+    } else if (entity instanceof AttendanceEntity) {
+      return 'AT';
     }
   }
 }

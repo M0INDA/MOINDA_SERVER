@@ -11,10 +11,10 @@ export class ApproveEntity extends MoindaContent {
   id: string;
 
   @Column({ type: 'varchar', length: 12, nullable: false })
-  studyId!: string;
+  studyId?: string;
 
-  @OneToMany(() => StudyEntity, (study) => study.approve)
-  studies: Promise<StudyEntity[]>;
+  @ManyToOne(() => StudyEntity, (study) => study.approves)
+  study: StudyEntity;
 
   @Column({ type: 'varchar', length: 12, nullable: false })
   userId?: string;

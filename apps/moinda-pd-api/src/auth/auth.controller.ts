@@ -22,8 +22,15 @@ export class AuthController {
     // access token 만료 시 호출하여 토큰 재발급
     let refreshToken: string = headers.refreshtoken.split(' ')[1];
     let result = await this.authService.refreshToken(refreshToken);
-    res.setHeader('authorization', 'Bearer ' + result.accessToken);
-    return res.json(result);
+    // res.setHeader('authorization', 'Bearer ' + result.accessToken);
+    return res.json({ accessToken: 'Bearer ' + result.accessToken });
+  }
+
+  // 이메일 인증 : 권용교
+  @Post('/nodemailer')
+  async emailVerify(@Body('email') email: string): Promise<string> {
+    let result = await this.authService.verifyEmail(email);
+    return result;
   }
 
   // AuthGuard test : 권용교

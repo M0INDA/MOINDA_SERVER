@@ -1,10 +1,18 @@
 import { CategoryEnum } from './../../../../libs/moinda-pd/src/entity/enum/study.category.enum';
 import { IconEnum } from './../../../../libs/moinda-pd/src/entity/enum/study.icon.enum';
-import { IsDate, IsString } from 'class-validator';
+import {
+  IsDataURI,
+  IsDate,
+  IsDateString,
+  IsISO8601,
+  IsString,
+  MaxLength,
+} from 'class-validator';
+import { Type } from 'class-transformer';
 
 export class CreateStudyDto {
   @IsString()
-  name!: string;
+  studyName!: string;
 
   @IsString()
   title!: string;
@@ -18,7 +26,9 @@ export class CreateStudyDto {
   @IsString()
   category!: CategoryEnum;
 
+  @Type(() => Date)
   @IsDate()
+  // @IsDateString({ strict: true } as any)
   startDate!: Date;
 }
 

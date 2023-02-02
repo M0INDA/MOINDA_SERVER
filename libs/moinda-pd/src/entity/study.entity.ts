@@ -1,4 +1,5 @@
 import { UserEntity } from '@app/moinda-pd/entity/user.entity';
+import { Transform, TransformFnParams } from 'class-transformer';
 import { Column, Entity, ManyToOne, OneToMany, PrimaryColumn } from 'typeorm';
 import { STUDY } from '../constant.model';
 import { ApproveEntity } from './approve.entity';
@@ -8,6 +9,7 @@ import { DiaryEntity } from './diary.entity';
 import { CategoryEnum } from './enum/study.category.enum';
 import { IconEnum } from './enum/study.icon.enum';
 import { StudyStatusEnum } from './enum/study.status.enum';
+import { MemberEntity } from './memeber.entity';
 
 @Entity({ name: STUDY })
 export class StudyEntity extends MoindaContent {
@@ -67,20 +69,27 @@ export class StudyEntity extends MoindaContent {
   icon: IconEnum;
   //숫자로 관리 1~20
 
-  @Column({ type: 'varchar', length: 12, nullable: true })
-  hostUserId?: string;
+  @Column({
+    type: 'int',
+    nullable: true,
+    default: 0,
+  })
+  views: number;
 
-  @Column({ type: 'varchar', length: 12, nullable: true })
-  approveId?: string;
+  @Column({ type: 'varchar', length: 12, nullable: false })
+  userId!: string;
 
   @ManyToOne(() => UserEntity, (user) => user.studies)
   user: UserEntity;
 
-  @ManyToOne(() => ApproveEntity, (approve) => approve.studies)
-  approve: ApproveEntity;
+  @OneToMany(() => ApproveEntity, (approve) => approve.study)
+  approves: Promise<ApproveEntity[]>;
 
   @OneToMany(() => DiaryEntity, (diary) => diary.study)
   diaries: Promise<DiaryEntity[]>;
+
+  @OneToMany(() => MemberEntity, (member) => member.study)
+  members: Promise<MemberEntity[]>;
 
   @OneToMany(() => ChatEntity, (chat) => chat.study)
   chats: Promise<ChatEntity[]>;

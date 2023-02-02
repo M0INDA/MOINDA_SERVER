@@ -1,3 +1,4 @@
+import { AttendanceEntity } from './attendance.entity';
 import { StudyEntity } from './study.entity';
 import { Column, Entity, OneToMany, OneToOne, PrimaryColumn } from 'typeorm';
 import { USER } from '../constant.model';
@@ -9,6 +10,7 @@ import { ChatEntity } from './chat.entity';
 import { UserProviderEnum } from './enum/user.provider.enum';
 import { RatingEntity } from './rating.entity';
 import { ScoreEntity } from './score.entity';
+import { MemberEntity } from './memeber.entity';
 
 @Entity({ name: USER })
 export class UserEntity extends MoindaContent {
@@ -81,4 +83,10 @@ export class UserEntity extends MoindaContent {
 
   @OneToMany(() => ScoreEntity, (score) => score.user)
   scores: Promise<ScoreEntity[]>;
+
+  @OneToMany(() => MemberEntity, (member) => member.user)
+  members: Promise<MemberEntity[]>;
+
+  @OneToOne(() => AttendanceEntity, (attendance) => attendance.user)
+  attendances: Promise<AttendanceEntity[]>;
 }

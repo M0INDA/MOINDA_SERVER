@@ -3,33 +3,36 @@ import { CreateDiaryDto } from '../dto/create-diary.dto';
 import {
   Body,
   Controller,
-  Delete,
   Get,
   Param,
   Post,
   Put,
+  Delete,
   Query,
   UseGuards,
+  ValidationPipe,
 } from '@nestjs/common';
 import { StudyService } from './study.service';
 import { StudyEntity } from '@app/moinda-pd/entity/study.entity';
 import { DiaryEntity } from '@app/moinda-pd/entity/diary.entity';
 import { JwtStrategy } from '../security/passport.jwt.strategy';
-import { User } from '../decorator/user.decorator';
 import { UserEntity } from '@app/moinda-pd/entity/user.entity';
 import { UpdateStudyDto } from '../dto/update-study.dto';
+import { GetUser } from '../decorator/user.decorator';
+import { AuthGuard } from '../security/auth.guard';
 
 @Controller('study')
 export class StudyController {
   constructor(private readonly studyService: StudyService) {}
 
-  // 스터디 개설
-  @Post('/produce')
-  @UseGuards(JwtStrategy)
+  @Post()
+  @UseGuards(AuthGuard)
+  // @UseGuards(JwtStrategy)
   async onCreateStudy(
-    @Body() createStudyDto: CreateStudyDto,
-    @User() user: UserEntity | undefined,
+    @Body(ValidationPipe) createStudyDto: CreateStudyDto,
+    @GetUser() user: UserEntity,
   ): Promise<StudyEntity> {
+    console.log(user);
     return this.studyService.onCreateStudy(user, createStudyDto);
   }
 
@@ -49,7 +52,7 @@ export class StudyController {
   @Put('/:id')
   @UseGuards(JwtStrategy)
   async updateStudy(
-    @User() user: UserEntity,
+    @GetUser() user: UserEntity,
     @Param(':id') studyId: string,
     @Body() updateStudyDto: UpdateStudyDto,
   ): Promise<StudyEntity> {
@@ -60,7 +63,7 @@ export class StudyController {
   @Get(':id/room')
   @UseGuards(JwtStrategy)
   async getMyStudyRoom(
-    @User() user: UserEntity,
+    @GetUser() user: UserEntity,
     @Param(':id') studyId: string,
   ): Promise<StudyEntity> {
     return this.studyService.getMyStudyRoom(user, studyId);
@@ -70,7 +73,7 @@ export class StudyController {
   @Post(':id/diary')
   @UseGuards(JwtStrategy)
   async createDiary(
-    @User() user: UserEntity,
+    @GetUser() user: UserEntity,
     @Param(':id') studyId: string,
     @Body() createDiaryDto: CreateDiaryDto,
   ): Promise<DiaryEntity> {
@@ -81,7 +84,7 @@ export class StudyController {
   @Get(':id/diary/:diaryid')
   @UseGuards(JwtStrategy)
   async getDiary(
-    @User() user: UserEntity,
+    @GetUser() user: UserEntity,
     @Param(':id') studyId: string,
     @Param(':diaryId') diaryId: string,
     @Query() page,
@@ -93,7 +96,7 @@ export class StudyController {
   @Put(':id/diary/:diaryid')
   @UseGuards(JwtStrategy)
   async updateDiary(
-    @User() user: UserEntity,
+    @GetUser() user: UserEntity,
     @Param(':id') studyId: string,
     @Param(':diaryId') diaryId: string,
   ): Promise<DiaryEntity> {
@@ -104,7 +107,7 @@ export class StudyController {
   @Delete(':id/diary/:diaryid')
   @UseGuards(JwtStrategy)
   async deleteDiary(
-    @User() user: UserEntity,
+    @GetUser() user: UserEntity,
     @Param(':id') studyId: string,
     @Param(':diaryId') diaryId: string,
   ): Promise<DiaryEntity> {

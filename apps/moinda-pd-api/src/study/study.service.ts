@@ -1,3 +1,4 @@
+import { CreateStudyDto } from './../dto/create-study.dto';
 import { PdReadStudyEntity } from './../../../../libs/moinda-pd/src/read/entity/pd.read.study.entity';
 import { IconEnum } from './../../../../libs/moinda-pd/src/entity/enum/study.icon.enum';
 import { DB_READ_NAME, STUDY } from '@app/moinda-pd/constant.model';
@@ -38,17 +39,22 @@ export class StudyService {
     const queryRunner = await this.connection.createQueryRunner();
     await queryRunner.connect();
     await queryRunner.startTransaction();
+    console.log('asdfdasf', dto);
     try {
       const study = this.studyRepository.create();
+      // const study = new StudyEntity();
       dto.id = this.idService.getId(study);
+      // try {
+      console.log(user.id, 'user.id');
       study.id = dto.id;
       study.studyName = dto.studyName;
       study.title = dto.title;
       study.content = dto.content;
-      study.icon = IconEnum.ONE;
-      study.hostUserId = user.id;
-      study.category = CategoryEnum.ETC;
+      study.icon = dto.icon;
+      study.userId = user.id;
+      study.category = dto.category;
       study.startDate = dto.startDate;
+      console.log(study, '1111111');
       await queryRunner.manager.save(StudyEntity, study);
       await queryRunner.commitTransaction();
     } catch (e) {
@@ -57,6 +63,9 @@ export class StudyService {
       await queryRunner.release();
     }
     return this.onGetStudy(dto.id);
+    // } catch (e) {
+    //   console.log(e);
+    // }
   }
 
   // 스터디 목록 R
@@ -66,7 +75,7 @@ export class StudyService {
 
   // 스터디 상세 페이지 R
   async onGetStudy(studyId: string): Promise<StudyEntity> {
-    return this.pdReadStudyRepository
+    return await this.pdReadStudyRepository
       .createQueryBuilder(STUDY)
       .where({ id: studyId })
       .getOne();
@@ -81,7 +90,7 @@ export class StudyService {
     Do.require(!!studyId, '존재하지 않는 스터디입니다.');
 
     const study = await this.onGetStudy(studyId);
-    if (study.hostUserId === user.id)
+    if (study.userId === user.id)
       throw new HttpException(
         '스터디 게시글 작성자가 아닙니다',
         HttpStatus.FORBIDDEN,
