@@ -72,6 +72,7 @@ export class AuthController {
         findUser = await this.userService.signup(user);
       }
 
+      // 카카오 유저 데이터로 토큰 생성
       const jwt = await this.userService.validateUser({
         email: findUser.email,
         password: findUser.password,
