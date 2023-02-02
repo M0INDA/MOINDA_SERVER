@@ -48,7 +48,6 @@ export class StudyService {
       study.userId = user.id;
       study.category = dto.category;
       study.startDate = dto.startDate;
-      study.approveId = null;
       console.log(study, '1111111');
       await queryRunner.manager.save(StudyEntity, study);
       await queryRunner.commitTransaction();

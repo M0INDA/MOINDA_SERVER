@@ -6,8 +6,8 @@ import { PdReadUserEntity } from './pd.read.user.entity';
 
 @Entity({ name: APPROVE })
 export class PdReadApproveEntity extends ApproveEntity {
-  @OneToMany(() => PdReadStudyEntity, (study) => study.approve)
-  override studies: Promise<PdReadStudyEntity[]>;
+  @ManyToOne(() => PdReadStudyEntity, (study) => study.approves)
+  override study: PdReadStudyEntity;
 
   @ManyToOne(() => PdReadUserEntity, (user) => user.approves)
   override user: PdReadUserEntity;
