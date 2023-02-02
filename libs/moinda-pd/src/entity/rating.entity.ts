@@ -1,9 +1,10 @@
 import { RATING } from './../constant.model';
 // 유저 총점 엔티티
 
-import { Entity, OneToOne, Column, PrimaryColumn } from 'typeorm';
+import { Entity, OneToOne, Column, PrimaryColumn, ManyToOne } from 'typeorm';
 import { MoindaContent } from './content/moinda.content';
 import { UserEntity } from './user.entity';
+import { MemberEntity } from './memeber.entity';
 
 @Entity({ name: RATING })
 export class RatingEntity extends MoindaContent {
@@ -43,4 +44,10 @@ export class RatingEntity extends MoindaContent {
     nullable: false,
   })
   thScore!: number;
+
+  @Column({ type: 'varchar', length: 12, nullable: false })
+  memberId!: string;
+
+  @ManyToOne(() => MemberEntity, (member) => member.ratings)
+  member: MemberEntity;
 }

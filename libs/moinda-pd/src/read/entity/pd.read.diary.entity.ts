@@ -5,6 +5,7 @@ import { PdReadUserEntity } from './pd.read.user.entity';
 import { PdReadStudyEntity } from './pd.read.study.entity';
 import { PdReadDiaryImgEntity } from './pd.read.diaryImg.entity';
 import { PdReadCommentEntity } from './pd.read.comment.entity';
+import { PdReadMemberEntity } from './pd.read.member.entity';
 
 @Entity({ name: DIARY })
 export class PdReadDiaryEntity extends DiaryEntity {
@@ -19,4 +20,7 @@ export class PdReadDiaryEntity extends DiaryEntity {
 
   @OneToMany(() => PdReadCommentEntity, (comment) => comment.diary)
   override comments: Promise<PdReadCommentEntity[]>;
+
+  @ManyToOne(() => PdReadMemberEntity, (member) => member.diaries)
+  override member: PdReadMemberEntity;
 }
