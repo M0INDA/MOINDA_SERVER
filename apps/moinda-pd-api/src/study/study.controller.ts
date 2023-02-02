@@ -11,6 +11,7 @@ import {
   Query,
   UseGuards,
   ValidationPipe,
+  Ip,
 } from '@nestjs/common';
 import { StudyService } from './study.service';
 import { StudyEntity } from '@app/moinda-pd/entity/study.entity';
@@ -20,6 +21,7 @@ import { UserEntity } from '@app/moinda-pd/entity/user.entity';
 import { UpdateStudyDto } from '../dto/update-study.dto';
 import { GetUser } from '../decorator/user.decorator';
 import { AuthGuard } from '../security/auth.guard';
+import { ViewsDto } from '../dto/views.dto';
 
 @Controller('study')
 export class StudyController {
@@ -44,7 +46,11 @@ export class StudyController {
 
   // 스터디 상세 페이지 R
   @Get('/:id')
-  async onGetStudy(@Param(':id') studyId: string): Promise<StudyEntity> {
+  async onGetStudy(
+    @Param(':id') studyId: string,
+    @Ip() ip: ViewsDto,
+  ): Promise<StudyEntity> {
+    await this.studyService.views(studyId, ip);
     return this.studyService.onGetStudy(studyId);
   }
 

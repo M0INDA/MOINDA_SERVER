@@ -1,23 +1,18 @@
-import { CreateStudyDto } from './../dto/create-study.dto';
 import { PdReadStudyEntity } from './../../../../libs/moinda-pd/src/read/entity/pd.read.study.entity';
-import { IconEnum } from './../../../../libs/moinda-pd/src/entity/enum/study.icon.enum';
 import { DB_READ_NAME, STUDY } from '@app/moinda-pd/constant.model';
 import { StudyEntity } from '@app/moinda-pd/entity/study.entity';
 import { UserEntity } from '@app/moinda-pd/entity/user.entity';
-import { PdReadStudyRepository } from '@app/moinda-pd/read/repository/pd.read.study.repository';
-import { StudyRepository } from '@app/moinda-pd/repository/study.repository';
-import { UserRepository } from '@app/moinda-pd/repository/user.repository';
 import { IdService } from '@app/moinda-pd/service/pd.id.service';
 import { Do } from '@app/moinda/do';
 import { Injectable } from '@nestjs/common';
-import { getRepositoryToken, InjectRepository } from '@nestjs/typeorm';
-import { Connection, getRepository, Repository } from 'typeorm';
-import { CategoryEnum } from '@app/moinda-pd/entity/enum/study.category.enum';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Connection, Repository } from 'typeorm';
 import { DiaryEntity } from '@app/moinda-pd/entity/diary.entity';
 import { HttpException } from '@nestjs/common/exceptions';
 import { HttpStatus } from '@nestjs/common/enums';
 import { UpdateStudyDto } from '../dto/update-study.dto';
 import { CreateDiaryDto } from '../dto/create-diary.dto';
+import { ViewsDto } from '../dto/views.dto';
 
 @Injectable()
 export class StudyService {
@@ -71,6 +66,11 @@ export class StudyService {
   // 스터디 목록 R
   async getAllStudy(): Promise<StudyEntity[]> {
     return await this.pdReadStudyRepository.find();
+  }
+
+  // 조회수
+  async views(studyId: string, ip: ViewsDto) {
+    return;
   }
 
   // 스터디 상세 페이지 R

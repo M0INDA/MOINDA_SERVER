@@ -1,7 +1,3 @@
-import { PdReadStudyRepository } from '@app/moinda-pd/read/repository/pd.read.study.repository';
-import { StudyRepository } from '@app/moinda-pd/repository/study.repository';
-import { PdReadUserRepository } from '@app/moinda-pd/read/repository/pd.read.user.repository';
-import { UserRepository } from '@app/moinda-pd/repository/user.repository';
 import { Module } from '@nestjs/common';
 import { StudyController } from './study.controller';
 import { StudyService } from './study.service';
@@ -11,12 +7,13 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { StudyEntity } from '@app/moinda-pd/entity/study.entity';
 import { UserEntity } from '@app/moinda-pd/entity/user.entity';
 import { PdReadStudyEntity } from '@app/moinda-pd/read/entity/pd.read.study.entity';
+import { PdReadUserEntity } from '@app/moinda-pd/read/entity/pd.read.user.entity';
 import { IdService } from '@app/moinda-pd/service/pd.id.service';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([StudyEntity, UserEntity]),
-    TypeOrmModule.forFeature([PdReadStudyEntity], DB_READ_NAME),
+    TypeOrmModule.forFeature([PdReadStudyEntity, PdReadUserEntity]),
     // TypeOrmExModule.forCustomRepository([UserRepository, StudyRepository]),
     // TypeOrmExModule.forCustomRepository([
     //   PdReadUserRepository,
