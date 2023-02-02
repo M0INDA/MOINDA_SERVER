@@ -1,5 +1,5 @@
 import { SCORE } from './../constant.model';
-import { Column, Entity, ManyToOne, PrimaryColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, OneToOne, PrimaryColumn } from 'typeorm';
 import { MoindaContent } from './content/moinda.content';
 import { stScoreEnum } from './enum/score.stScore.enum';
 import { ndScoreEnum } from './enum/score.ndScore.enum';
@@ -43,6 +43,6 @@ export class ScoreEntity extends MoindaContent {
   @Column({ type: 'varchar', length: 12, nullable: true })
   userId?: string;
 
-  @ManyToOne(() => UserEntity, (user) => user.scores)
+  @OneToOne(() => UserEntity, (user) => user.scores)
   user: UserEntity;
 }

@@ -53,6 +53,12 @@ import { PdReadScoreEntity } from '@app/moinda-pd/read/entity/pd.read.score.enti
 import { PdReadRatingEntity } from '@app/moinda-pd/read/entity/pd.read.rating.entity';
 import { PdReadCheckInEntity } from '@app/moinda-pd/read/entity/pd.read.checkIn.entity';
 import { APP_INTERCEPTOR } from '@nestjs/core';
+import { MainController } from './main/main.controller';
+import { MainService } from './main/main.service';
+import { MemberEntity } from '@app/moinda-pd/entity/memeber.entity';
+import { PdReadMemberEntity } from '@app/moinda-pd/read/entity/pd.read.member.entity';
+import { PdReadAttendanceEntity } from '@app/moinda-pd/read/entity/pd.read.attendance.entity';
+import { AttendanceEntity } from '@app/moinda-pd/entity/attendance.entity';
 
 @Module({
   imports: [
@@ -65,8 +71,10 @@ import { APP_INTERCEPTOR } from '@nestjs/core';
       StudyEntity,
       DiaryImgEntity,
       DiaryEntity,
+      MemberEntity,
       CommentEntity,
       ChatEntity,
+      AttendanceEntity,
       ApproveEntity,
       ScoreEntity,
       RatingEntity,
@@ -78,7 +86,9 @@ import { APP_INTERCEPTOR } from '@nestjs/core';
         PdReadStudyEntity,
         PdReadDiaryImgEntity,
         PdReadDiaryEntity,
+        PdReadMemberEntity,
         PdReadCommentEntity,
+        PdReadAttendanceEntity,
         PdReadChatEntity,
         PdReadApproveEntity,
         PdReadScoreEntity,
@@ -116,7 +126,7 @@ import { APP_INTERCEPTOR } from '@nestjs/core';
     //   }),
     // }),
   ],
-  controllers: [ApiController, StudyController],
-  providers: [IdService, ApiService, StudyService, JwtStrategy],
+  controllers: [ApiController, StudyController, MainController],
+  providers: [IdService, ApiService, StudyService, JwtStrategy, MainService],
 })
 export class ApiModule {}
