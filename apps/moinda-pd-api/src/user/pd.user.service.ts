@@ -17,6 +17,7 @@ import { PdReadUserEntity } from '../../../../libs/moinda-pd/src/read/entity/pd.
 import { Repository } from 'typeorm';
 import { DB_READ_NAME } from '@app/moinda-pd/constant.model';
 import { response } from 'express';
+import { UserProviderEnum } from '@app/moinda-pd/entity/enum/user.provider.enum';
 
 @Injectable()
 export class UserService {
@@ -58,21 +59,30 @@ export class UserService {
   // 회원가입 초기 refresh token 값은 null
   // 회원 비밀번호 bcrypt 암호화를 사용하여 데이터베이스에 저장
   async signup(createUserDto: CreateUserDto): Promise<UserEntity> {
-    const { email, password, nickname } = createUserDto;
-
-    const hash = parseInt(this.configService.get<string>('HASHCODE'));
-    // 비밀번호 암호화
-    const hashPassword: string = await bcrypt.hash(password, hash);
+    const { email, password, nickname, userType, profile_image } =
+      createUserDto;
 
     // 유저 인스턴스 생성
     const signUser = new UserEntity();
-    const signid = this.idService.getId(signUser);
-    try {
-      signUser.id = signid;
-      signUser.email = email;
-      signUser.nickname = nickname;
-      signUser.password = hashPassword;
+    signUser.id = this.idService.getId(signUser);
 
+    try {
+      if (userType === UserProviderEnum.LOCAL) {
+        // 일반 회원가입
+        const hash = parseInt(this.configService.get<string>('HASHCODE'));
+        // 비밀번호 암호화
+        signUser.password = await bcrypt.hash(password, hash);
+        signUser.email = email;
+        signUser.nickname = nickname;
+      } else if (userType === UserProviderEnum.KAKAO) {
+        // 카카오 로그인
+        signUser.email = email;
+        signUser.nickname = nickname;
+        signUser.avatarImg = profile_image;
+        signUser.provider = userType;
+      }
+
+      // 유저 생성
       return await this.userRepository.save(signUser);
     } catch (error) {
       console.log('ERROR :::::::> ' + error.message);
@@ -99,13 +109,16 @@ export class UserService {
     if (!findUser)
       throw new UnauthorizedException('이메일 혹은 비밀번호를 확인해주세요');
 
-    const isPasswordValidated: boolean = await bcrypt.compare(
-      password,
-      findUser.password,
-    );
+    // 회원가입 유저만 비밀번호로 검증
+    if (findUser.provider === UserProviderEnum.LOCAL) {
+      const isPasswordValidated: boolean = await bcrypt.compare(
+        password,
+        findUser.password,
+      );
 
-    if (!isPasswordValidated)
-      throw new HttpException('비밀번호 불일치', HttpStatus.UNAUTHORIZED);
+      if (!isPasswordValidated)
+        throw new HttpException('비밀번호 불일치', HttpStatus.UNAUTHORIZED);
+    }
 
     let payload: Payload = { email: findUser.email, id: findUser.id };
     let accessToken = this.jwtService.sign(payload, {
