@@ -36,7 +36,7 @@ export class UserEntity extends MoindaContent {
   @Column({
     type: 'varchar',
     length: 64,
-    nullable: false,
+    nullable: true,
   })
   password!: string | undefined;
 
@@ -49,7 +49,7 @@ export class UserEntity extends MoindaContent {
 
   @Column({
     type: 'varchar',
-    length: 64,
+    length: 128,
     nullable: true,
   })
   avatarImg?: string | undefined;
