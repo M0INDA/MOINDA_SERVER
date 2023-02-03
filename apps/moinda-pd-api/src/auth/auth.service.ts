@@ -12,6 +12,8 @@ import { UserService } from '../user/pd.user.service';
 import * as bcrypt from 'bcrypt';
 import { ConfigService } from '@nestjs/config';
 import { MailerService } from '@nestjs-modules/mailer';
+import axios from 'axios';
+import qs from 'qs';
 
 export interface Payload {
   nickname?: string;
@@ -109,5 +111,71 @@ export class AuthService {
     });
 
     return getRandomNum;
+  }
+
+  async kakaoLogin(options: { code: string; domain: string }): Promise<any> {
+    const { code, domain } = options;
+    const kakaoKey = '507de8ce1c4e0e21e7ec2278ea407e01';
+    const kakaoTokenUrl = 'https://kauth.kakao.com/oauth/token';
+    const kakaoUserInfoUrl = 'https://kapi.kakao.com/v2/user/me';
+    const body = {
+      grant_type: 'authorization_code',
+      client_id: kakaoKey,
+      redirect_uri: `${domain}/oauth/callback/kakao`,
+      code,
+    };
+    const headers = {
+      'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8',
+    };
+
+    try {
+      /*
+        grant_type	  String	authorization_code로 고정	O
+        client_id	    String	앱 REST API 키
+        redirect_uri	String	인가 코드가 리다이렉트된 URI	O
+        code	        String	인가 코드 받기 요청으로 얻은 인가 코드	O
+
+        POST /oauth/token HTTP/1.1
+        Host: kauth.kakao.com
+        Content-type: application/x-www-form-urlencoded;charset=utf-8
+      */
+      const response = await axios({
+        method: 'POST',
+        url: `https://kauth.kakao.com/oauth/token`,
+        timeout: 30000,
+        headers,
+        data: body,
+      });
+
+      if (response.status === 200) {
+        // Token 을 가져왔을 경우 사용자 정보 조회
+        const headerUserInfo = {
+          'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8',
+          Authorization: 'Bearer ' + response.data.access_token,
+        };
+
+        const responseUserInfo = await axios({
+          method: 'GET',
+          url: kakaoUserInfoUrl,
+          timeout: 30000,
+          headers: headerUserInfo,
+        });
+
+        console.log(`responseUserInfo.status : ${responseUserInfo.status}`);
+        if (responseUserInfo.status === 200) {
+          console.log(
+            `kakaoUserInfo : ${JSON.stringify(responseUserInfo.data)}`,
+          );
+          return responseUserInfo.data;
+        } else {
+          throw new UnauthorizedException();
+        }
+      } else {
+        throw new UnauthorizedException();
+      }
+    } catch (error) {
+      console.log(error);
+      throw new UnauthorizedException();
+    }
   }
 }

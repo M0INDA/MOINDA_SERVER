@@ -1,9 +1,11 @@
+import { UserProviderEnum } from '@app/moinda-pd/entity/enum/user.provider.enum';
 import {
   IsNotEmpty,
   IsString,
   MaxLength,
   MinLength,
   IsEmail,
+  IsEnum,
 } from 'class-validator';
 
 export class CreateUserDto {
@@ -26,4 +28,11 @@ export class CreateUserDto {
 
   @IsString()
   refreshToken?: string = 'null';
+
+  @IsNotEmpty()
+  @IsEnum(UserProviderEnum)
+  userType?: UserProviderEnum = UserProviderEnum.LOCAL;
+
+  @IsString()
+  profile_image?: string = 'null';
 }
