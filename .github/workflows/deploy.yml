@@ -34,7 +34,7 @@ jobs:
       - name: build client files
         working-directory: ./
         run: |
-          npm install
+          npm install --force
           npm run build
           
       - name: zip file
