@@ -34,14 +34,14 @@ export class UserService {
   // 이메일로 회원 찾기 : 권용교
   async findOne(email: string): Promise<UserEntity> {
     return await this.pdReadUserRepository.findOne({
-      email: email,
+      where: { email: email },
     });
   }
 
   // 회원 Id로 찾기 : 권용교
   async findId(id: string): Promise<UserEntity> {
     return await this.pdReadUserRepository.findOne({
-      id: id,
+      where: { id: id },
     });
   }
 

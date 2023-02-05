@@ -14,6 +14,7 @@ import { INestApplication, Res } from '@nestjs/common';
 import { UserEntity } from '@app/moinda-pd/entity/user.entity';
 import { TestingModule } from '@nestjs/testing';
 import { nanoid } from 'nanoid';
+import { UserRepository } from '@app/moinda-pd/repository/user.repository';
 
 export class TestContext {
   app: INestApplication;
@@ -26,6 +27,7 @@ export class TestContext {
   userController: UserController;
   studyController: StudyController;
   authController: AuthController;
+  //   userRepository: UserRepository;
   //   userRepository: Repository<UserEntity>(UserEntity)
   //   manager = getConnectionManager().get('default');
   //   readManager = getConnectionManager().get(DB_READ_NAME);
@@ -53,10 +55,27 @@ export class TestContext {
   //   const repository = manager.getRepository<AModel>(Model);
 
   //   async createUser(): Promise<UserEntity> {
-  //     return createDummyUser();
+  //     return this.createDummyUser();
   //   }
 
   //   async createDummyUser(): Promise<UserEntity> {
-  //     this.setOneMockGetAccessToken()
+  //     const signUser = this.setOneMockSignup();
+  //     const user = await this.userService.findUser(signUser);
+  //     return this.userRepository
+  //       .createQueryBuilder(USER)
+  //       .where({ id: user.id })
+  //       .getOne();
+  //   }
+
+  //   setOneMockSignup() {
+  //     const resp = {
+  //       nickname: 'test12',
+  //       email: 'testUser12@test.com',
+  //       password: 'test123',
+  //     };
+  //     jest
+  //       .spyOn(this.userService, 'signup')
+  //       .mockImplementation(async () => await this.userRepository.save(resp));
+  //     return resp.nickname;
   //   }
 }
