@@ -4,11 +4,13 @@ import {
   IsDataURI,
   IsDate,
   IsDateString,
+  IsInt,
   IsISO8601,
   IsString,
   MaxLength,
 } from 'class-validator';
 import { Type } from 'class-transformer';
+import { StudyStatusEnum } from '@app/moinda-pd/entity/enum/study.status.enum';
 
 export class CreateStudyDto {
   @IsString()
@@ -30,6 +32,15 @@ export class CreateStudyDto {
   @IsDate()
   // @IsDateString({ strict: true } as any)
   startDate!: Date;
+
+  @IsInt()
+  targetTime!: number;
+
+  @IsString()
+  tel!: string;
+
+  @IsString()
+  studyStatus!: StudyStatusEnum;
 }
 
 // study.studyName = dto.studyName;
