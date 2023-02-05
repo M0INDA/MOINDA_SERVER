@@ -116,7 +116,8 @@ export class AuthService {
 
   async kakaoLogin(options: { code: string; domain: string }): Promise<any> {
     const { code, domain } = options;
-    const kakaoKey = '507de8ce1c4e0e21e7ec2278ea407e01';
+    const kakaoKey = this.configService.get<string>('KAKAOKEY');
+    console.log(kakaoKey);
     const kakaoTokenUrl = 'https://kauth.kakao.com/oauth/token';
     const kakaoUserInfoUrl = 'https://kapi.kakao.com/v2/user/me';
     const body = {
