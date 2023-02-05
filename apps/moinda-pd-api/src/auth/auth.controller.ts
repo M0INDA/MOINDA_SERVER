@@ -17,6 +17,7 @@ import { UserService } from '../user/pd.user.service';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { UserProviderEnum } from '@app/moinda-pd/entity/enum/user.provider.enum';
 import { UserEntity } from '@app/moinda-pd/entity/user.entity';
+import { IdService } from '@app/moinda-pd/service/pd.id.service';
 
 // @UseFilters(HttpExceptionFilter)
 @Controller('auth')
@@ -24,6 +25,7 @@ export class AuthController {
   constructor(
     private readonly authService: AuthService,
     private readonly userService: UserService,
+    private readonly idService: IdService,
   ) {}
 
   @Post('/refreshAccessToken')
@@ -51,6 +53,7 @@ export class AuthController {
       if (!code || !domain) {
         throw new BadRequestException('카카오 정보가 없습니다.');
       }
+
       const kakao = await this.authService.kakaoLogin({ code, domain });
 
       // 카카오 로그인 유저 조회
@@ -60,13 +63,13 @@ export class AuthController {
 
       // 등록된 카카오 유저가 아닌 경우 -> 회원가입
       if (findUser === null) {
+        let randomNick: string = this.idService.getId('test');
+
         let user: CreateUserDto = {
           email: kakao.kakao_account.email,
           password: 'kakao',
-          nickname: kakao.properties.nickname,
+          nickname: randomNick,
           userType: UserProviderEnum.KAKAO,
-          // profile_image : kakao.properties.profile_image
-          profile_image: kakao.properties.thumbnail_image,
         };
 
         findUser = await this.userService.signup(user);
@@ -83,6 +86,8 @@ export class AuthController {
         secure: true,
       });
 
+      // res.header('Access-Control-Allow-Origin', '*');
+      console.log(jwt);
       return res.json({ accessToken: 'Bearer ' + jwt.accessToken });
     } catch (e) {
       console.log(e);

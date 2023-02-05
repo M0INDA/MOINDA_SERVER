@@ -59,6 +59,7 @@ export class AuthService {
           expiresIn: access_expiresIn + 's',
         });
         return { accessToken: accessToken };
+        4;
       } else {
         throw new HttpException(
           'refresh token forgery error',

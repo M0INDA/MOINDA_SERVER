@@ -4,7 +4,13 @@ import { ApiModule } from './api.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(ApiModule, { cors: true });
-  app.enableCors();
+  app.enableCors({
+    origin: ['http://localhost:3001'],
+    credentials: true,
+    // origin: function (origin, callback) {
+    //   callback(null, true);
+    // },
+  });
   app.useGlobalPipes(
     new ValidationPipe({
       //     whitelist: true, //decorator 없는 property object 거름
