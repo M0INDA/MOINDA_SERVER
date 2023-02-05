@@ -2,8 +2,7 @@ import { IsNotEmpty, IsString } from 'class-validator';
 
 export class CreateDiaryDto {
   @IsString()
-  @IsNotEmpty()
-  title!: string;
+  id!: string;
 
   @IsString()
   @IsNotEmpty()
