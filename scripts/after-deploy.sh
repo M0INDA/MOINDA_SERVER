@@ -3,7 +3,7 @@
 
 cd /home/ubuntu/drcloud-deploy
 
-npm install
+npm install --force
 
 npm install class-validator class-transformer mysql2 bcrypt @types/bcrypt axios @types/axios
 
