@@ -38,8 +38,7 @@ export class AuthController {
   // 이메일 인증 : 권용교
   @Post('/nodemailer')
   async emailVerify(@Body('email') email: string): Promise<string> {
-    let result = await this.authService.verifyEmail(email);
-    return result;
+    return await this.authService.verifyEmail(email);
   }
 
   // 카카오 로그인

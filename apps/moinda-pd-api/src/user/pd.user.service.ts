@@ -15,7 +15,7 @@ import { JwtService } from '@nestjs/jwt';
 import { Payload } from '../auth/auth.service';
 import { PdReadUserEntity } from '../../../../libs/moinda-pd/src/read/entity/pd.read.user.entity';
 import { Repository } from 'typeorm';
-import { DB_READ_NAME } from '@app/moinda-pd/constant.model';
+import { DB_READ_NAME, USER } from '@app/moinda-pd/constant.model';
 import { response } from 'express';
 import { UserProviderEnum } from '@app/moinda-pd/entity/enum/user.provider.enum';
 
@@ -38,9 +38,16 @@ export class UserService {
 
   // 회원 Id로 찾기 : 권용교
   async findId(id: string): Promise<UserEntity> {
-    return await this.pdReadUserRepository.findOneBy({
-      id: id,
+    return await this.pdReadUserRepository.findOne({
+      where: { id: id },
     });
+  }
+
+  async findUser(nickname: string) {
+    return await this.pdReadUserRepository
+      .createQueryBuilder(USER)
+      .where({ nickname: nickname })
+      .getOne();
   }
 
   // 닉네임 중복 : 권용교
@@ -65,21 +72,19 @@ export class UserService {
     signUser.id = this.idService.getId(signUser);
 
     try {
-      if (userType === UserProviderEnum.LOCAL) {
-        // 일반 회원가입
-        const hash = parseInt(this.configService.get<string>('HASHCODE'));
-        // 비밀번호 암호화
-        signUser.password = await bcrypt.hash(password, hash);
-        signUser.email = email;
-        signUser.nickname = nickname;
-      } else if (userType === UserProviderEnum.KAKAO) {
+      // 일반 회원가입
+      const hash = parseInt(this.configService.get<string>('HASHCODE'));
+      // 비밀번호 암호화
+      signUser.password = await bcrypt.hash(password, hash);
+      signUser.email = email;
+      signUser.nickname = nickname;
+      if (userType) {
         // 카카오 로그인
         signUser.email = email;
         signUser.nickname = nickname;
         signUser.avatarImg = profile_image;
         signUser.provider = userType;
       }
-
       // 유저 생성
       return await this.userRepository.save(signUser);
     } catch (error) {

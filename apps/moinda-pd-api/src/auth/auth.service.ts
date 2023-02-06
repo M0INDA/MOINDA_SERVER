@@ -74,7 +74,7 @@ export class AuthService {
   }
 
   async verifyEmail(email: string): Promise<string> {
-    let searchUser: UserEntity = await this.usersService.findOne(email);
+    const searchUser: UserEntity = await this.usersService.findOne(email);
 
     if (!!searchUser) {
       throw new HttpException(
@@ -84,7 +84,7 @@ export class AuthService {
     }
 
     // 인증 번호 생성
-    let getRandomNum: string = Math.floor(Math.random() * 1000000)
+    const getRandomNum: string = Math.floor(Math.random() * 1000000)
       .toString()
       .padStart(6, '0');
 

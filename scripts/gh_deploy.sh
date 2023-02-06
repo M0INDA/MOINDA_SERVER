@@ -2,7 +2,7 @@ cd /home/ubuntu/github_action
 
 npm install
 
-npm install class-validator class-transformer mysql2 bcrypt @types/bcrypt
+npm install class-validator class-transformer mysql2 bcrypt @types/bcrypt axios @types/axios
 
 npm run build
 
