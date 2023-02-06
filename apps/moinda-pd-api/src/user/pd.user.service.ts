@@ -33,9 +33,7 @@ export class UserService {
 
   // 이메일로 회원 찾기 : 권용교
   async findOne(email: string): Promise<UserEntity> {
-    return await this.pdReadUserRepository.findOneBy({
-      email: email,
-    });
+    return await this.pdReadUserRepository.findOne({ where: { email: email } });
   }
 
   // 회원 Id로 찾기 : 권용교
