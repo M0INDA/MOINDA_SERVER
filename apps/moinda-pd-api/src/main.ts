@@ -16,7 +16,7 @@ async function bootstrap() {
     ],
     credentials: true,
     preflightContinue: false,
-    optionsSuccessStatus: 204,
+    optionsSuccessStatus: 200,
   });
   app.useGlobalPipes(
     new ValidationPipe({
