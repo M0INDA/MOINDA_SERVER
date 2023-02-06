@@ -129,6 +129,9 @@ export class StudyService {
     study.category = dto.category;
     study.startDate = dto.startDate;
     study.content = dto.content;
+    study.targetTime = dto.targetTime;
+    study.tel = dto.tel;
+    study.studyStatus = dto.studyStatus;
     // 추가 될 것들 연락수단, 해시태그
     return this.studyRepository.save(study);
   }
