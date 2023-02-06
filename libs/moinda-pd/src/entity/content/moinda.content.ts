@@ -1,4 +1,9 @@
-import { BaseEntity, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import {
+  BaseEntity,
+  CreateDateColumn,
+  DeleteDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
 export abstract class MoindaContent extends BaseEntity {
   @CreateDateColumn()
@@ -6,4 +11,7 @@ export abstract class MoindaContent extends BaseEntity {
 
   @UpdateDateColumn()
   updatedAt: Date;
+
+  @DeleteDateColumn()
+  deletedAt!: Date | null;
 }
