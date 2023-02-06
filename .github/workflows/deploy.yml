@@ -31,6 +31,8 @@ jobs:
           touch .env.ci
           cat << EOF >> .env.ci
           ${{ secrets.ENV_FILE_DEV }}
+          cat << EOF >> .env.ci
+          ${{ secrets.ENV_AUTH_DEV }}
       - name: build client files
         working-directory: ./
         run: |
