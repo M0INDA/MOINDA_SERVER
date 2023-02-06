@@ -30,8 +30,9 @@ export class StudyController {
     return this.studyService.onCreateStudy(user, createStudyDto);
   }
 
-  @Get()
-  async onGetStudy(@Param(':id') studyId: string): Promise<StudyEntity> {
+  @Get(':id')
+  async onGetStudy(@Param('id') studyId: string): Promise<StudyEntity> {
+    console.log('123', studyId);
     return this.studyService.onGetStudy(studyId);
   }
 }

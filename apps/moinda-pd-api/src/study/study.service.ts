@@ -59,6 +59,7 @@ export class StudyService {
   }
 
   async onGetStudy(studyId: string) {
+    console.log(studyId);
     return await this.pdReadStudyRepository
       .createQueryBuilder(STUDY)
       .where({ id: studyId })
