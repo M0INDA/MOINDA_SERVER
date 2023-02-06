@@ -24,7 +24,6 @@ import { DiaryEntity } from './entity/diary.entity';
 import { CommentEntity } from './entity/comment.entity';
 import { ChatEntity } from './entity/chat.entity';
 import { ApproveEntity } from './entity/approve.entity';
-import { DataSource } from 'typeorm';
 import { MemberEntity } from './entity/memeber.entity';
 import { PdReadMemberEntity } from './read/entity/pd.read.member.entity';
 import { PdReadAttendanceEntity } from './read/entity/pd.read.attendance.entity';
@@ -78,7 +77,6 @@ import { PdReadHashtagEntity } from './read/entity/pd.read.hashtag.entity';
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
       timezone: '+09:00',
-
       keepConnectionAlive: true,
       // logging: process.env.DB_LOGGING == 'true',
       synchronize: process.env.DB_SYNCHRONIZE == 'true',
@@ -102,6 +100,4 @@ import { PdReadHashtagEntity } from './read/entity/pd.read.hashtag.entity';
   providers: [IdService],
   exports: [IdService],
 })
-export class MoindaPdModule {
-  constructor(private dataSource: DataSource) {}
-}
+export class MoindaPdModule {}
