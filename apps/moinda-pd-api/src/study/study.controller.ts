@@ -23,6 +23,8 @@ import { AuthGuard } from '../security/auth.guard';
 import { ViewsDto } from '../dto/views.dto';
 import { updateDiaryDto } from '../dto/update-diary.dto';
 import { ApproveEntity } from '@app/moinda-pd/entity/approve.entity';
+import { StudyRequestDto } from '../dto/request-study.dto';
+import { ApproveStatusEnum } from '@app/moinda-pd/entity/enum/aprove.status.enum';
 
 @Controller('study')
 export class StudyController {
@@ -73,13 +75,22 @@ export class StudyController {
   async studyRequest(
     @GetUser() user: UserEntity,
     @Param('id') studyId: string,
+    @Body() studyRequestDto: StudyRequestDto,
   ): Promise<ApproveEntity> {
-    return this.studyService.studyRequest(user, studyId);
+    return this.studyService.studyRequest(user, studyId, studyRequestDto);
   }
 
   // 참여 수락 여부
   @Put(':id/approve/:approveId')
   @UseGuards(AuthGuard)
+  async whetherOrNot(
+    @GetUser() user: UserEntity,
+    @Param('id') studyId: string,
+    @Param('id') approveId: string,
+    @Body() approveStatus: ApproveStatusEnum,
+  ): Promise<ApproveEntity> {
+    return this.studyService.whetherOrNot();
+  }
 
   // 내 스터디룸 R
   @Get(':id/room')
@@ -103,14 +114,13 @@ export class StudyController {
   }
 
   // 스터디 일지 R
-  @Get(':id/diary/:diaryid')
+  @Get(':id/diary')
   @UseGuards(AuthGuard)
   async getDiary(
     @GetUser() user: UserEntity,
     @Param('id') studyId: string,
-    @Param('diaryId') diaryId: string,
-  ): Promise<DiaryEntity> {
-    return this.studyService.getDiary(user, studyId, diaryId);
+  ): Promise<DiaryEntity[]> {
+    return this.studyService.getDiary(user, studyId);
   }
 
   // 스터디 일지 U

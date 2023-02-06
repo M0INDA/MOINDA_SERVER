@@ -1,5 +1,5 @@
 import { PdReadStudyEntity } from './../../../../libs/moinda-pd/src/read/entity/pd.read.study.entity';
-import { DB_READ_NAME, STUDY } from '@app/moinda-pd/constant.model';
+import { APPROVE, DB_READ_NAME, STUDY } from '@app/moinda-pd/constant.model';
 import { StudyEntity } from '@app/moinda-pd/entity/study.entity';
 import { UserEntity } from '@app/moinda-pd/entity/user.entity';
 import { IdService } from '@app/moinda-pd/service/pd.id.service';
@@ -18,6 +18,8 @@ import { PdReadMemberEntity } from '@app/moinda-pd/read/entity/pd.read.member.en
 import { PdReadDiaryEntity } from '@app/moinda-pd/read/entity/pd.read.diary.entity';
 import { updateDiaryDto } from '../dto/update-diary.dto';
 import { ApproveEntity } from '@app/moinda-pd/entity/approve.entity';
+import { SubscribeMessage } from '@nestjs/websockets';
+import { StudyRequestDto } from '../dto/request-study.dto';
 
 @Injectable()
 export class StudyService {
@@ -32,13 +34,17 @@ export class StudyService {
     private readonly pdReadStudyRepository: Repository<PdReadStudyEntity>,
     @InjectRepository(DiaryEntity)
     private readonly diaryRepository: Repository<DiaryEntity>,
+    @InjectRepository(PdReadDiaryEntity, DB_READ_NAME)
+    private readonly pdReadDiaryRepository: Repository<PdReadDiaryEntity>,
     @InjectRepository(MemberEntity)
     private readonly memberRepository: Repository<MemberEntity>,
     @InjectRepository(PdReadMemberEntity, DB_READ_NAME)
     private readonly pdReadMemberRepository: Repository<PdReadMemberEntity>,
-    @InjectRepository(PdReadDiaryEntity, DB_READ_NAME)
-    private readonly pdReadDiaryRepository: Repository<PdReadDiaryEntity>,
+    @InjectRepository(ApproveEntity)
+    private readonly approveRepository: Repository<ApproveEntity>,
   ) {}
+
+  @SubscribeMessage('')
 
   // 스터디 개설
   async onCreateStudy(user: UserEntity, dto: any): Promise<StudyEntity> {
@@ -100,13 +106,12 @@ export class StudyService {
 
   // 스터디 상세 페이지 R
   async onGetStudy(studyId: string): Promise<StudyEntity> {
-    console.log('상세페이지 조회 지나갑니다11');
-    Do.require(!!studyId, '존재하지 않는 스터디입니다.');
-
-    return await this.pdReadStudyRepository
+    const study = await this.pdReadStudyRepository
       .createQueryBuilder(STUDY)
       .where({ id: studyId })
       .getOne();
+    Do.require(!!study, '존재하지 않는 스터디입니다.');
+    return study;
   }
 
   // 스터디 상세 페이지 U
@@ -115,19 +120,9 @@ export class StudyService {
     studyId: string,
     dto: UpdateStudyDto,
   ): Promise<StudyEntity> {
-    // Do.require(!!studyId, '존재하지 않는 스터디입니다.');
-
     const study = await this.onGetStudy(studyId);
-    if (!study)
-      throw new HttpException(
-        '존재하지 않는 스터디입니다.',
-        HttpStatus.NOT_FOUND,
-      );
-    if (study.userId !== user.id)
-      throw new HttpException(
-        '스터디 게시글 작성자가 아닙니다',
-        HttpStatus.FORBIDDEN,
-      );
+    Do.require(!!study, '존재하지 않는 스터디입니다.');
+    Do.require(study.userId == user.id, '스터디 게시글 작성자가 아닙니다');
 
     study.icon = dto.icon;
     study.title = dto.title;
@@ -135,6 +130,9 @@ export class StudyService {
     study.category = dto.category;
     study.startDate = dto.startDate;
     study.content = dto.content;
+    study.targetTime = dto.targetTime;
+    study.tel = dto.tel;
+    study.studyStatus = dto.studyStatus;
     // 추가 될 것들 연락수단, 해시태그
     return this.studyRepository.save(study);
   }
@@ -143,11 +141,22 @@ export class StudyService {
   async studyRequest(
     user: UserEntity,
     studyId: string,
+    dto: StudyRequestDto,
   ): Promise<ApproveEntity> {
-    return;
+    const studyRequest = this.approveRepository.create();
+    const approveId = this.idService.getId(studyRequest);
+
+    studyRequest.id = approveId;
+    studyRequest.studyId = studyId;
+    studyRequest.userId = user.id;
+    studyRequest.aproveStatus = dto.aproveStatus;
+    return studyRequest;
   }
 
   // 참여 수락 여부
+  async whetherOrNot(): Promise<ApproveEntity> {
+    return;
+  }
 
   // 내 스터디룸 R
   async getMyStudyRoom(
@@ -157,13 +166,9 @@ export class StudyService {
     const studyRoom = await this.pdReadStudyRepository.findOne({
       where: { id: studyId },
     });
+    Do.require(!!studyRoom, '존재하지 않는 스터디입니다.');
 
-    if (studyRoom.userId !== user.id) {
-      throw new HttpException(
-        '현재 참여 중인 스터디가 아닙니다',
-        HttpStatus.FORBIDDEN,
-      );
-    }
+    Do.require(studyRoom.userId == user.id, '현재 참여 중인 스터디가 아닙니다');
     return studyRoom;
   }
 
@@ -173,15 +178,17 @@ export class StudyService {
     studyId: string,
     dto: CreateDiaryDto,
   ): Promise<DiaryEntity> {
-    Do.require(!!studyId, '존재하지 않는 스터디입니다.');
+    const study = await this.onGetStudy(studyId);
+    Do.require(!!study, '존재하지 않는 스터디입니다.');
 
     const diary = this.diaryRepository.create();
-    dto.id = this.idService.getId(diary);
+    const dtoId = this.idService.getId(diary);
     const member = await this.pdReadMemberRepository.findOne({
       where: { userId: user.id, studyId },
     });
+    Do.require(!!member, '현재 참여 중인 스터디가 아닙니다');
 
-    diary.id = dto.id;
+    diary.id = dtoId;
     diary.content = dto.content;
     diary.userId = user.id;
     diary.studyId = studyId;
@@ -190,26 +197,22 @@ export class StudyService {
   }
 
   // 스터디 일지 R
-  async getDiary(
-    user: UserEntity,
-    studyId: string,
-    diaryId: string,
-  ): Promise<DiaryEntity> {
+  async getDiary(user: UserEntity, studyId: string): Promise<DiaryEntity[]> {
     Do.require(!!studyId, '존재하지 않는 스터디입니다.');
     await this.getMyStudyRoom(user, studyId);
 
-    return await this.pdReadDiaryRepository.findOne({
-      where: { id: diaryId, studyId },
+    return await this.pdReadDiaryRepository.find({
+      where: { studyId },
     });
   }
 
-  // 나의 스터디 일지 R
+  // 스터디 일지 R
   async getMyDiary(
     user: UserEntity,
     studyId: string,
     diaryId: string,
   ): Promise<DiaryEntity> {
-    Do.require(!!studyId, '존재하지 않는 스터디입니다.');
+    // Do.require(!!studyId, '존재하지 않는 스터디입니다.');
     await this.getMyStudyRoom(user, studyId);
 
     return await this.pdReadDiaryRepository.findOne({
@@ -252,3 +255,42 @@ export class StudyService {
     return;
   }
 }
+
+// import { Handler, Context } from 'aws-lambda';
+// import { Server } from 'http';
+// import { createServer, proxy } from 'aws-serverless-express';
+// import { eventContext } from 'aws-serverless-express/middleware';
+
+// import { NestFactory } from '@nestjs/core';
+// import { ExpressAdapter } from '@nestjs/platform-express';
+// import { AppModule } from './app.module';
+
+// // const express = require('express');
+// import express from 'express';
+
+// // NOTE: If you get ERR_CONTENT_DECODING_FAILED in your browser, this is likely
+// // due to a compressed response (e.g. gzip) which has not been handled correctly
+// // by aws-serverless-express and/or API Gateway. Add the necessary MIME types to
+// // binaryMimeTypes below
+// const binaryMimeTypes: string[] = [];
+
+// let cachedServer: Server;
+
+// async function bootstrapServer(): Promise<Server> {
+//   if (!cachedServer) {
+//     const expressApp = express();
+//     const nestApp = await NestFactory.create(
+//       AppModule,
+//       new ExpressAdapter(expressApp),
+//     );
+//     nestApp.use(eventContext());
+//     await nestApp.init();
+//     cachedServer = createServer(expressApp, undefined, binaryMimeTypes);
+//   }
+//   return cachedServer;
+// }
+
+// export const handler: Handler = async (event: any, context: Context) => {
+//   cachedServer = await bootstrapServer();
+//   return proxy(cachedServer, event, context, 'PROMISE').promise;
+// };
