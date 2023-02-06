@@ -46,6 +46,8 @@ export class IdService {
       return 'AT';
     } else if (entity instanceof HashtagEntity) {
       return 'HA';
+    } else {
+      return 'ID';
     }
   }
 }

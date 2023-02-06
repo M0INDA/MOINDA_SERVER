@@ -7,6 +7,7 @@ import { ConfigService } from '@nestjs/config';
 const configService = new ConfigService();
 import { JwtService } from '@nestjs/jwt';
 import { MailerModule } from '@nestjs-modules/mailer';
+import { IdService } from '@app/moinda-pd/service/pd.id.service';
 
 @Module({
   imports: [
@@ -25,7 +26,7 @@ import { MailerModule } from '@nestjs-modules/mailer';
       },
     }),
   ],
-  providers: [AuthService, JwtStrategy, JwtService],
+  providers: [AuthService, JwtStrategy, JwtService, IdService],
   controllers: [AuthController],
   exports: [AuthService],
 })
