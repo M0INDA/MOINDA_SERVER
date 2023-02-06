@@ -3,21 +3,22 @@ import { NestFactory } from '@nestjs/core';
 import { ApiModule } from './api.module';
 
 async function bootstrap() {
-  const app = await NestFactory.create(ApiModule);
-  app.enableCors({
-    origin: '*',
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    allowedHeaders: [
-      'access-control-allow-origin',
-      'X-Requested-With',
-      'Content-Type',
-      'Accept',
-      'Authorization',
-    ],
-    credentials: true,
-    preflightContinue: false,
-    optionsSuccessStatus: 200,
-  });
+  const app = await NestFactory.create(ApiModule, { cors: true });
+  app.enableCors();
+//   app.enableCors({
+//     origin: '*',
+//     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+//     allowedHeaders: [
+//       'access-control-allow-origin',
+//       'X-Requested-With',
+//       'Content-Type',
+//       'Accept',
+//       'Authorization',
+//     ],
+//     credentials: true,
+//     preflightContinue: false,
+//     optionsSuccessStatus: 200,
+//   });
   app.useGlobalPipes(
     new ValidationPipe({
       //     whitelist: true, //decorator 없는 property object 거름
