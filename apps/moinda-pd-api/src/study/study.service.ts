@@ -18,7 +18,6 @@ import { PdReadMemberEntity } from '@app/moinda-pd/read/entity/pd.read.member.en
 import { PdReadDiaryEntity } from '@app/moinda-pd/read/entity/pd.read.diary.entity';
 import { updateDiaryDto } from '../dto/update-diary.dto';
 import { ApproveEntity } from '@app/moinda-pd/entity/approve.entity';
-import { SubscribeMessage } from '@nestjs/websockets';
 import { StudyRequestDto } from '../dto/request-study.dto';
 
 @Injectable()
@@ -43,8 +42,6 @@ export class StudyService {
     @InjectRepository(ApproveEntity)
     private readonly approveRepository: Repository<ApproveEntity>,
   ) {}
-
-  @SubscribeMessage('')
 
   // 스터디 개설
   async onCreateStudy(user: UserEntity, dto: any): Promise<StudyEntity> {
@@ -84,7 +81,6 @@ export class StudyService {
     //   console.log(e);
     // }
   }
-
 
   // 스터디 목록 R
   async getAllStudy(): Promise<StudyEntity[]> {
