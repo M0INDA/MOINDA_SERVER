@@ -56,5 +56,5 @@ jobs:
         run: aws deploy create-deployment
           --application-name MOINDA-DEV3
           --deployment-config-name CodeDeployDefault.OneAtATime
-          --deployment-group-name MOINDA-DEV3
+          --deployment-group-name MOINDA-DEV4
           --s3-location bucket=moinda-dev,bundleType=zip,key=moinda-dev.zip
