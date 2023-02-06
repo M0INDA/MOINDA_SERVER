@@ -79,6 +79,7 @@ export class StudyService {
     // }
   }
 
+
   // 스터디 목록 R
   async getAllStudy(): Promise<StudyEntity[]> {
     return await this.pdReadStudyRepository.find();
@@ -101,6 +102,7 @@ export class StudyService {
   async onGetStudy(studyId: string): Promise<StudyEntity> {
     console.log('상세페이지 조회 지나갑니다11');
     Do.require(!!studyId, '존재하지 않는 스터디입니다.');
+
     return await this.pdReadStudyRepository
       .createQueryBuilder(STUDY)
       .where({ id: studyId })
