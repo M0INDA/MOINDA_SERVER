@@ -9,7 +9,6 @@ import { CommentEntity } from './comment.entity';
 import { ChatEntity } from './chat.entity';
 import { UserProviderEnum } from './enum/user.provider.enum';
 import { RatingEntity } from './rating.entity';
-import { ScoreEntity } from './score.entity';
 import { MemberEntity } from './memeber.entity';
 
 @Entity({ name: USER })
@@ -63,6 +62,13 @@ export class UserEntity extends MoindaContent {
   provider: UserProviderEnum;
   //소셜로그인 하는거 갯수만큼 / 로컬 => 디폴트
 
+  @Column({
+    type: 'int',
+    nullable: true,
+    default: 0,
+  })
+  score: number;
+
   @OneToMany(() => StudyEntity, (study) => study.user)
   studies: Promise<StudyEntity[]>;
 
@@ -80,9 +86,6 @@ export class UserEntity extends MoindaContent {
 
   @OneToOne(() => RatingEntity, (rating) => rating.user)
   ratings: Promise<RatingEntity[]>;
-
-  @OneToMany(() => ScoreEntity, (score) => score.user)
-  scores: Promise<ScoreEntity[]>;
 
   @OneToMany(() => MemberEntity, (member) => member.user)
   members: Promise<MemberEntity[]>;
