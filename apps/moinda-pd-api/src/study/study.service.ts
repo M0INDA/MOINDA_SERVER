@@ -50,10 +50,8 @@ export class StudyService {
     const queryRunner = await this.connection.createQueryRunner();
     await queryRunner.connect();
     await queryRunner.startTransaction();
-    console.log('asdfdasf', dto);
     try {
       const study = this.studyRepository.create();
-      // const study = new StudyEntity();
       dto.id = this.idService.getId(study);
       // try {
       console.log(user.id, 'user.id');
@@ -139,13 +137,13 @@ export class StudyService {
     studyId: string,
     dto: StudyRequestDto,
   ): Promise<ApproveEntity> {
-    const studyRequest = this.approveRepository.create();
-    const approveId = this.idService.getId(studyRequest);
-
-    studyRequest.id = approveId;
-    studyRequest.studyId = studyId;
-    studyRequest.userId = user.id;
-    studyRequest.aproveStatus = dto.aproveStatus;
+    const approveId = this.idService.getId(ApproveEntity);
+    const studyRequest = this.approveRepository.create({
+      id: approveId,
+      studyId,
+      userId: user.id,
+      approveStatus: dto.approveStatus,
+    });
     return studyRequest;
   }
 
