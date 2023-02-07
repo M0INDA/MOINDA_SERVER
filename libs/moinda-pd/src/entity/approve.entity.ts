@@ -1,7 +1,7 @@
 import { Column, Entity, ManyToOne, OneToMany, PrimaryColumn } from 'typeorm';
 import { APPROVE } from '../constant.model';
 import { MoindaContent } from './content/moinda.content';
-import { ApproveStatusEnum } from './enum/aprove.status.enum';
+import { ApproveStatusEnum } from './enum/approve.status.enum';
 import { StudyEntity } from './study.entity';
 import { UserEntity } from './user.entity';
 
@@ -28,6 +28,6 @@ export class ApproveEntity extends MoindaContent {
     nullable: false,
     default: ApproveStatusEnum.UNREAD,
   })
-  aproveStatus: ApproveStatusEnum;
+  approveStatus: ApproveStatusEnum;
   // 승인 거절 unread=>디폴트
 }

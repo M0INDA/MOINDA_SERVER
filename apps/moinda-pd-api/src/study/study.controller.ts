@@ -24,7 +24,7 @@ import { ViewsDto } from '../dto/views.dto';
 import { updateDiaryDto } from '../dto/update-diary.dto';
 import { ApproveEntity } from '@app/moinda-pd/entity/approve.entity';
 import { StudyRequestDto } from '../dto/request-study.dto';
-import { ApproveStatusEnum } from '@app/moinda-pd/entity/enum/aprove.status.enum';
+import { ApproveStatusEnum } from '@app/moinda-pd/entity/enum/approve.status.enum';
 
 @Controller('study')
 export class StudyController {
