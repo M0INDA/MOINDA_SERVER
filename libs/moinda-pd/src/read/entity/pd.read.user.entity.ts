@@ -8,7 +8,6 @@ import { PdReadCommentEntity } from './pd.read.comment.entity';
 import { PdReadDiaryEntity } from './pd.read.diary.entity';
 import { PdReadMemberEntity } from './pd.read.member.entity';
 import { PdReadRatingEntity } from './pd.read.rating.entity';
-import { PdReadScoreEntity } from './pd.read.score.entity';
 import { PdReadStudyEntity } from './pd.read.study.entity';
 
 @Entity({ name: USER })
@@ -30,9 +29,6 @@ export class PdReadUserEntity extends UserEntity {
 
   @OneToOne(() => PdReadRatingEntity, (rating) => rating.user)
   override ratings: Promise<PdReadRatingEntity[]>;
-
-  @OneToMany(() => PdReadScoreEntity, (score) => score.user)
-  override scores: Promise<PdReadScoreEntity[]>;
 
   @OneToMany(() => PdReadMemberEntity, (member) => member.user)
   override members: Promise<PdReadMemberEntity[]>;

@@ -9,7 +9,6 @@ export const DIARY = 'diary';
 export const DIARYIMG = 'diaryimg';
 export const COMMENT = 'comment';
 export const CHAT = 'chat';
-export const SCORE = 'score';
 export const RATING = 'rating';
 export const CHECKIN = 'checkin';
 export const ATTENDANCE = 'attendance';

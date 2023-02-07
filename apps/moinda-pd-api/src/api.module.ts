@@ -18,7 +18,6 @@ import { DiaryImgEntity } from '@app/moinda-pd/entity/diaryImg.entity';
 import { CommentEntity } from '@app/moinda-pd/entity/comment.entity';
 import { ChatEntity } from '@app/moinda-pd/entity/chat.entity';
 import { ApproveEntity } from '@app/moinda-pd/entity/approve.entity';
-import { ScoreEntity } from '@app/moinda-pd/entity/score.entity';
 import { RatingEntity } from '@app/moinda-pd/entity/rating.entity';
 import { CheckInEntity } from '@app/moinda-pd/entity/checkIn.entity';
 import { PdReadUserEntity } from '@app/moinda-pd/read/entity/pd.read.user.entity';
@@ -28,7 +27,6 @@ import { PdReadDiaryEntity } from '@app/moinda-pd/read/entity/pd.read.diary.enti
 import { PdReadCommentEntity } from '@app/moinda-pd/read/entity/pd.read.comment.entity';
 import { PdReadChatEntity } from '@app/moinda-pd/read/entity/pd.read.chat.entity';
 import { PdReadApproveEntity } from '@app/moinda-pd/read/entity/pd.read.approve.entity';
-import { PdReadScoreEntity } from '@app/moinda-pd/read/entity/pd.read.score.entity';
 import { PdReadRatingEntity } from '@app/moinda-pd/read/entity/pd.read.rating.entity';
 import { PdReadCheckInEntity } from '@app/moinda-pd/read/entity/pd.read.checkIn.entity';
 import { MainController } from './main/main.controller';
@@ -57,7 +55,6 @@ import { PdReadHashtagEntity } from '@app/moinda-pd/read/entity/pd.read.hashtag.
       ChatEntity,
       AttendanceEntity,
       ApproveEntity,
-      ScoreEntity,
       RatingEntity,
       CheckInEntity,
     ]),
@@ -73,7 +70,6 @@ import { PdReadHashtagEntity } from '@app/moinda-pd/read/entity/pd.read.hashtag.
         PdReadAttendanceEntity,
         PdReadChatEntity,
         PdReadApproveEntity,
-        PdReadScoreEntity,
         PdReadRatingEntity,
         PdReadCheckInEntity,
       ],
@@ -87,7 +83,6 @@ import { PdReadHashtagEntity } from '@app/moinda-pd/read/entity/pd.read.hashtag.
     //   CommentRepository,
     //   ChatRepository,
     //   ApproveRepository,
-    //   ScoreRepository,
     //   RatingRepository,
     //   CheckInRepository,
     //   PdReadUserRepository,
@@ -97,7 +92,6 @@ import { PdReadHashtagEntity } from '@app/moinda-pd/read/entity/pd.read.hashtag.
     //   PdReadCommentRepository,
     //   PdReadChatRepository,
     //   PdReadApproveRepository,
-    //   PdReadScoreRepository,
     //   PdReadRatingRepository,
     //   PdReadCheckInRepository,
     // ]),

@@ -8,7 +8,6 @@ import { customAlphabet } from 'nanoid';
 import { UserEntity } from '../entity/user.entity';
 import { DiaryImgEntity } from '../entity/diaryImg.entity';
 import { DiaryEntity } from '../entity/diary.entity';
-import { ScoreEntity } from '../entity/score.entity';
 import { CheckInEntity } from '../entity/checkIn.entity';
 import { MemberEntity } from '../entity/memeber.entity';
 import { AttendanceEntity } from '../entity/attendance.entity';
@@ -34,8 +33,6 @@ export class IdService {
       return 'CO';
     } else if (entity instanceof ChatEntity) {
       return 'CH';
-    } else if (entity instanceof ScoreEntity) {
-      return 'SC';
     } else if (entity instanceof CheckInEntity) {
       return 'CI';
     } else if (entity instanceof RatingEntity) {

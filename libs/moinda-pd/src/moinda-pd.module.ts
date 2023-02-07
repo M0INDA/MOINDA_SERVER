@@ -1,10 +1,8 @@
 import { HashtagEntity } from './entity/hashtag.entity';
 import { PdReadCheckInEntity } from './read/entity/pd.read.checkIn.entity';
 import { PdReadRatingEntity } from './read/entity/pd.read.rating.entity';
-import { PdReadScoreEntity } from './read/entity/pd.read.score.entity';
 import { CheckInEntity } from './entity/checkIn.entity';
 import { RatingEntity } from './entity/rating.entity';
-import { ScoreEntity } from './entity/score.entity';
 import { PdReadApproveEntity } from './read/entity/pd.read.approve.entity';
 import { PdReadChatEntity } from './read/entity/pd.read.chat.entity';
 import { PdReadCommentEntity } from './read/entity/pd.read.comment.entity';
@@ -62,7 +60,6 @@ import { PdReadHashtagEntity } from './read/entity/pd.read.hashtag.entity';
         CommentEntity,
         ChatEntity,
         ApproveEntity,
-        ScoreEntity,
         RatingEntity,
         CheckInEntity,
       ],
@@ -91,7 +88,6 @@ import { PdReadHashtagEntity } from './read/entity/pd.read.hashtag.entity';
         PdReadHashtagEntity,
         PdReadChatEntity,
         PdReadApproveEntity,
-        PdReadScoreEntity,
         PdReadRatingEntity,
         PdReadCheckInEntity,
       ],
