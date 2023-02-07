@@ -85,7 +85,6 @@ export class StudyService {
     // }
   }
 
-
   // 스터디 목록 R
   async getAllStudy(): Promise<StudyEntity[]> {
     return await this.pdReadStudyRepository.find();
