@@ -9,7 +9,6 @@ import { DiaryEntity } from './diary.entity';
 import { CategoryEnum } from './enum/study.category.enum';
 import { IconEnum } from './enum/study.icon.enum';
 import { StudyStatusEnum } from './enum/study.status.enum';
-import { HashtagEntity } from './hashtag.entity';
 import { MemberEntity } from './memeber.entity';
 
 @Entity({ name: STUDY })
@@ -114,7 +113,4 @@ export class StudyEntity extends MoindaContent {
 
   @OneToMany(() => ChatEntity, (chat) => chat.study)
   chats: Promise<ChatEntity[]>;
-
-  @OneToMany(() => HashtagEntity, (hashtag) => hashtag.study)
-  hashtags: Promise<HashtagEntity[]>;
 }

@@ -1,4 +1,3 @@
-import { HashtagEntity } from './entity/hashtag.entity';
 import { PdReadCheckInEntity } from './read/entity/pd.read.checkIn.entity';
 import { PdReadRatingEntity } from './read/entity/pd.read.rating.entity';
 import { PdReadScoreEntity } from './read/entity/pd.read.score.entity';
@@ -28,7 +27,6 @@ import { MemberEntity } from './entity/memeber.entity';
 import { PdReadMemberEntity } from './read/entity/pd.read.member.entity';
 import { PdReadAttendanceEntity } from './read/entity/pd.read.attendance.entity';
 import { AttendanceEntity } from './entity/attendance.entity';
-import { PdReadHashtagEntity } from './read/entity/pd.read.hashtag.entity';
 
 @Module({
   imports: [
@@ -58,7 +56,6 @@ import { PdReadHashtagEntity } from './read/entity/pd.read.hashtag.entity';
         DiaryEntity,
         MemberEntity,
         AttendanceEntity,
-        HashtagEntity,
         CommentEntity,
         ChatEntity,
         ApproveEntity,
@@ -88,7 +85,6 @@ import { PdReadHashtagEntity } from './read/entity/pd.read.hashtag.entity';
         PdReadMemberEntity,
         PdReadAttendanceEntity,
         PdReadCommentEntity,
-        PdReadHashtagEntity,
         PdReadChatEntity,
         PdReadApproveEntity,
         PdReadScoreEntity,

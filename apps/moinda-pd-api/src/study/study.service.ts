@@ -1,4 +1,3 @@
-import { UpdateStudyDto } from './../dto/update-study.dto';
 import { PdReadStudyEntity } from './../../../../libs/moinda-pd/src/read/entity/pd.read.study.entity';
 
 import { DB_READ_NAME, STUDY } from '@app/moinda-pd/constant.model';
@@ -10,6 +9,7 @@ import { Do } from '@app/moinda/do';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Connection, createQueryBuilder, Repository } from 'typeorm';
+import { MemberEntity } from '@app/moinda-pd/entity/memeber.entity';
 
 @Injectable()
 export class StudyService {
@@ -22,6 +22,8 @@ export class StudyService {
     private readonly idService: IdService,
     @InjectRepository(PdReadStudyEntity, DB_READ_NAME)
     private readonly pdReadStudyRepository: Repository<PdReadStudyEntity>,
+    @InjectRepository(MemberEntity)
+    private readonly memberRepository: Repository<MemberEntity>,
   ) {}
 
   async onCreateStudy(user: UserEntity, dto: any): Promise<StudyEntity> {
@@ -33,8 +35,10 @@ export class StudyService {
     console.log('asdfdasf', dto);
     try {
       const study = this.studyRepository.create();
+      const member = this.memberRepository.create();
       // const study = new StudyEntity();
       dto.id = this.idService.getId(study);
+      const memberId = this.idService.getId(member);
       // try {
       console.log(user.id, 'user.id');
       study.id = dto.id;
@@ -49,8 +53,11 @@ export class StudyService {
       study.tel = dto.tel;
       study.studyStatus = dto.studyStatus;
       study.hashtag = dto.hashtag;
-      console.log(study, '1111111');
+      member.studyId = dto.id;
+      member.id = memberId;
+      member.userId = user.id;
       await queryRunner.manager.save(StudyEntity, study);
+      await queryRunner.manager.save(MemberEntity, member);
       await queryRunner.commitTransaction();
     } catch (e) {
       await queryRunner.rollbackTransaction();

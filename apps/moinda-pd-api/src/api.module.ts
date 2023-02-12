@@ -37,8 +37,6 @@ import { MemberEntity } from '@app/moinda-pd/entity/memeber.entity';
 import { PdReadMemberEntity } from '@app/moinda-pd/read/entity/pd.read.member.entity';
 import { PdReadAttendanceEntity } from '@app/moinda-pd/read/entity/pd.read.attendance.entity';
 import { AttendanceEntity } from '@app/moinda-pd/entity/attendance.entity';
-import { HashtagEntity } from '@app/moinda-pd/entity/hashtag.entity';
-import { PdReadHashtagEntity } from '@app/moinda-pd/read/entity/pd.read.hashtag.entity';
 
 @Module({
   imports: [
@@ -53,7 +51,6 @@ import { PdReadHashtagEntity } from '@app/moinda-pd/read/entity/pd.read.hashtag.
       DiaryEntity,
       MemberEntity,
       CommentEntity,
-      HashtagEntity,
       ChatEntity,
       AttendanceEntity,
       ApproveEntity,
@@ -69,7 +66,6 @@ import { PdReadHashtagEntity } from '@app/moinda-pd/read/entity/pd.read.hashtag.
         PdReadDiaryEntity,
         PdReadMemberEntity,
         PdReadCommentEntity,
-        PdReadHashtagEntity,
         PdReadAttendanceEntity,
         PdReadChatEntity,
         PdReadApproveEntity,
