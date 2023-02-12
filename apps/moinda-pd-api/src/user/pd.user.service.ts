@@ -70,10 +70,10 @@ export class UserService {
       createUserDto;
 
     // 유저 인스턴스 생성
-    const signUser = new UserEntity();
-    signUser.id = this.idService.getId(signUser);
-
     try {
+      const signUser = new UserEntity();
+      signUser.id = this.idService.getId(signUser);
+
       // 일반 회원가입
       const hash = parseInt(this.configService.get<string>('HASHCODE'));
       // 비밀번호 암호화

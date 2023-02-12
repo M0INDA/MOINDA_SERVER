@@ -17,7 +17,7 @@ export class CreateUserDto {
   @IsNotEmpty({ message: '닉네임을 적어주세요' })
   @IsString()
   @MaxLength(24)
-  @MinLength(6)
+  @MinLength(2)
   nickname: string;
 
   @IsNotEmpty({ message: '비밀번호를 적어주세요' })
@@ -31,7 +31,7 @@ export class CreateUserDto {
 
   @IsNotEmpty()
   @IsEnum(UserProviderEnum)
-  userType?: UserProviderEnum = UserProviderEnum.LOCAL;
+  userType?: UserProviderEnum;
 
   @IsString()
   profile_image?: string = 'null';

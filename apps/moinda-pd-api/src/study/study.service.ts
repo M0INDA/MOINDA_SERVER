@@ -1,3 +1,4 @@
+import { UpdateStudyDto } from './../dto/update-study.dto';
 import { PdReadStudyEntity } from './../../../../libs/moinda-pd/src/read/entity/pd.read.study.entity';
 
 import { DB_READ_NAME, STUDY } from '@app/moinda-pd/constant.model';
@@ -44,6 +45,9 @@ export class StudyService {
       study.userId = user.id;
       study.category = dto.category;
       study.startDate = dto.startDate;
+      study.targetTime = dto.targetTime;
+      study.tel = dto.tel;
+      study.studyStatus = dto.studyStatus;
       console.log(study, '1111111');
       await queryRunner.manager.save(StudyEntity, study);
       await queryRunner.commitTransaction();
@@ -59,9 +63,29 @@ export class StudyService {
   }
 
   async onGetStudy(studyId: string) {
+    Do.require(!!studyId, '존재하지 않는 스터디입니다.');
     return await this.pdReadStudyRepository
       .createQueryBuilder(STUDY)
       .where({ id: studyId })
       .getOne();
+  }
+
+  async updateStudy(user: UserEntity, studyId: string, dto: any) {
+    const study = await this.onGetStudy(studyId);
+    Do.require(!!study, '존재하지 않는 스터디입니다.');
+    Do.require(studyId === study.id, '잘못된 요청입니다.');
+    Do.require(study.userId === user.id, '권한이 없습니다.');
+
+    study.studyName = dto.studyName;
+    study.title = dto.title;
+    study.content = dto.content;
+    study.icon = dto.icon;
+    study.category = dto.category;
+    study.startDate = dto.startDate;
+    study.targetTime = dto.targetTime;
+    study.tel = dto.tel;
+    study.studyStatus = dto.studyStatus;
+
+    return await this.studyRepository.save(study);
   }
 }

@@ -1,3 +1,4 @@
+import { UpdateStudyDto } from './../dto/update-study.dto';
 import { CreateStudyDto } from './../dto/create-study.dto';
 import {
   Body,
@@ -5,6 +6,7 @@ import {
   Get,
   Param,
   Post,
+  Put,
   UseGuards,
   ValidationPipe,
 } from '@nestjs/common';
@@ -30,8 +32,18 @@ export class StudyController {
     return this.studyService.onCreateStudy(user, createStudyDto);
   }
 
-  @Get()
-  async onGetStudy(@Param(':id') studyId: string): Promise<StudyEntity> {
+  @Get(':id')
+  async onGetStudy(@Param('id') studyId: string): Promise<StudyEntity> {
     return this.studyService.onGetStudy(studyId);
+  }
+
+  @Put(':id')
+  @UseGuards(AuthGuard)
+  async updateStudy(
+    @Param('id') studyId: string,
+    @Body() updateStudyDto: UpdateStudyDto,
+    @GetUser() user: UserEntity,
+  ): Promise<StudyEntity> {
+    return this.studyService.updateStudy(user, studyId, updateStudyDto);
   }
 }
