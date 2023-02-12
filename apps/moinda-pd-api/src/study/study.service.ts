@@ -94,7 +94,7 @@ export class StudyService {
   async studyList(page: number, take: number) {
     return await this.pdReadStudyRepository.find({
       order: {
-        updatedAt: 'ASC',
+        updatedAt: 'DESC',
       },
       skip: page,
       take: take * (page - 1),
