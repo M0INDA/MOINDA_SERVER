@@ -33,17 +33,14 @@ export class CreateStudyDto {
   // @IsDateString({ strict: true } as any)
   startDate!: Date;
 
-  @IsString()
-  studyStatus: StudyStatusEnum;
-
   @IsNumber()
-  targetTime?: number;
+  targetTime?: number | 0;
 
   @IsString()
   tel?: string | null;
 
   @IsString()
-  hahstag!: string;
+  hashtag!: string;
 }
 
 // study.studyName = dto.studyName;
