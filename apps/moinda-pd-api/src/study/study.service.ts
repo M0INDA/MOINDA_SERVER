@@ -98,8 +98,9 @@ export class StudyService {
     return await this.studyRepository.save(study);
   }
 
-  async studyList(page: number, take: number) {
+  async studyList(page: number, take: number, category: string) {
     return await this.pdReadStudyRepository.find({
+      where: { category: category },
       order: {
         updatedAt: 'DESC',
       },

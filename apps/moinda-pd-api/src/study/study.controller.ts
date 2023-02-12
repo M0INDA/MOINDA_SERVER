@@ -52,9 +52,10 @@ export class StudyController {
   //take = limit
   @Get()
   async studyList(
+    @Query('category') category: string,
     @Query('page') page: number,
     @Query('take') take: number,
   ): Promise<StudyEntity[]> {
-    return this.studyService.studyList(page, take);
+    return this.studyService.studyList(page, take, category);
   }
 }
