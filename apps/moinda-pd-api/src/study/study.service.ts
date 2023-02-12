@@ -9,7 +9,7 @@ import { IdService } from '@app/moinda-pd/service/pd.id.service';
 import { Do } from '@app/moinda/do';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Connection, Repository } from 'typeorm';
+import { Connection, createQueryBuilder, Repository } from 'typeorm';
 
 @Injectable()
 export class StudyService {
@@ -48,6 +48,7 @@ export class StudyService {
       study.targetTime = dto.targetTime;
       study.tel = dto.tel;
       study.studyStatus = dto.studyStatus;
+      study.hashtag = dto.hashtag;
       console.log(study, '1111111');
       await queryRunner.manager.save(StudyEntity, study);
       await queryRunner.commitTransaction();
@@ -85,7 +86,18 @@ export class StudyService {
     study.targetTime = dto.targetTime;
     study.tel = dto.tel;
     study.studyStatus = dto.studyStatus;
+    study.hashtag = dto.hashtag;
 
     return await this.studyRepository.save(study);
+  }
+
+  async studyList(page: number, take: number) {
+    return await this.pdReadStudyRepository.find({
+      order: {
+        updatedAt: 'ASC',
+      },
+      skip: page,
+      take: take * (page - 1),
+    });
   }
 }

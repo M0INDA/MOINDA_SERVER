@@ -33,4 +33,7 @@ export class UpdateStudyDto {
 
   @IsString()
   tel?: string | null;
+
+  @IsString()
+  hashtag!: string;
 }

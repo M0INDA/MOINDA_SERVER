@@ -7,6 +7,7 @@ import {
   Param,
   Post,
   Put,
+  Query,
   UseGuards,
   ValidationPipe,
 } from '@nestjs/common';
@@ -45,5 +46,15 @@ export class StudyController {
     @GetUser() user: UserEntity,
   ): Promise<StudyEntity> {
     return this.studyService.updateStudy(user, studyId, updateStudyDto);
+  }
+
+  //skip = page
+  //take = limit
+  @Get()
+  async studyList(
+    @Query('page') page: number,
+    @Query('take') take: number,
+  ): Promise<StudyEntity[]> {
+    return this.studyService.studyList(page, take);
   }
 }

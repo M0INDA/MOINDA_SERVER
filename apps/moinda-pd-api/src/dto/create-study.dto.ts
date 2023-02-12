@@ -41,6 +41,9 @@ export class CreateStudyDto {
 
   @IsString()
   tel?: string | null;
+
+  @IsString()
+  hahstag!: string;
 }
 
 // study.studyName = dto.studyName;
