@@ -143,14 +143,14 @@ export class StudyService {
     }
     return this.onGetApprove(approveId);
   }
-
+  //참여요청 가져오기
   async onGetApprove(approveId: string) {
     return await this.pdReadApproveRepository
       .createQueryBuilder(APPROVE)
       .where({ id: approveId })
       .getOne();
   }
-
+  //참여 수락 or 거절
   async acceptOrReject(
     studyId: string,
     approveId: string,
