@@ -1,5 +1,9 @@
-import { Controller, Get, Query } from '@nestjs/common';
+import { UserEntity } from '@app/moinda-pd/entity/user.entity';
+import { AuthGuard } from './../security/auth.guard';
+import { StudyEntity } from '@app/moinda-pd/entity/study.entity';
+import { Controller, Get, Query, UseGuards } from '@nestjs/common';
 import { MainService } from './main.service';
+import { GetUser } from '../decorator/user.decorator';
 
 @Controller('main')
 export class MainController {
@@ -10,5 +14,16 @@ export class MainController {
     return this.mainService.getNewStudy();
   }
 
-  //   @Get('')
+  @Get('bestStudy')
+  async getBestStudy(
+    @Query('category') category: string,
+  ): Promise<StudyEntity[]> {
+    return this.mainService.getBestStudy(category);
+  }
+
+  @Get('myStudy')
+  @UseGuards(AuthGuard)
+  async getMyStudy(@GetUser() user: UserEntity): Promise<StudyEntity[]> {
+    return this.mainService.getMyStudy(user);
+  }
 }
