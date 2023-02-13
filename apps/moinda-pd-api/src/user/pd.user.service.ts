@@ -80,12 +80,9 @@ export class UserService {
       signUser.password = await bcrypt.hash(password, hash);
       signUser.email = email;
       signUser.nickname = nickname;
-      if (userType) {
-        // 카카오 로그인
-        signUser.email = email;
-        signUser.nickname = nickname;
+      signUser.provider = userType;
+      if (userType === 'KAKAO') {
         signUser.avatarImg = profile_image;
-        signUser.provider = userType;
       }
       // 유저 생성
       return await this.userRepository.save(signUser);

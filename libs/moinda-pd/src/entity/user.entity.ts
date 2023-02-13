@@ -57,10 +57,10 @@ export class UserEntity extends MoindaContent {
   @Column({
     type: 'varchar',
     length: 64,
-    nullable: false,
+    nullable: true,
     default: UserProviderEnum.LOCAL,
   })
-  provider: UserProviderEnum;
+  provider!: UserProviderEnum;
   //소셜로그인 하는거 갯수만큼 / 로컬 => 디폴트
 
   @OneToMany(() => StudyEntity, (study) => study.user)

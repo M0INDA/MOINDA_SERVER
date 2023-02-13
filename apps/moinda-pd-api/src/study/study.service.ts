@@ -1,9 +1,16 @@
+import { StudyStatusDto } from './../dto/setStudyStatus.dto';
+import { TargetTimeDto } from './../dto/study-targetTime.dto';
 import { PdReadMemberEntity } from '@app/moinda-pd/read/entity/pd.read.member.entity';
 import { PdReadApproveEntity } from '@app/moinda-pd/read/entity/pd.read.approve.entity';
 import { ApproveEntity } from '@app/moinda-pd/entity/approve.entity';
 import { PdReadStudyEntity } from './../../../../libs/moinda-pd/src/read/entity/pd.read.study.entity';
 
-import { DB_READ_NAME, STUDY, APPROVE } from '@app/moinda-pd/constant.model';
+import {
+  DB_READ_NAME,
+  STUDY,
+  APPROVE,
+  MEMBER,
+} from '@app/moinda-pd/constant.model';
 import { StudyEntity } from '@app/moinda-pd/entity/study.entity';
 import { UserEntity } from '@app/moinda-pd/entity/user.entity';
 
@@ -165,5 +172,68 @@ export class StudyService {
       approve.aproveStatus = ApproveStatusEnum.APPROVE;
     else approve.aproveStatus = ApproveStatusEnum.REJECT;
     return await this.approveRepository.save(approve);
+  }
+
+  async setTargetTime(
+    studyId: string,
+    targetTimeDto: TargetTimeDto,
+    user: UserEntity,
+  ) {
+    Do.require(!!studyId, '잘못된 요청입니다.');
+    Do.require(!!targetTimeDto, '시간 필수입니다.');
+    const study = await this.onGetStudy(studyId);
+    Do.require(!!study, '잘못된 요청입니다.');
+    Do.require(study.userId === user.id, '권한이 없습니다.');
+    study.targetTime = targetTimeDto.targetTime;
+    return await this.studyRepository.save(study);
+  }
+
+  async onGetMember(studyId: string, userId: string) {
+    return await this.pdReadMemberRepository
+      .createQueryBuilder(MEMBER)
+      .where({ studyId: studyId })
+      .where({ userId: userId })
+      .getOne();
+  }
+
+  async onGetManyMember(studyId: string) {
+    return await this.pdReadMemberRepository
+      .createQueryBuilder(MEMBER)
+      .where({ studyId: studyId })
+      .getMany();
+  }
+
+  async onGetRoom(studyId: string, user: UserEntity) {
+    Do.require(!!studyId, '잘못된 요청입니다.');
+    const study = await this.onGetStudy(studyId);
+    const member = await this.onGetMember(studyId, user.id);
+    const members = await this.onGetManyMember(studyId);
+    Do.require(!!member, '권한이 없습니다.');
+    const result = {
+      id: study.id,
+      hostUserId: study.userId,
+      category: study.category,
+      studyName: study.studyName,
+      icon: study.icon,
+      studyStatus: study.studyStatus,
+      targetTime: study.targetTime,
+      members: members.length,
+      hashTags: study.hashtag.split(''),
+    };
+    return result;
+  }
+
+  async setStudyStatus(
+    studyId: string,
+    studyStatusDto: StudyStatusDto,
+    user: UserEntity,
+  ) {
+    Do.require(!!studyId, '잘못된 요청입니다.');
+    const study = await this.onGetStudy(studyId);
+    Do.require(!!study, '잘못된 요청입니다.');
+    Do.require(study.userId === user.id, '권한이 없습니다.');
+    study.studyStatus = studyStatusDto.studyStatus;
+
+    return this.studyRepository.save(study);
   }
 }

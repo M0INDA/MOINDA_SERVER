@@ -16,7 +16,7 @@ export class CreateUserDto {
 
   @IsNotEmpty({ message: '닉네임을 적어주세요' })
   @IsString()
-  @MaxLength(24)
+  @MaxLength(10)
   @MinLength(2)
   nickname: string;
 
@@ -29,7 +29,6 @@ export class CreateUserDto {
   @IsString()
   refreshToken?: string = 'null';
 
-  @IsNotEmpty()
   @IsEnum(UserProviderEnum)
   userType?: UserProviderEnum;
 

@@ -37,9 +37,7 @@ export class UserController {
   }
 
   @Post('signup')
-  signup(
-    @Body(ValidationPipe) createUserDto: CreateUserDto,
-  ): Promise<UserEntity> {
+  signup(@Body() createUserDto: CreateUserDto): Promise<UserEntity> {
     const { email, password, nickname } = createUserDto;
     if (!email || !password || !nickname) {
       throw new HttpException('회원가입 데이터 누락', HttpStatus.BAD_REQUEST);

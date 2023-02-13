@@ -1,3 +1,4 @@
+import { TargetTimeDto } from './../dto/study-targetTime.dto';
 import { ApproveEntity } from '@app/moinda-pd/entity/approve.entity';
 import { UpdateStudyDto } from './../dto/update-study.dto';
 import { CreateStudyDto } from './../dto/create-study.dto';
@@ -18,6 +19,7 @@ import { JwtStrategy } from '../security/passport.jwt.strategy';
 import { UserEntity } from '@app/moinda-pd/entity/user.entity';
 import { GetUser } from '../decorator/user.decorator';
 import { AuthGuard } from '../security/auth.guard';
+import { StudyStatusDto } from '../dto/setStudyStatus.dto';
 
 @Controller('study')
 export class StudyController {
@@ -83,5 +85,31 @@ export class StudyController {
       approveStatus,
       user,
     );
+  }
+
+  @Put(':id/room/tartgetTime')
+  @UseGuards(AuthGuard)
+  async setTargetTime(
+    @Param('id') studyId: string,
+    @Body() targetTimeDto: TargetTimeDto,
+    @GetUser() user: UserEntity,
+  ) {
+    return this.studyService.setTargetTime(studyId, targetTimeDto, user);
+  }
+
+  @Get(':id/room')
+  @UseGuards(AuthGuard)
+  async onGetRoom(@Param('id') studyId: string, @GetUser() user: UserEntity) {
+    return this.studyService.onGetRoom(studyId, user);
+  }
+
+  @Put(':id/studyStatus')
+  @UseGuards(AuthGuard)
+  async setStudyStatus(
+    @Param('id') studyId: string,
+    @Body() studyStatusDto: StudyStatusDto,
+    @GetUser() user: UserEntity,
+  ): Promise<StudyEntity> {
+    return this.studyService.setStudyStatus(studyId, studyStatusDto, user);
   }
 }
