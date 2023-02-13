@@ -1,3 +1,4 @@
+import { ApproveEntity } from '@app/moinda-pd/entity/approve.entity';
 import { UpdateStudyDto } from './../dto/update-study.dto';
 import { CreateStudyDto } from './../dto/create-study.dto';
 import {
@@ -50,12 +51,37 @@ export class StudyController {
 
   //skip = page
   //take = limit
-  @Get()
+  @Get('new')
   async studyList(
     @Query('category') category: string,
     @Query('page') page: number,
     @Query('take') take: number,
   ): Promise<StudyEntity[]> {
     return this.studyService.studyList(page, take, category);
+  }
+
+  @Post(':id/approve')
+  @UseGuards(AuthGuard)
+  async requestToApprove(
+    @Param('id') studyId: string,
+    @GetUser() user: UserEntity,
+  ): Promise<ApproveEntity> {
+    return this.studyService.requestToApprove(studyId, user);
+  }
+
+  @Put(':id/approve/:approveId')
+  @UseGuards(AuthGuard)
+  async acceptOrReject(
+    @Param('id') studyId: string,
+    @Param('approveId') approveId: string,
+    @Query('approveStatus') approveStatus: string,
+    @GetUser() user: UserEntity,
+  ): Promise<ApproveEntity> {
+    return this.studyService.acceptOrReject(
+      studyId,
+      approveId,
+      approveStatus,
+      user,
+    );
   }
 }
