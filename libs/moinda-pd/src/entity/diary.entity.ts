@@ -14,7 +14,7 @@ export class DiaryEntity extends MoindaContent {
 
   @Column({
     type: 'varchar',
-    length: 512,
+    length: 18000,
     nullable: false,
   })
   content!: string;

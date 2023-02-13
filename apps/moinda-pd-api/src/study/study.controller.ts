@@ -1,3 +1,5 @@
+import { CreateDiaryDto } from './../dto/create-diary.dto';
+import { DiaryEntity } from '@app/moinda-pd/entity/diary.entity';
 import { TargetTimeDto } from './../dto/study-targetTime.dto';
 import { ApproveEntity } from '@app/moinda-pd/entity/approve.entity';
 import { UpdateStudyDto } from './../dto/update-study.dto';
@@ -20,6 +22,7 @@ import { UserEntity } from '@app/moinda-pd/entity/user.entity';
 import { GetUser } from '../decorator/user.decorator';
 import { AuthGuard } from '../security/auth.guard';
 import { StudyStatusDto } from '../dto/setStudyStatus.dto';
+import { getuid } from 'process';
 
 @Controller('study')
 export class StudyController {
@@ -111,5 +114,37 @@ export class StudyController {
     @GetUser() user: UserEntity,
   ): Promise<StudyEntity> {
     return this.studyService.setStudyStatus(studyId, studyStatusDto, user);
+  }
+
+  //스터디 검색 ===> ui가 안나왔다 함.
+  @Get()
+  async searchStudy(@Query('keyword') keyword: string): Promise<StudyEntity[]> {
+    return this.studyService.searchStudy(keyword);
+  }
+
+  //스터디원 출석 조회
+
+  //스터디 일지 작성
+  @Post(':id/diary')
+  @UseGuards(AuthGuard)
+  async onCreateDiary(
+    @Param('id') studyId: string,
+    @Body() createDiaryDto: CreateDiaryDto,
+    @GetUser() user: UserEntity,
+  ): Promise<DiaryEntity> {
+    return this.studyService.onCreateDiary(studyId, createDiaryDto, user);
+  }
+
+  //스터디 일지 리스트 조회
+  @Get(':id/diary')
+  @UseGuards(AuthGuard)
+  async getDiary(
+    @Param('id') studyId: string,
+    @Query('take') take: number,
+    @Query('skip') skip: number,
+    @Query('keyword') keyword: string | undefined,
+    @GetUser() user: UserEntity,
+  ): Promise<DiaryEntity> {
+    return this.studyService.getDiary(studyId, take, skip, keyword, user);
   }
 }
