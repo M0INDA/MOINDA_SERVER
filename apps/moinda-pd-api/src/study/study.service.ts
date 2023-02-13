@@ -88,6 +88,7 @@ export class StudyService {
   }
   //study 조회
   async onGetStudy(studyId: string) {
+    await this.studyRepository.increment({ id: studyId }, 'views', 1);
     Do.require(!!studyId, '존재하지 않는 스터디입니다.');
     return await this.pdReadStudyRepository
       .createQueryBuilder(STUDY)
