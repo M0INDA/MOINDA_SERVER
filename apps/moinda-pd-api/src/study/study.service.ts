@@ -32,7 +32,7 @@ export class StudyService {
     private readonly approveRepository: Repository<ApproveEntity>,
     @InjectRepository(PdReadApproveEntity, DB_READ_NAME)
     private readonly pdReadApproveRepository: Repository<PdReadApproveEntity>,
-    @InjectRepository(PdReadMemberEntity)
+    @InjectRepository(PdReadMemberEntity, DB_READ_NAME)
     private readonly pdReadMemberRepository: Repository<PdReadMemberEntity>,
   ) {}
   //study 생성
