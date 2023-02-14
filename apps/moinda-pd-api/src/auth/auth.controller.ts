@@ -77,10 +77,11 @@ export class AuthController {
         password: findUser.password,
       });
 
-      res.cookie('refreshToken', 'Bearer ' + jwt.refreshToken, {
-        httpOnly: true,
-        secure: true,
-      });
+      // res.cookie('refreshToken', 'Bearer ' + jwt.refreshToken, {
+      //   httpOnly: true,
+      //   secure: true,
+      // });
+      res.setHeader('authorization', 'Bearer ' + jwt.refreshToken);
 
       return res.json({ accessToken: 'Bearer ' + jwt.accessToken });
     } catch (e) {

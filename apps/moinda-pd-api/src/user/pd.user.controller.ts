@@ -52,10 +52,11 @@ export class UserController {
   async login(@Body() loginUserDto: LoginUserDto, @Res() res: Response) {
     const jwt = await this.userService.validateUser(loginUserDto);
 
-    res.cookie('refreshToken', 'Bearer ' + jwt.refreshToken, {
-      httpOnly: true,
-      secure: true,
-    });
+    // res.cookie('refreshToken', 'Bearer ' + jwt.refreshToken, {
+    //   httpOnly: true,
+    //   secure: true,
+    // });
+    res.setHeader('authorization', 'Bearer ' + jwt.refreshToken);
     return res.json({ accessToken: 'Bearer ' + jwt.accessToken });
   }
 

@@ -30,7 +30,7 @@ export class CreateUserDto {
   refreshToken?: string = 'null';
 
   @IsEnum(UserProviderEnum)
-  userType?: UserProviderEnum;
+  userType?: UserProviderEnum = UserProviderEnum.LOCAL;
 
   @IsString()
   profile_image?: string = 'null';
