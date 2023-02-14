@@ -1,8 +1,9 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable, UnauthorizedException, Res, Next } from '@nestjs/common';
 import { ExtractJwt, Strategy, VerifiedCallback } from 'passport-jwt';
 import { PassportStrategy } from '@nestjs/passport';
 import { AuthService } from '../auth/auth.service';
 import { ConfigService } from '@nestjs/config';
+import { Response, Request, NextFunction } from 'express';
 
 interface Payload {
   nickname?: string;

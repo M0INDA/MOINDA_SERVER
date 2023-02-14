@@ -16,8 +16,8 @@ import { MailerModule } from '@nestjs-modules/mailer';
         host: 'smtp.gmail.com',
         port: 587,
         auth: {
-          user: process.env.MAIL_USER,
-          pass: process.env.MAIL_PASS,
+          user: configService.get<string>('MAIL_USER'),
+          pass: configService.get<string>('MAIL_PASS'),
         },
       },
       defaults: {

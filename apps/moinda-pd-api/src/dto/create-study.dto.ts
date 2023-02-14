@@ -1,10 +1,11 @@
-import { StudyStatusEnum } from './../../../../libs/moinda-pd/src/entity/enum/study.status.enum';
+import { StudyStatusEnum } from '@app/moinda-pd/entity/enum/study.status.enum';
 import { CategoryEnum } from './../../../../libs/moinda-pd/src/entity/enum/study.category.enum';
 import { IconEnum } from './../../../../libs/moinda-pd/src/entity/enum/study.icon.enum';
 import {
   IsDataURI,
   IsDate,
   IsDateString,
+  IsInt,
   IsISO8601,
   IsNumber,
   IsString,

@@ -33,15 +33,14 @@ export class UserService {
 
   // 이메일로 회원 찾기 : 권용교
   async findOne(email: string): Promise<UserEntity> {
-    return await this.pdReadUserRepository.findOne({
-      where: { email: email },
-    });
+    return await this.pdReadUserRepository.findOne({ where: { email: email } });
   }
 
   // 회원 Id로 찾기 : 권용교
   async findId(id: string): Promise<UserEntity> {
     return await this.pdReadUserRepository.findOne({
       where: { id: id },
+      relations: ['scores'],
     });
   }
 
@@ -156,8 +155,20 @@ export class UserService {
     }
   }
 
-  // read db test
-  async testdb() {
-    return await this.pdReadUserRepository.find({});
+  // 회원 탈퇴처리
+  async deleteUser(id: string) {
+    try {
+      /* 
+      // enum 수정 후 
+        return await this.userRepository.update(
+            { id: id },
+            { enum_name: enum_name },
+          );
+      */
+      // enum 수정 전 : 유저 삭제처리
+      return await this.userRepository.delete({ id: id });
+    } catch (error) {
+      throw new HttpException('user withdrawal error', HttpStatus.BAD_REQUEST);
+    }
   }
 }

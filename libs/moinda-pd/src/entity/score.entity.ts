@@ -1,5 +1,12 @@
 import { SCORE } from './../constant.model';
-import { Column, Entity, ManyToOne, OneToOne, PrimaryColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  ManyToOne,
+  OneToOne,
+  PrimaryColumn,
+  JoinColumn,
+} from 'typeorm';
 import { MoindaContent } from './content/moinda.content';
 import { stScoreEnum } from './enum/score.stScore.enum';
 import { ndScoreEnum } from './enum/score.ndScore.enum';
@@ -44,5 +51,6 @@ export class ScoreEntity extends MoindaContent {
   userId?: string;
 
   @OneToOne(() => UserEntity, (user) => user.scores)
+  @JoinColumn([{ name: 'scores', referencedColumnName: 'id' }])
   user: UserEntity;
 }
