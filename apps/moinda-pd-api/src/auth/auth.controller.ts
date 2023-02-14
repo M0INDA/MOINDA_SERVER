@@ -92,9 +92,8 @@ export class AuthController {
   // AuthGuard test : 권용교
   @Get('/authtest')
   @UseGuards(AuthGuard)
-  isAuthenticated(@Req() req: Request): any {
-    // const user: any = req.user;
-    console.log(req.body);
+  isAuthenticated(@Req() req: any): any {
+    console.log(req.user.id);
     return '성공!';
   }
 }

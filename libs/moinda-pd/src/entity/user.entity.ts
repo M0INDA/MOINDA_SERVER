@@ -1,6 +1,13 @@
 import { AttendanceEntity } from './attendance.entity';
 import { StudyEntity } from './study.entity';
-import { Column, Entity, OneToMany, OneToOne, PrimaryColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  OneToMany,
+  OneToOne,
+  PrimaryColumn,
+  JoinColumn,
+} from 'typeorm';
 import { USER } from '../constant.model';
 import { MoindaContent } from './content/moinda.content';
 import { ApproveEntity } from './approve.entity';

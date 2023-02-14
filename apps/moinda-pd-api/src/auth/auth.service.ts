@@ -59,6 +59,7 @@ export class AuthService {
           expiresIn: access_expiresIn + 's',
         });
         return { accessToken: accessToken };
+        4;
       } else {
         throw new HttpException(
           'refresh token forgery error',
@@ -74,7 +75,7 @@ export class AuthService {
   }
 
   async verifyEmail(email: string): Promise<string> {
-    const searchUser: UserEntity = await this.usersService.findOne(email);
+    let searchUser: UserEntity = await this.usersService.findOne(email);
 
     if (!!searchUser) {
       throw new HttpException(
@@ -84,7 +85,7 @@ export class AuthService {
     }
 
     // 인증 번호 생성
-    const getRandomNum: string = Math.floor(Math.random() * 1000000)
+    let getRandomNum: string = Math.floor(Math.random() * 1000000)
       .toString()
       .padStart(6, '0');
 
@@ -115,8 +116,7 @@ export class AuthService {
 
   async kakaoLogin(options: { code: string; domain: string }): Promise<any> {
     const { code, domain } = options;
-    const kakaoKey = '507de8ce1c4e0e21e7ec2278ea407e01';
-    const kakaoTokenUrl = 'https://kauth.kakao.com/oauth/token';
+    const kakaoKey = this.configService.get<string>('KAKAOKEY');
     const kakaoUserInfoUrl = 'https://kapi.kakao.com/v2/user/me';
     const body = {
       grant_type: 'authorization_code',

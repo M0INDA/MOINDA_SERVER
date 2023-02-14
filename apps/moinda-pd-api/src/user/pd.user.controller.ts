@@ -8,12 +8,15 @@ import {
   HttpStatus,
   Res,
   Get,
+  Req,
+  UseGuards,
 } from '@nestjs/common';
 import { Response, Request } from 'express';
 import { UserService } from './pd.user.service';
 import { UserEntity } from '@app/moinda-pd/entity/user.entity';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { LoginUserDto } from '../dto/login-user.dto';
+import { AuthGuard } from '../security/auth.guard';
 
 // @UseFilters(InvalidStatusException)
 @Controller('user')
@@ -51,11 +54,6 @@ export class UserController {
   async login(@Body() loginUserDto: LoginUserDto, @Res() res: Response) {
     const jwt = await this.userService.validateUser(loginUserDto);
 
-    // 수정사항
-    // refreshToken -> cookie
-    // accessToken -> body
-    // res.setHeader('authorization', 'Bearer ' + jwt.accessToken);
-    // res.setHeader('refreshtoken', 'Bearer ' + jwt.refreshToken);
     res.cookie('refreshToken', 'Bearer ' + jwt.refreshToken, {
       httpOnly: true,
       secure: true,
@@ -63,8 +61,34 @@ export class UserController {
     return res.json({ accessToken: 'Bearer ' + jwt.accessToken });
   }
 
-  @Get('readtest')
-  async test() {
-    return await this.userService.testdb();
+  @Get('getUserProfile')
+  @UseGuards(AuthGuard)
+  async getProfile(@Req() req: any) {
+    try {
+      const id = req.user.id;
+
+      const userInfo = await this.userService.findId(id);
+      const userScore = await userInfo.scores;
+
+      const userProfile = {
+        profileImg: userInfo.avatarImg,
+        nickname: userInfo.nickname,
+        email: userInfo.email,
+        userScore: userScore,
+      };
+      return userInfo;
+    } catch (error) {
+      throw new HttpException('유저 정보 조회 실패', HttpStatus.NOT_FOUND);
+    }
+  }
+
+  @Post('withDrawal')
+  @UseGuards(AuthGuard)
+  async WithDrawal(@Req() req: any) {
+    const id = req.user.id;
+
+    // enum으로 바뀌면 상태값만 바꿔주자, 일단 유저 삭제처리
+    const result = await this.userService.deleteUser(id);
+    return result;
   }
 }
