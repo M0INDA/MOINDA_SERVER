@@ -90,4 +90,13 @@ export class UserController {
     const result = await this.userService.deleteUser(id);
     return result;
   }
+
+  @Get('attendanceTime')
+  @UseGuards(AuthGuard)
+  async getAttendanceTime(@Req() req: any) {
+    const id = req.user.id;
+
+    const result = await this.userService.getAttendanceTime(id);
+    return result;
+  }
 }

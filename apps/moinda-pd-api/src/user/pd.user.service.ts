@@ -18,6 +18,7 @@ import { Repository } from 'typeorm';
 import { DB_READ_NAME, USER } from '@app/moinda-pd/constant.model';
 import { response } from 'express';
 import { UserProviderEnum } from '@app/moinda-pd/entity/enum/user.provider.enum';
+import { PdReadAttendanceEntity } from '@app/moinda-pd/read/entity/pd.read.attendance.entity';
 
 @Injectable()
 export class UserService {
@@ -29,6 +30,8 @@ export class UserService {
     private readonly jwtService: JwtService,
     @InjectRepository(PdReadUserEntity, DB_READ_NAME)
     private readonly pdReadUserRepository: Repository<PdReadUserEntity>,
+    @InjectRepository(PdReadAttendanceEntity, DB_READ_NAME)
+    private readonly PdReadAttendanceRepository: Repository<PdReadAttendanceEntity>,
   ) {}
 
   // 이메일로 회원 찾기 : 권용교
@@ -170,5 +173,19 @@ export class UserService {
     } catch (error) {
       throw new HttpException('user withdrawal error', HttpStatus.BAD_REQUEST);
     }
+  }
+
+  // 유저 총 공부시간
+  // 이게 맞는건가 ? 상의
+  async getAttendanceTime(id: String) {
+    const result = await this.PdReadAttendanceRepository.query(
+      `
+      SELECT SUM(a.todayTime) AS 'totalTime'
+      FROM attendance AS a
+      WHERE userId=?
+      `,
+      [id],
+    );
+    return result;
   }
 }
