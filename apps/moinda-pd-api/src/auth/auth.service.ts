@@ -59,7 +59,6 @@ export class AuthService {
           expiresIn: access_expiresIn + 's',
         });
         return { accessToken: accessToken };
-        4;
       } else {
         throw new HttpException(
           'refresh token forgery error',
@@ -129,16 +128,6 @@ export class AuthService {
     };
 
     try {
-      /*
-        grant_type	  String	authorization_code로 고정	O
-        client_id	    String	앱 REST API 키
-        redirect_uri	String	인가 코드가 리다이렉트된 URI	O
-        code	        String	인가 코드 받기 요청으로 얻은 인가 코드	O
-
-        POST /oauth/token HTTP/1.1
-        Host: kauth.kakao.com
-        Content-type: application/x-www-form-urlencoded;charset=utf-8
-      */
       const response = await axios({
         method: 'POST',
         url: `https://kauth.kakao.com/oauth/token`,
@@ -176,6 +165,119 @@ export class AuthService {
     } catch (error) {
       console.log(error);
       throw new UnauthorizedException();
+    }
+  }
+
+  async getNaverToken(data) {
+    try {
+      const { code, state } = data;
+
+      const naverToken = await axios.post(
+        'https://nid.naver.com/oauth2.0/token',
+        {},
+        {
+          params: {
+            grant_type: 'authorization_code',
+            client_id: process.env.NEXT_PUBLIC_CLIENT_ID_NAVER,
+            client_secret: process.env.CLIENT_SECRET_NAVER,
+            code: code,
+            state: state,
+          },
+        },
+      );
+      if (naverToken.status !== 200) throw new Error('네이버 토큰 발급 에러');
+
+      return naverToken.data;
+    } catch (err) {
+      throw new Error(err);
+    }
+  }
+
+  async getNaverUserInfo(data) {
+    try {
+      const { access_token } = data;
+
+      const userInfo = await axios.post(
+        'https://openapi.naver.com/v1/nid/me',
+        {},
+        {
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8',
+            Authorization: `Bearer ${access_token}`,
+          },
+        },
+      );
+      if (userInfo.status !== 200) throw new Error('유저 정보가 없습니다.');
+      return userInfo.data;
+    } catch (err) {
+      throw new Error(err);
+    }
+  }
+
+  async getGoogleToken(data) {
+    try {
+      const { code, url } = data;
+      const client_id = process.env.NEXT_PUBLIC_CLIENT_ID_GOOGLE;
+      const client_secret = process.env.NEXT_PUBLIC_CLIENT_SECRET_GOOGLE;
+      const redirect_uri = process.env.NEXT_PUBLIC_REDIRECT_URL_GOOGLE;
+
+      const googleToken = await axios.post(
+        'https://oauth2.googleapis.com/token',
+        {},
+        {
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8',
+          },
+          params: {
+            code: code,
+            client_id: client_id,
+            client_secret: client_secret,
+            grant_type: 'authorization_code',
+            redirect_uri: url + redirect_uri,
+          },
+        },
+      );
+
+      if (googleToken.status !== 200) {
+        throw new Error('구글 토근 발급 에러');
+      }
+
+      return googleToken.data;
+    } catch (err) {
+      throw new Error(err);
+    }
+  }
+
+  async googleTokenValidation(data) {
+    try {
+      const { access_token } = data;
+
+      const result = await axios.get(
+        `https://oauth2.googleapis.com/tokeninfo?access_token=${access_token}`,
+      );
+      return result;
+    } catch (err) {
+      throw new Error(err);
+    }
+  }
+
+  async getGoogleUserInfo(data) {
+    const { access_token } = data;
+
+    try {
+      const userInfo = await axios.get(
+        `https://www.googleapis.com/oauth2/v2/userinfo?access_token=${access_token}`,
+        {
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8',
+            Authorization: `Bearer ${access_token}`,
+          },
+        },
+      );
+      if (userInfo.status !== 200) throw new Error('유저 정보가 없습니다.');
+      return userInfo.data;
+    } catch (err) {
+      throw new Error(err);
     }
   }
 }

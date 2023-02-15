@@ -76,15 +76,28 @@ export class UserService {
       const signUser = new UserEntity();
       signUser.id = this.idService.getId(signUser);
 
-      // 일반 회원가입
-      const hash = parseInt(this.configService.get<string>('HASHCODE'));
-      // 비밀번호 암호화
-      signUser.password = await bcrypt.hash(password, hash);
-      signUser.email = email;
-      signUser.nickname = nickname;
-      signUser.provider = userType;
       if (userType === 'KAKAO') {
+        signUser.nickname = 'KAKAO' + signUser.id;
+        signUser.email = email;
+        signUser.provider = userType;
         signUser.avatarImg = profile_image;
+      } else if (userType === 'NAVER') {
+        signUser.nickname = 'NAVER_' + signUser.id;
+        signUser.email = email;
+        signUser.provider = userType;
+      } else if (userType === 'GOOGLE') {
+        signUser.nickname = 'GOOGLE_' + signUser.id;
+        signUser.email = email;
+        signUser.provider = userType;
+        signUser.avatarImg = profile_image;
+      } else {
+        // 일반 회원가입
+        const hash = parseInt(this.configService.get<string>('HASHCODE'));
+        // 비밀번호 암호화
+        signUser.password = await bcrypt.hash(password, hash);
+        signUser.email = email;
+        signUser.nickname = nickname;
+        signUser.provider = userType;
       }
       // 유저 생성
       return await this.userRepository.save(signUser);
