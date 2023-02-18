@@ -78,6 +78,7 @@ export class StudyService {
       study.tel = dto.tel;
       study.studyStatus = dto.studyStatus;
       study.hashtag = dto.hashtag;
+      study.memberCnt = 1;
       member.studyId = dto.id;
       member.id = memberId;
       member.userId = user.id;
@@ -177,9 +178,10 @@ export class StudyService {
     Do.require(!!approveId, '잘못된 요청입니다.');
     const approve = await this.onGetApprove(approveId);
     Do.require(user.id === approve.userId, '권한이 없습니다.');
-    if (approveStatus === 'APPROVE')
+    if (approveStatus === 'APPROVE') {
       approve.aproveStatus = ApproveStatusEnum.APPROVE;
-    else approve.aproveStatus = ApproveStatusEnum.REJECT;
+      await this.studyRepository.increment({ id: studyId }, 'memberCnt', 1);
+    } else approve.aproveStatus = ApproveStatusEnum.REJECT;
     return await this.approveRepository.save(approve);
   }
   //study 목표시간설정

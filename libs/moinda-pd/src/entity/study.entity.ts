@@ -96,6 +96,12 @@ export class StudyEntity extends MoindaContent {
     nullable: false,
   })
   hashtag: string;
+
+  @Column({
+    type: 'int',
+    default: 0,
+  })
+  memberCnt: number;
   @Column({ type: 'varchar', length: 12, nullable: false })
   userId!: string;
 

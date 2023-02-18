@@ -23,7 +23,7 @@ export class MainController {
 
   @Get('myStudy')
   @UseGuards(AuthGuard)
-  async getMyStudy(@GetUser() user: UserEntity): Promise<StudyEntity[]> {
+  async getMyStudy(@GetUser() user: UserEntity) {
     return this.mainService.getMyStudy(user);
   }
 }
