@@ -5,6 +5,7 @@ import {
   IsDataURI,
   IsDate,
   IsDateString,
+  IsEnum,
   IsISO8601,
   IsNumber,
   IsString,
@@ -22,10 +23,10 @@ export class CreateStudyDto {
   @IsString()
   content!: string;
 
-  @IsString()
+  @IsEnum(IconEnum)
   icon!: IconEnum;
 
-  @IsString()
+  @IsEnum(CategoryEnum)
   category!: CategoryEnum;
 
   @Type(() => Date)
