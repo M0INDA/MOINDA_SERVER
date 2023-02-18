@@ -14,6 +14,7 @@ import {
   Query,
   UseGuards,
   ValidationPipe,
+  Req,
 } from '@nestjs/common';
 import { StudyService } from './study.service';
 import { StudyEntity } from '@app/moinda-pd/entity/study.entity';
@@ -37,6 +38,15 @@ export class StudyController {
   ): Promise<StudyEntity> {
     console.log(user);
     return this.studyService.onCreateStudy(user, createStudyDto);
+  }
+
+  // 유저 프로필 정보에 들어가는 스터디 정보 : 권용교
+  @Get('/getUserJoinStudyList')
+  @UseGuards(AuthGuard)
+  async getStudyList(@Req() req: any) {
+    const id = req.user.id;
+    const studyList = await this.studyService.getUserJoinStudyList(id);
+    return studyList;
   }
 
   @Get(':id')

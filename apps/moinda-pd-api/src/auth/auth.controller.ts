@@ -38,16 +38,20 @@ export class AuthController {
   // 이메일 인증 : 권용교
   @Post('/nodemailer')
   async emailVerify(@Body('email') email: string): Promise<string> {
-    let result = await this.authService.verifyEmail(email);
-    return result;
+    return await this.authService.verifyEmail(email);
   }
 
   // 카카오 로그인
   @Post('/kakao')
-  async kakaoLogin(@Body() body: any, @Res() res: Response): Promise<any> {
+  async kakaoLogin(@Res() res: Response, @Req() req: Request): Promise<any> {
     try {
+      const { code } = req.query;
+      if (typeof code === 'undefined' || typeof code !== 'string') {
+        throw new Error(`kakao data Error`);
+      }
+      const domain = req.protocol + '://' + req.get('host');
+
       // 카카오 토큰 조회 후 계정 정보 가져오기
-      const { code, domain } = body;
       if (!code || !domain) {
         throw new BadRequestException('카카오 정보가 없습니다.');
       }
@@ -78,10 +82,11 @@ export class AuthController {
         password: findUser.password,
       });
 
-      res.cookie('refreshToken', 'Bearer ' + jwt.refreshToken, {
-        httpOnly: true,
-        secure: true,
-      });
+      // res.cookie('refreshToken', 'Bearer ' + jwt.refreshToken, {
+      //   httpOnly: true,
+      //   secure: true,
+      // });
+      res.setHeader('authorization', 'Bearer ' + jwt.refreshToken);
 
       return res.json({ accessToken: 'Bearer ' + jwt.accessToken });
     } catch (e) {
@@ -90,12 +95,95 @@ export class AuthController {
     }
   }
 
+  @Post('/naver')
+  async naverLogin(@Res() res: Response, @Req() req: Request): Promise<any> {
+    const { code, state, error, error_description } = req.query;
+    if (typeof code === 'undefined') {
+      throw new Error(`naver data Error (${error}) : ${error_description}`);
+    }
+    const naverToken = await this.authService.getNaverToken({ code, state });
+    const naverUserInfo = await this.authService.getNaverUserInfo(naverToken);
+
+    let findUser: UserEntity = await this.userService.findOne(
+      naverUserInfo.response.email,
+    );
+
+    if (findUser === null) {
+      let user: CreateUserDto = {
+        email: naverUserInfo.response.email,
+        password: 'naver',
+        nickname: 'naverUser',
+        userType: UserProviderEnum.NAVER,
+      };
+
+      findUser = await this.userService.signup(user);
+    }
+
+    const jwt = await this.userService.validateUser({
+      email: findUser.email,
+      password: findUser.password,
+    });
+
+    // res.cookie('refreshToken', 'Bearer ' + jwt.refreshToken, {
+    //   httpOnly: true,
+    //   secure: true,
+    // });
+    res.setHeader('authorization', 'Bearer ' + jwt.refreshToken);
+
+    return res.json({ accessToken: 'Bearer ' + jwt.accessToken });
+  }
+
+  @Post('/google')
+  async googleLogin(@Res() res: Response, @Req() req: Request): Promise<any> {
+    const { code } = req.query;
+    if (typeof code === 'undefined') {
+      throw new Error(`google data Error`);
+    }
+    const url = req.protocol + '://' + req.get('host');
+    const gooleToken = await this.authService.getGoogleToken({ code, url });
+    const googleTokenValidation = await this.authService.googleTokenValidation(
+      gooleToken,
+    );
+    if (googleTokenValidation.status !== 200) {
+      throw new Error('google accesstoken validation error');
+    }
+    const googleUserInfo = await this.authService.getGoogleUserInfo(gooleToken);
+
+    let findUser: UserEntity = await this.userService.findOne(
+      googleUserInfo.email,
+    );
+
+    if (findUser === null) {
+      let user: CreateUserDto = {
+        email: googleUserInfo.email,
+        password: 'google',
+        nickname: 'googleUser',
+        userType: UserProviderEnum.GOOGLE,
+        profile_image: googleUserInfo.picture,
+      };
+
+      findUser = await this.userService.signup(user);
+    }
+
+    const jwt = await this.userService.validateUser({
+      email: findUser.email,
+      password: findUser.password,
+    });
+
+    // res.cookie('refreshToken', 'Bearer ' + jwt.refreshToken, {
+    //   httpOnly: true,
+    //   secure: true,
+    // });
+    res.setHeader('authorization', 'Bearer ' + jwt.refreshToken);
+
+    return res.json({ accessToken: 'Bearer ' + jwt.accessToken });
+  }
+
   // AuthGuard test : 권용교
   @Get('/authtest')
   @UseGuards(AuthGuard)
-  isAuthenticated(@Req() req: Request): any {
-    // const user: any = req.user;
-    console.log(req.body);
+  isAuthenticated(@Req() req: any): any {
+    console.log(req.user.id);
     return '성공!';
   }
 }

@@ -18,6 +18,7 @@ import { Repository } from 'typeorm';
 import { DB_READ_NAME, USER } from '@app/moinda-pd/constant.model';
 import { response } from 'express';
 import { UserProviderEnum } from '@app/moinda-pd/entity/enum/user.provider.enum';
+import { PdReadAttendanceEntity } from '@app/moinda-pd/read/entity/pd.read.attendance.entity';
 
 @Injectable()
 export class UserService {
@@ -29,19 +30,20 @@ export class UserService {
     private readonly jwtService: JwtService,
     @InjectRepository(PdReadUserEntity, DB_READ_NAME)
     private readonly pdReadUserRepository: Repository<PdReadUserEntity>,
+    @InjectRepository(PdReadAttendanceEntity, DB_READ_NAME)
+    private readonly PdReadAttendanceRepository: Repository<PdReadAttendanceEntity>,
   ) {}
 
   // 이메일로 회원 찾기 : 권용교
   async findOne(email: string): Promise<UserEntity> {
-    return await this.pdReadUserRepository.findOne({
-      where: { email: email },
-    });
+    return await this.pdReadUserRepository.findOne({ where: { email: email } });
   }
 
   // 회원 Id로 찾기 : 권용교
   async findId(id: string): Promise<UserEntity> {
     return await this.pdReadUserRepository.findOne({
       where: { id: id },
+      relations: ['scores'],
     });
   }
 
@@ -74,15 +76,28 @@ export class UserService {
       const signUser = new UserEntity();
       signUser.id = this.idService.getId(signUser);
 
-      // 일반 회원가입
-      const hash = parseInt(this.configService.get<string>('HASHCODE'));
-      // 비밀번호 암호화
-      signUser.password = await bcrypt.hash(password, hash);
-      signUser.email = email;
-      signUser.nickname = nickname;
-      signUser.provider = userType;
       if (userType === 'KAKAO') {
+        signUser.nickname = 'KAKAO' + signUser.id;
+        signUser.email = email;
+        signUser.provider = userType;
         signUser.avatarImg = profile_image;
+      } else if (userType === 'NAVER') {
+        signUser.nickname = 'NAVER_' + signUser.id;
+        signUser.email = email;
+        signUser.provider = userType;
+      } else if (userType === 'GOOGLE') {
+        signUser.nickname = 'GOOGLE_' + signUser.id;
+        signUser.email = email;
+        signUser.provider = userType;
+        signUser.avatarImg = profile_image;
+      } else {
+        // 일반 회원가입
+        const hash = parseInt(this.configService.get<string>('HASHCODE'));
+        // 비밀번호 암호화
+        signUser.password = await bcrypt.hash(password, hash);
+        signUser.email = email;
+        signUser.nickname = nickname;
+        signUser.provider = userType;
       }
       // 유저 생성
       return await this.userRepository.save(signUser);
@@ -156,8 +171,34 @@ export class UserService {
     }
   }
 
-  // read db test
-  async testdb() {
-    return await this.pdReadUserRepository.find({});
+  // 회원 탈퇴처리
+  async deleteUser(id: string) {
+    try {
+      /* 
+      // enum 수정 후 
+        return await this.userRepository.update(
+            { id: id },
+            { enum_name: enum_name },
+          );
+      */
+      // enum 수정 전 : 유저 삭제처리
+      return await this.userRepository.delete({ id: id });
+    } catch (error) {
+      throw new HttpException('user withdrawal error', HttpStatus.BAD_REQUEST);
+    }
+  }
+
+  // 유저 총 공부시간
+  // 이게 맞는건가 ? 상의
+  async getAttendanceTime(id: String) {
+    const result = await this.PdReadAttendanceRepository.query(
+      `
+      SELECT SUM(a.todayTime) AS 'totalTime'
+      FROM attendance AS a
+      WHERE userId=?
+      `,
+      [id],
+    );
+    return result;
   }
 }

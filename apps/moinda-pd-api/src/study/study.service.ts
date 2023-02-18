@@ -8,6 +8,10 @@ import { PdReadApproveEntity } from '@app/moinda-pd/read/entity/pd.read.approve.
 import { ApproveEntity } from '@app/moinda-pd/entity/approve.entity';
 import { PdReadStudyEntity } from './../../../../libs/moinda-pd/src/read/entity/pd.read.study.entity';
 
+import { IconEnum } from '@app/moinda-pd/entity/enum/study.icon.enum';
+import { CategoryEnum } from '@app/moinda-pd/entity/enum/study.category.enum';
+import { StudyStatusEnum } from '../../../../libs/moinda-pd/src/entity/enum/study.status.enum';
+
 import {
   DB_READ_NAME,
   STUDY,
@@ -320,5 +324,39 @@ export class StudyService {
         take: take,
       });
     }
+  }
+
+  // 유저가 속한 스터디 목록 조회
+  async getUserJoinStudyList(userId: string) {
+    let studyInfo = {
+      study_end: [],
+      study_ing: [],
+      study_my: [],
+    };
+
+    const result = await this.pdReadMemberRepository.find({
+      where: { userId: userId },
+    });
+
+    const userStudyList = result.map((e) => {
+      return e.studyId;
+    });
+
+    for (const e of userStudyList) {
+      let result = await this.onGetStudy(e);
+
+      // 내가 만든 스터지인지
+      if (result.userId === userId) {
+        studyInfo.study_my.push(result);
+      }
+
+      if (result.studyStatus === StudyStatusEnum.END) {
+        studyInfo.study_end.push(result);
+      } else {
+        studyInfo.study_ing.push(result);
+      }
+    }
+
+    return studyInfo;
   }
 }

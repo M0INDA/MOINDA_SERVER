@@ -31,6 +31,8 @@ jobs:
           touch .env.ci
           cat << EOF >> .env.ci
           ${{ secrets.ENV_FILE_DEV }}
+          cat << EOF >> .env.ci
+          ${{ secrets.ENV_AUTH_DEV }}
       - name: build client files
         working-directory: ./
         run: |
@@ -38,21 +40,21 @@ jobs:
           npm run build
           
       - name: zip file
-        run: zip -r moinda-dev.zip ./apps ./libs ./dist ./.eslintrc.js ./.gitignore ./.prettierrc ./nest-cli.json ./package.json ./tsconfig.build.json ./tsconfig.json ./appspec.yml ./scripts
+        run: zip -r moinda-dev0.zip ./apps ./libs ./dist ./.eslintrc.js ./.gitignore ./.prettierrc ./nest-cli.json ./package.json ./tsconfig.build.json ./tsconfig.json ./appspec.yml ./scripts
 
       - name: AWS connect
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_DEV }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_DEV }}
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_DEV0 }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_DEV0 }}
           aws-region: ap-northeast-2
 
       - name: upload to S3
-        run: aws s3 cp --region ap-northeast-2 ./moinda-dev.zip s3://moinda-dev/moinda-dev.zip
+        run: aws s3 cp --region ap-northeast-2 ./moinda-dev0.zip s3://moinda-dev0/moinda-dev0.zip
 
       - name: deploy with AWS codeDeploy
         run: aws deploy create-deployment
-          --application-name MOINDA-DEV3
+          --application-name MOINDA-DEV0
           --deployment-config-name CodeDeployDefault.OneAtATime
-          --deployment-group-name MOINDA-DEV3
-          --s3-location bucket=moinda-dev,bundleType=zip,key=moinda-dev.zip
+          --deployment-group-name MOINDA-DEV0
+          --s3-location bucket=moinda-dev0,bundleType=zip,key=moinda-dev0.zip

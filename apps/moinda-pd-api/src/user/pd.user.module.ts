@@ -8,11 +8,15 @@ import { JwtModule } from '@nestjs/jwt';
 import { PdReadUserEntity } from '@app/moinda-pd/read/entity/pd.read.user.entity';
 import { UserEntity } from '@app/moinda-pd/entity/user.entity';
 import { DB_READ_NAME } from '@app/moinda-pd/constant.model';
+import { PdReadAttendanceEntity } from '@app/moinda-pd/read/entity/pd.read.attendance.entity';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([UserEntity]),
-    TypeOrmModule.forFeature([PdReadUserEntity], DB_READ_NAME),
+    TypeOrmModule.forFeature(
+      [PdReadUserEntity, PdReadAttendanceEntity],
+      DB_READ_NAME,
+    ),
     PassportModule.register({ defaultStrategy: 'jwt', session: false }),
     JwtModule.register({
       secret: process.env.TOKENKEY,
