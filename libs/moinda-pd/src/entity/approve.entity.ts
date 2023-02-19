@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne, OneToMany, PrimaryColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryColumn } from 'typeorm';
 import { APPROVE } from '../constant.model';
 import { MoindaContent } from './content/moinda.content';
 import { ApproveStatusEnum } from './enum/approve.status.enum';
