@@ -8,7 +8,6 @@ import {
   Post,
   Put,
   Delete,
-  Query,
   UseGuards,
   ValidationPipe,
   Ip,
@@ -23,16 +22,19 @@ import { AuthGuard } from '../security/auth.guard';
 import { ViewsDto } from '../dto/views.dto';
 import { updateDiaryDto } from '../dto/update-diary.dto';
 import { ApproveEntity } from '@app/moinda-pd/entity/approve.entity';
-import { StudyRequestDto } from '../dto/request-study.dto';
 import { ApproveStatusEnum } from '@app/moinda-pd/entity/enum/approve.status.enum';
+import { StudyStatusEnum } from '@app/moinda-pd/entity/enum/study.status.enum';
+import { CategoryEnum } from '@app/moinda-pd/entity/enum/study.category.enum';
+import { targetTimeSet } from '../dto/targetTime-set.dto';
+import { WhetherOrNotDto } from '../dto/whetherOrNot.dto';
 
 @Controller('study')
 export class StudyController {
   constructor(private readonly studyService: StudyService) {}
 
+  // 스터디 개설 C
   @Post()
   @UseGuards(AuthGuard)
-  // @UseGuards(JwtStrategy)
   async onCreateStudy(
     @Body(ValidationPipe) createStudyDto: CreateStudyDto,
     @GetUser() user: UserEntity,
@@ -41,10 +43,20 @@ export class StudyController {
     return this.studyService.onCreateStudy(user, createStudyDto);
   }
 
-  // 스터디 목록 R
-  @Get()
-  async getAllStudy(/** @Query() page: */): Promise<StudyEntity[]> {
-    return this.studyService.getAllStudy();
+  // 추천 스터디 목록 R
+  @Get('best')
+  async getBestStudy(
+    @Param('category') category: CategoryEnum,
+  ): Promise<StudyEntity[]> {
+    return this.studyService.getBestStudy(category);
+  }
+
+  // 최신 스터디 목록 R
+  @Get('new')
+  async getNewStudy(
+    @Param('category') category: CategoryEnum,
+  ): Promise<StudyEntity[]> {
+    return this.studyService.getNewStudy(category);
   }
 
   // 스터디 상세 페이지 R
@@ -75,9 +87,9 @@ export class StudyController {
   async studyRequest(
     @GetUser() user: UserEntity,
     @Param('id') studyId: string,
-    @Body() studyRequestDto: StudyRequestDto,
+    // @Body() studyRequestDto: StudyRequestDto,
   ): Promise<ApproveEntity> {
-    return this.studyService.studyRequest(user, studyId, studyRequestDto);
+    return this.studyService.studyRequest(user, studyId);
   }
 
   // 참여 수락 여부
@@ -86,20 +98,53 @@ export class StudyController {
   async whetherOrNot(
     @GetUser() user: UserEntity,
     @Param('id') studyId: string,
-    @Param('id') approveId: string,
-    @Body() approveStatus: ApproveStatusEnum,
+    @Param('approveId') approveId: string,
+    @Body() approveStatus: WhetherOrNotDto,
   ): Promise<ApproveEntity> {
-    return this.studyService.whetherOrNot();
+    return this.studyService.whetherOrNot(
+      user,
+      studyId,
+      approveId,
+      approveStatus,
+    );
   }
 
-  // 내 스터디룸 R
+  // 스터디룸 R
   @Get(':id/room')
   @UseGuards(AuthGuard)
   async getMyStudyRoom(
     @GetUser() user: UserEntity,
     @Param('id') studyId: string,
+  ) {
+    return this.studyService.getStudyRoom(user, studyId);
+  }
+
+  // 스터디룸 / 스터디 상태 U
+  @Put(':id/studyStatus')
+  @UseGuards(AuthGuard)
+  async studyStatus(
+    @GetUser() user: UserEntity,
+    @Param('id') studyId: string,
+    @Body() studyStatus: StudyStatusEnum,
   ): Promise<StudyEntity> {
-    return this.studyService.getMyStudyRoom(user, studyId);
+    return this.studyService.studyStatus(user, studyId, studyStatus);
+  }
+
+  // 스터디룸 / 스터디원 출석 현황 R
+  @Get(':id/room/memberStatus')
+  async memberStatus(@Param('id') studyId: string) {
+    return this.studyService.memberStatus(studyId);
+  }
+
+  // 스터디룸 / 그룹 목표 시간 C
+  @Post(':id/room/targetTime')
+  @UseGuards(AuthGuard)
+  async targetTimeSet(
+    @GetUser() user: UserEntity,
+    @Param('id') studyId: string,
+    @Body() targetTime: targetTimeSet,
+  ): Promise<StudyEntity> {
+    return this.studyService.targetTimeSet(user, studyId, targetTime);
   }
 
   // 스터디 일지 C
