@@ -21,7 +21,7 @@ export class MainController {
     return this.mainService.getBestStudy(category);
   }
 
-  @Get('my_ study')
+  @Get('my_study')
   @UseGuards(AuthGuard)
   async getMyStudy(@GetUser() user: UserEntity) {
     return this.mainService.getMyStudy(user);
