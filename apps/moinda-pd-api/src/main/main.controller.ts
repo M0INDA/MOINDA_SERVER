@@ -9,19 +9,19 @@ import { GetUser } from '../decorator/user.decorator';
 export class MainController {
   constructor(private readonly mainService: MainService) {}
 
-  @Get('newstudy')
+  @Get('new_study')
   async getNewStudy() {
     return this.mainService.getNewStudy();
   }
 
-  @Get('bestStudy')
+  @Get('best_study')
   async getBestStudy(
     @Query('category') category: string,
   ): Promise<StudyEntity[]> {
     return this.mainService.getBestStudy(category);
   }
 
-  @Get('myStudy')
+  @Get('my_ study')
   @UseGuards(AuthGuard)
   async getMyStudy(@GetUser() user: UserEntity) {
     return this.mainService.getMyStudy(user);
