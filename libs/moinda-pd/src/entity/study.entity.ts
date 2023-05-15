@@ -10,6 +10,7 @@ import { CategoryEnum } from './enum/study.category.enum';
 import { IconEnum } from './enum/study.icon.enum';
 import { StudyStatusEnum } from './enum/study.status.enum';
 import { MemberEntity } from './memeber.entity';
+import { PostEntity } from './post.entity';
 
 @Entity({ name: STUDY })
 export class StudyEntity extends MoindaContent {
@@ -27,13 +28,6 @@ export class StudyEntity extends MoindaContent {
     type: 'varchar',
     length: 64,
     nullable: false,
-  })
-  title!: string;
-
-  @Column({
-    type: 'varchar',
-    length: 64,
-    nullable: false,
     default: CategoryEnum.ETC,
   })
   category!: CategoryEnum;
@@ -41,25 +35,12 @@ export class StudyEntity extends MoindaContent {
 
   @Column({
     type: 'varchar',
-    length: 3000,
-    nullable: false,
-  })
-  content!: string;
-
-  @Column({
-    type: 'varchar',
     length: 64,
     nullable: false,
-    default: StudyStatusEnum.PUBLIC,
+    default: StudyStatusEnum.PROGRESS,
   })
   studyStatus!: StudyStatusEnum;
   //모집중 진행중(모집 안할 때) 스터디끝
-
-  @Column({
-    type: 'date',
-    nullable: false,
-  })
-  startDate: Date;
 
   @Column({
     type: 'varchar',
@@ -77,33 +58,12 @@ export class StudyEntity extends MoindaContent {
   targetTime: number;
 
   @Column({
-    type: 'varchar',
-    length: 128,
-    nullable: true,
-  })
-  tel: string;
-
-  @Column({
     type: 'int',
-    nullable: true,
-    default: 0,
-  })
-  views: number;
-
-  @Column({
-    type: 'varchar',
-    length: 64,
-    nullable: false,
-  })
-  hashtag: string;
-
-  @Column({
-    type: 'int',
-    default: 0,
+    default: 1,
   })
   memberCnt: number;
   @Column({ type: 'varchar', length: 12, nullable: false })
-  userId!: string;
+  hostId!: string;
 
   @ManyToOne(() => UserEntity, (user) => user.studies)
   user: UserEntity;
@@ -119,4 +79,7 @@ export class StudyEntity extends MoindaContent {
 
   @OneToMany(() => ChatEntity, (chat) => chat.study)
   chats: Promise<ChatEntity[]>;
+
+  @OneToMany(() => PostEntity, (post) => post.study)
+  posts: Promise<PostEntity[]>;
 }

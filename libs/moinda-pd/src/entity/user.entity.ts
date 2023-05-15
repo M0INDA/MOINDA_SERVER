@@ -1,3 +1,4 @@
+import { PostEntity } from './post.entity';
 import { AttendanceEntity } from './attendance.entity';
 import { StudyEntity } from './study.entity';
 import {
@@ -96,4 +97,7 @@ export class UserEntity extends MoindaContent {
 
   @OneToOne(() => AttendanceEntity, (attendance) => attendance.user)
   attendances: Promise<AttendanceEntity[]>;
+
+  @OneToMany(() => PostEntity, (post) => post.user)
+  posts: Promise<PostEntity[]>;
 }

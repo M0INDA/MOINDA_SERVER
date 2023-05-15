@@ -14,6 +14,7 @@ export const RATING = 'rating';
 export const CHECKIN = 'checkin';
 export const ATTENDANCE = 'attendance';
 export const HASHTAG = 'hashtag';
+export const POST = 'post';
 
 // export const DB_READ_NAME = 'DB_READ_NAME';
 export const DB_READ_NAME = 'moinda'; // rds

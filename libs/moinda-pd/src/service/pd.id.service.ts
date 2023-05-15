@@ -1,3 +1,4 @@
+import { PostEntity } from './../entity/post.entity';
 import { RatingEntity } from './../entity/rating.entity';
 import { ChatEntity } from './../entity/chat.entity';
 import { CommentEntity } from './../entity/comment.entity';
@@ -43,6 +44,8 @@ export class IdService {
       return 'ME';
     } else if (entity instanceof AttendanceEntity) {
       return 'AT';
+    } else if (entity instanceof PostEntity) {
+      return 'PO';
     }
   }
 }
